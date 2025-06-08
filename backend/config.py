@@ -1,38 +1,118 @@
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+from typing import Optional, List, Tuple
 
 # Load environment variables
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path)
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(env_path)
 
 class Settings:
-    # Hugging Face Configuration
-    HUGGINGFACE_API_TOKEN: str = os.getenv("HUGGINGFACE_API_TOKEN", "")
+    # OpenRouter Configuration - Free Models 2025
+    OPENROUTER_API_KEY: Optional[str] = os.getenv("OPENROUTER_API_KEY")
+    OPENROUTER_API_BASE: str = "https://openrouter.ai/api/v1"
     
     # API Configuration
-    API_HOST: str = os.getenv("API_HOST", "0.0.0.0")
-    API_PORT: int = int(os.getenv("API_PORT", "8000"))
+    API_HOST: str = "0.0.0.0"
+    API_PORT: int = 8000
     
-    # Model Configuration
-    DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "meta/llama-3-8b-instruct")
-    TEXT_GENERATION_MODEL: str = os.getenv("TEXT_GENERATION_MODEL", "mistralai/Mistral-Small-3.1-instruct")
+    # FREE OpenRouter Models (as of 2025)
+    # These models are available for free with OpenRouter
+    FREE_MODELS = {
+        "deepseek": {
+            "model_name": "deepseek/deepseek-chat-v3-0324:free",
+            "description": "High-performance model excellent for coding and reasoning",
+            "max_tokens": 4096,
+            "good_for": ["coding", "reasoning", "general_chat"]
+        },
+        "qwen": {
+            "model_name": "qwen/qwen-2.5-7b-instruct:free", 
+            "description": "Good general purpose model",
+            "max_tokens": 4096,
+            "good_for": ["general_chat", "text_generation"]
+        },
+        "llama": {
+            "model_name": "meta-llama/llama-3.1-8b-instruct:free",
+            "description": "Meta's open source model, good for various tasks",
+            "max_tokens": 4096,
+            "good_for": ["text_generation", "summarization"]
+        },
+        "gemma": {
+            "model_name": "google/gemma-2-9b-it:free",
+            "description": "Google's efficient model",
+            "max_tokens": 4096,
+            "good_for": ["instruction_following", "text_generation"]
+        }
+    }
+    
+    # Default model (DeepSeek is highly rated for coding tasks)
+    DEFAULT_MODEL: str = os.getenv("DEFAULT_MODEL", "deepseek/deepseek-chat-v3-0324:free")
+    
+    # Fallback models in order of preference
+    FALLBACK_MODELS: List[str] = [
+        "deepseek/deepseek-chat-v3-0324:free",
+        "qwen/qwen-2.5-7b-instruct:free",
+        "meta-llama/llama-3.1-8b-instruct:free",
+        "google/gemma-2-9b-it:free"
+    ]
+    
+    # Rate limiting info (important for free tier)
+    # Default: 50 requests/day, with $10 credit: 1000 requests/day
+    RATE_LIMIT_WARNING_THRESHOLD: int = 45  # Warn when approaching daily limit
     
     @property
-    def huggingface_headers(self):
-        """Get headers for Hugging Face API requests"""
-        if not self.HUGGINGFACE_API_TOKEN:
-            raise ValueError("HUGGINGFACE_API_TOKEN not found in environment variables")
+    def openrouter_headers(self) -> dict:
+        """Get headers for OpenRouter API requests"""
+        if not self.OPENROUTER_API_KEY:
+            return {"Content-Type": "application/json"}
         
         return {
-            "Authorization": f"Bearer {self.HUGGINGFACE_API_TOKEN}",
-            "Content-Type": "application/json"
+            "Authorization": f"Bearer {self.OPENROUTER_API_KEY}",
+            "Content-Type": "application/json",
+            "HTTP-Referer": "http://localhost:8000",  # Optional: your app URL
+            "X-Title": "Mentor Mind"  # Optional: your app name
         }
     
-    def validate_config(self):
-        """Validate that required configuration is present"""
-        if not self.HUGGINGFACE_API_TOKEN:
-            raise ValueError("HUGGINGFACE_API_TOKEN is required but not found in environment variables")
+    def get_model_info(self, model_key: str = None) -> dict:
+        """Get information about a specific model or the default model"""
+        if not model_key:
+            # Find the default model info
+            for key, info in self.FREE_MODELS.items():
+                if info["model_name"] == self.DEFAULT_MODEL:
+                    return info
+            # If default not found, return first available
+            return list(self.FREE_MODELS.values())[0]
+        
+        return self.FREE_MODELS.get(model_key, list(self.FREE_MODELS.values())[0])
+    
+    def validate_config(self) -> bool:
+        """Validate OpenRouter configuration"""
+        if not self.OPENROUTER_API_KEY:
+            print("⚠️  OPENROUTER_API_KEY not found!")
+            print("   To use OpenRouter's free models, you need to:")
+            print("   1. Sign up at https://openrouter.ai")
+            print("   2. Get your API key from the dashboard")
+            print("   3. Add it to your .env file: OPENROUTER_API_KEY=your_key_here")
+            print("   4. Optionally add $10 credit for higher rate limits (1000 requests/day)")
+            return False
+        
+        print(f"✅ OpenRouter configuration validated:")
+        print(f"   - Default Model: {self.DEFAULT_MODEL}")
+        print(f"   - Available Free Models: {len(self.FREE_MODELS)}")
+        print(f"   - Fallback Models: {len(self.FALLBACK_MODELS)}")
+        
+        # Show available models
+        print("\n📋 Available Free Models:")
+        for key, model_info in self.FREE_MODELS.items():
+            print(f"   - {key}: {model_info['model_name']}")
+            print(f"     Description: {model_info['description']}")
+            print(f"     Good for: {', '.join(model_info['good_for'])}")
+        
+        print("\n💡 Tips:")
+        print("   - DeepSeek is excellent for coding tasks")
+        print("   - Free tier: 50 requests/day (1000 with $10 credit)")
+        print("   - All models use OpenAI-compatible API format")
+        
         return True
 
 # Create global settings instance

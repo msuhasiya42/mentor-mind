@@ -80,9 +80,9 @@ async def startup_event():
         
     except Exception as e:
         logger.error(f"Startup error: {str(e)}")
-        # Continue without Hugging Face if token is missing
+        # Continue with basic functionality if OpenRouter key is missing
         learning_path_generator = LearningPathGenerator()
-        logger.warning("Started with limited functionality due to configuration issues")
+        logger.warning("Started with limited AI functionality due to configuration issues")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -103,13 +103,18 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     try:
-        # Check if Hugging Face token is configured
-        hf_status = "configured" if settings.HUGGINGFACE_API_TOKEN else "not configured"
+        # Check if OpenRouter API key is configured
+        openrouter_status = "configured" if settings.OPENROUTER_API_KEY else "not configured"
+        
+        # Get available models info
+        available_models = len(settings.FREE_MODELS) if hasattr(settings, 'FREE_MODELS') else 0
         
         return {
             "status": "healthy",
-            "huggingface_api": hf_status,
-            "version": "1.0.0"
+            "openrouter_api": openrouter_status,
+            "default_model": settings.DEFAULT_MODEL,
+            "available_free_models": available_models,
+            "version": "2.0.0 (OpenRouter)"
         }
     except Exception as e:
         return {
@@ -153,6 +158,39 @@ async def generate_learning_path(request: LearningPathRequest):
     except Exception as e:
         logger.error(f"Error generating learning path: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate learning path: {str(e)}")
+
+@app.post("/debug-search")
+async def debug_search(request: LearningPathRequest):
+    """Debug endpoint to test search functionality directly"""
+    try:
+        from services.content_aggregator import ContentAggregator
+        from services.search_engines import LLMSearchEngine
+        
+        # Test LLM search engine directly
+        llm_search = LLMSearchEngine()
+        llm_resources = await llm_search.search(request.topic)
+        await llm_search.close()
+        
+        # Test content aggregator
+        aggregator = ContentAggregator()
+        all_resources = await aggregator.get_all_resources(request.topic, [])
+        await aggregator.close()
+        
+        return {
+            "topic": request.topic,
+            "llm_direct_count": len(llm_resources),
+            "llm_sample": llm_resources[0] if llm_resources else None,
+            "aggregator_results": {
+                category: len(resources) for category, resources in all_resources.items()
+            },
+            "aggregator_samples": {
+                category: resources[0].title if resources else "No resources"
+                for category, resources in all_resources.items()
+            }
+        }
+        
+    except Exception as e:
+        return {"error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

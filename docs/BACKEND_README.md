@@ -54,8 +54,8 @@ Your `.env` file should look like:
 HUGGINGFACE_API_TOKEN=hf_your_actual_token_here
 API_HOST=0.0.0.0
 API_PORT=8000
-DEFAULT_MODEL=meta/llama-3-8b-instruct
-TEXT_GENERATION_MODEL=mistralai/Mistral-Small-3.1-instruct
+DEFAULT_MODEL=gpt2
+TEXT_GENERATION_MODEL=tiiuae/falcon-7b-instruct
 ```
 
 ### 5. Test Setup

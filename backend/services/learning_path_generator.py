@@ -48,35 +48,34 @@ class LearningPathGenerator:
             query_time = time.time() - query_start
             logger.info(f"Query generation took {query_time:.2f} seconds")
             
-            # Aggregate content from multiple sources in parallel
+            # Get comprehensive resources using the LLM search engine
             aggregation_start = time.time()
-            aggregation_tasks = [
-                self.content_aggregator.get_documentation(cleaned_topic, enhanced_queries),
-                self.content_aggregator.get_blogs(cleaned_topic, enhanced_queries),
-                self.content_aggregator.get_youtube_videos(cleaned_topic, enhanced_queries),
-                self.content_aggregator.get_free_courses(cleaned_topic, enhanced_queries),
-                self.content_aggregator.get_paid_courses(cleaned_topic, enhanced_queries)
-            ]
-            
-            results = await asyncio.gather(*aggregation_tasks)
-            docs, blogs, youtube, free_courses, paid_courses = results
+            all_resources = await self.content_aggregator.get_all_resources(cleaned_topic, enhanced_queries)
             aggregation_time = time.time() - aggregation_start
-            logger.info(f"Parallel content aggregation took {aggregation_time:.2f} seconds")
+            logger.info(f"LLM-based resource aggregation took {aggregation_time:.2f} seconds")
             
-            # Use AI to rank and filter resources in parallel
-            ranking_start = time.time()
-            ranking_tasks = [
-                self.ai_processor.rank_resources(docs, cleaned_topic),
-                self.ai_processor.rank_resources(blogs, cleaned_topic),
-                self.ai_processor.rank_resources(youtube, cleaned_topic),
-                self.ai_processor.rank_resources(free_courses, cleaned_topic),
-                self.ai_processor.rank_resources(paid_courses, cleaned_topic)
-            ]
+            # Extract categorized resources
+            docs = all_resources.get('docs', [])
+            blogs = all_resources.get('blogs', [])
+            youtube = all_resources.get('youtube', [])
+            free_courses = all_resources.get('free_courses', [])
+            paid_courses = all_resources.get('paid_courses', [])
             
-            ranked_results = await asyncio.gather(*ranking_tasks)
-            docs, blogs, youtube, free_courses, paid_courses = ranked_results
-            ranking_time = time.time() - ranking_start
-            logger.info(f"Parallel resource ranking took {ranking_time:.2f} seconds")
+            # Use AI to rank and filter resources in parallel (if we have resources)
+            if any([docs, blogs, youtube, free_courses, paid_courses]):
+                ranking_start = time.time()
+                ranking_tasks = [
+                    self.ai_processor.rank_resources(docs, cleaned_topic),
+                    self.ai_processor.rank_resources(blogs, cleaned_topic),
+                    self.ai_processor.rank_resources(youtube, cleaned_topic),
+                    self.ai_processor.rank_resources(free_courses, cleaned_topic),
+                    self.ai_processor.rank_resources(paid_courses, cleaned_topic)
+                ]
+                
+                ranked_results = await asyncio.gather(*ranking_tasks)
+                docs, blogs, youtube, free_courses, paid_courses = ranked_results
+                ranking_time = time.time() - ranking_start
+                logger.info(f"Parallel resource ranking took {ranking_time:.2f} seconds")
             
             learning_path = LearningPath(
                 docs=docs[:5],  # Limit to top 5
@@ -87,7 +86,8 @@ class LearningPathGenerator:
             )
             
             total_time = time.time() - start_time
-            logger.info(f"Successfully generated learning path for: {topic} in {total_time:.2f} seconds")
+            total_resources = len(docs) + len(blogs) + len(youtube) + len(free_courses) + len(paid_courses)
+            logger.info(f"Successfully generated learning path for: {topic} with {total_resources} resources in {total_time:.2f} seconds")
             return learning_path
             
         except Exception as e:
