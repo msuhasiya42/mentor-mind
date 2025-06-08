@@ -115,10 +115,28 @@ mentor-mind/
 │   │   ├── learning_path_generator.py
 │   │   ├── content_aggregator.py
 │   │   └── ai_processor.py
+│   ├── tests/             # Test suite
 │   ├── main.py            # FastAPI app
 │   └── requirements.txt
+├── docs/                   # 📚 Documentation Hub
+│   ├── README.md          # Documentation index
+│   ├── REFACTORING_SUMMARY.md
+│   ├── TEST_RESULTS_SUMMARY.md
+│   ├── BACKEND_README.md
+│   ├── FRONTEND_README.md
+│   └── ... more docs
 └── README.md
 ```
+
+## 📚 Documentation
+
+All project documentation is organized in the `/docs` folder:
+
+- **[📖 Documentation Hub](./docs/README.md)** - Complete documentation index
+- **[🏗️ Architecture Guide](./docs/REFACTORING_SUMMARY.md)** - System architecture and design
+- **[🧪 Testing Guide](./docs/TEST_RESULTS_SUMMARY.md)** - Test coverage and results
+- **[⚙️ Backend Setup](./docs/BACKEND_README.md)** - Backend development guide
+- **[🎨 Frontend Setup](./docs/FRONTEND_README.md)** - Frontend development guide
 
 ## 🔧 API Endpoints
 
