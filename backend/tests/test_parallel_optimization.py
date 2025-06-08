@@ -5,6 +5,12 @@ Test script to verify parallel optimizations in the backend
 import asyncio
 import logging
 import time
+import sys
+import os
+
+# Add parent directory to path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from services.learning_path_generator import LearningPathGenerator
 
 # Set up logging
