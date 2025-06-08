@@ -1,0 +1,127 @@
+{
+    "topic": "AI",
+    "learning_path": {
+        "blogs": [
+            {
+                "title": "Awesome AI Resources",
+                "url": "https://github.com/search?q=awesome+AI",
+                "description": "Curated list of the best tools, libraries, and resources",
+                "platform": "GitHub",
+                "price": "Free"
+            },
+            {
+                "title": "AI Best Practices Guide",
+                "url": "https://medium.com/search?q=AI+best+practices",
+                "description": "Industry expert insights and best practices",
+                "platform": "Medium",
+                "price": "Free"
+            }
+        ],
+        "docs": [
+            {
+                "title": "| **OpenAI API Docs** | [OpenAI](https://platform.openai.com/docs/introduction) | Documentation for OpenAI’s models",
+                "url": "https://www.google.com/search?q=|+**OpenAI+API+Docs**+|+[OpenAI](https://platform.openai.com/docs/introduction)+|+Documentation+for+OpenAI’s+models+official+documentation",
+                "description": "GPT, DALL·E, Whisper). | Intermediate to Advanced | Free (API usage may incur costs) |",
+                "platform": "Official Documentation",
+                "price": "Free"
+            },
+            {
+                "title": "| **TensorFlow Documentation**",
+                "url": "https://www.google.com/search?q=|+**TensorFlow+Documentation**+official+documentation",
+                "description": "Learn more about this resource for comprehensive understanding.",
+                "platform": "Official Documentation",
+                "price": "Free"
+            },
+            {
+                "title": "| **PyTorch Documentation**",
+                "url": "https://www.google.com/search?q=|+**PyTorch+Documentation**+official+documentation",
+                "description": "Learn more about this resource for comprehensive understanding.",
+                "platform": "Official Documentation",
+                "price": "Free"
+            },
+            {
+                "title": "*Description*: Official docs for TensorFlow",
+                "url": "https://www.google.com/search?q=*Description*:+Official+docs+for+TensorFlow+official+documentation",
+                "description": "Google’s deep learning framework), including tutorials, API references, and deployment guides.",
+                "platform": "Official Documentation",
+                "price": "Free"
+            },
+            {
+                "title": "*Description*: Official PyTorch",
+                "url": "https://www.google.com/search?q=*Description*:+Official+PyTorch+official+documentation",
+                "description": "Facebook’s deep learning library) documentation with tutorials and API details.",
+                "platform": "Official Documentation",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "3Blue1Brown Neural Networks Series",
+                "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+                "description": "Beautiful visual explanations of neural networks",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "AI Complete Video Course",
+                "url": "https://www.youtube.com/results?search_query=AI+complete+course",
+                "description": "Comprehensive video course series",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Stanford CS229 Machine Learning Course",
+                "url": "https://cs229.stanford.edu/",
+                "description": "World-renowned Stanford course on machine learning",
+                "platform": "Stanford Online",
+                "price": "Free"
+            },
+            {
+                "title": "Fast.ai Practical Deep Learning",
+                "url": "https://course.fast.ai/",
+                "description": "Top-rated practical course for deep learning",
+                "platform": "Fast.ai",
+                "price": "Free"
+            },
+            {
+                "title": "*Platform*",
+                "url": "https://www.google.com/search?q=*Platform*+tutorial",
+                "description": "[TensorFlow.org](https://www.tensorflow.org/",
+                "platform": "Web Resource",
+                "price": "Free"
+            },
+            {
+                "title": "**Platform/Source**",
+                "url": "https://www.google.com/search?q=**Platform/Source**+tutorial",
+                "description": "[TensorFlow.org](https://www.tensorflow.org/",
+                "platform": "Web Resource",
+                "price": "Free"
+            },
+            {
+                "title": "| Title",
+                "url": "https://www.google.com/search?q=|+Title+tutorial",
+                "description": "Learn more about this resource for comprehensive understanding.",
+                "platform": "Web Resource",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Learn AI - Interactive Course",
+                "url": "https://www.codecademy.com/search?query=AI",
+                "description": "Interactive lessons with hands-on coding exercises",
+                "platform": "Codecademy",
+                "price": "Mixed"
+            },
+            {
+                "title": "Professional AI Certification",
+                "url": "https://www.udemy.com/courses/search/?q=AI+certification",
+                "description": "Industry-recognized certification program",
+                "platform": "Udemy",
+                "price": "Paid"
+            }
+        ]
+    }
+}

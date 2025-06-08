@@ -1,6 +1,6 @@
 # Services package for Mentor Mind 
 from .content_aggregator import ContentAggregator
-from .models import Resource, SearchResult
+from .learning_path_generator import Resource, SearchResult
 from .search_engines import SearchEngineManager
 from .fallback_data import FallbackDataProvider
 

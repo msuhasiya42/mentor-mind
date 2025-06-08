@@ -11,16 +11,9 @@ import os
 # Add the parent directory to the path to import config
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import settings
+from .learning_path_generator import Resource
 
 logger = logging.getLogger(__name__)
-
-@dataclass
-class Resource:
-    title: str
-    url: str
-    description: str = ""
-    platform: str = ""
-    price: str = ""
 
 class AIProcessor:
     def __init__(self):

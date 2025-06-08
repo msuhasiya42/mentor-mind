@@ -98,29 +98,8 @@ class Settings:
         """Validate OpenRouter configuration"""
         if not self.OPENROUTER_API_KEY:
             print("⚠️  OPENROUTER_API_KEY not found!")
-            print("   To use OpenRouter's free models, you need to:")
-            print("   1. Sign up at https://openrouter.ai")
-            print("   2. Get your API key from the dashboard")
-            print("   3. Add it to your .env file: OPENROUTER_API_KEY=your_key_here")
-            print("   4. Optionally add $10 credit for higher rate limits (1000 requests/day)")
             return False
         
-        print(f"✅ OpenRouter configuration validated:")
-        print(f"   - Default Model: {self.DEFAULT_MODEL}")
-        print(f"   - Available Free Models: {len(self.FREE_MODELS)}")
-        print(f"   - Fallback Models: {len(self.FALLBACK_MODELS)}")
-        
-        # Show available models
-        print("\n📋 Available Free Models:")
-        for key, model_info in self.FREE_MODELS.items():
-            print(f"   - {key}: {model_info['model_name']}")
-            print(f"     Description: {model_info['description']}")
-            print(f"     Good for: {', '.join(model_info['good_for'])}")
-        
-        print("\n💡 Tips:")
-        print("   - DeepSeek is excellent for coding tasks")
-        print("   - Free tier: 50 requests/day (1000 with $10 credit)")
-        print("   - All models use OpenAI-compatible API format")
         
         return True
 

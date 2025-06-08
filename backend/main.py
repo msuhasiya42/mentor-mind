@@ -1,21 +1,56 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List, Dict, Any
-import asyncio
+from contextlib import asynccontextmanager
 import logging
 
 from services.learning_path_generator import LearningPathGenerator
+from models import LearningPathRequest, LearningPathResponse, PydanticResource, PydanticLearningPath
 from config import settings
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# Initialize the learning path generator
+learning_path_generator = None
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Handle application startup and shutdown"""
+    global learning_path_generator
+    
+    # Startup logic
+    try:
+        # Validate configuration
+        settings.validate_config()
+        logger.info("✅ Configuration validated successfully")
+        
+        # Initialize the learning path generator
+        learning_path_generator = LearningPathGenerator()
+        logger.info("✅ Learning path generator initialized")
+        
+    except Exception as e:
+        logger.error(f"Startup error: {str(e)}")
+        # Continue with basic functionality if OpenRouter key is missing
+        learning_path_generator = LearningPathGenerator()
+        logger.warning("⚠️ Started with limited AI functionality due to configuration issues")
+    
+    # App is running
+    yield
+    
+    # Shutdown logic
+    if learning_path_generator:
+        try:
+            await learning_path_generator.close()
+            logger.info("🧹 Resources cleaned up successfully")
+        except Exception as e:
+            logger.error(f"Error during cleanup: {str(e)}")
+
 app = FastAPI(
     title="Mentor Mind API",
     description="AI-Powered Learning Path Generator",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan
 )
 
 # Configure CORS
@@ -27,35 +62,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize the learning path generator
-learning_path_generator = None
-
-class LearningPathRequest(BaseModel):
-    topic: str
-
-class Resource(BaseModel):
-    title: str
-    url: str
-    description: str = ""
-    platform: str = ""
-    price: str = ""
-
-class LearningPath(BaseModel):
-    blogs: List[Resource] = []
-    docs: List[Resource] = []
-    youtube: List[Resource] = []
-    free_courses: List[Resource] = []
-    paid_courses: List[Resource] = []
-
-class LearningPathResponse(BaseModel):
-    topic: str
-    learning_path: LearningPath
-
 def convert_dataclass_to_pydantic(dataclass_obj, resource_list):
     """Convert dataclass Resource to Pydantic Resource"""
     pydantic_resources = []
     for resource in resource_list:
-        pydantic_resource = Resource(
+        pydantic_resource = PydanticResource(
             title=resource.title,
             url=resource.url,
             description=resource.description,
@@ -64,36 +75,6 @@ def convert_dataclass_to_pydantic(dataclass_obj, resource_list):
         )
         pydantic_resources.append(pydantic_resource)
     return pydantic_resources
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize services on startup"""
-    global learning_path_generator
-    try:
-        # Validate configuration
-        settings.validate_config()
-        logger.info("Configuration validated successfully")
-        
-        # Initialize the learning path generator
-        learning_path_generator = LearningPathGenerator()
-        logger.info("Learning path generator initialized")
-        
-    except Exception as e:
-        logger.error(f"Startup error: {str(e)}")
-        # Continue with basic functionality if OpenRouter key is missing
-        learning_path_generator = LearningPathGenerator()
-        logger.warning("Started with limited AI functionality due to configuration issues")
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    """Clean up resources on shutdown"""
-    global learning_path_generator
-    if learning_path_generator:
-        try:
-            await learning_path_generator.close()
-            logger.info("Resources cleaned up successfully")
-        except Exception as e:
-            logger.error(f"Error during cleanup: {str(e)}")
 
 @app.get("/")
 async def root():
@@ -137,7 +118,7 @@ async def generate_learning_path(request: LearningPathRequest):
         learning_path_dataclass = await learning_path_generator.generate_path(request.topic.strip())
         
         # Convert dataclass to Pydantic model
-        learning_path_pydantic = LearningPath(
+        learning_path_pydantic = PydanticLearningPath(
             docs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.docs),
             blogs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.blogs),
             youtube=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.youtube),

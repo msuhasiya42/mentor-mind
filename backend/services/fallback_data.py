@@ -3,7 +3,7 @@ Fallback and curated data for different topics when search engines fail
 """
 from typing import List, Dict
 from urllib.parse import quote
-from .models import Resource
+from .learning_path_generator import Resource
 
 
 class FallbackDataProvider:

@@ -5,7 +5,7 @@ import asyncio
 import aiohttp
 import logging
 from typing import List
-from .models import Resource
+from .learning_path_generator import Resource
 from .search_engines import LLMSearchEngine
 from .fallback_data import FallbackDataProvider
 
