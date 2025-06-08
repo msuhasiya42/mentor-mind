@@ -93,15 +93,23 @@ class ContentAggregator:
                     f"{topic} reference guide"
                 ]
                 
-                for query in search_queries[:2]:  # Limit to avoid rate limiting
-                    search_results = await self._search_duckduckgo(query, session)
-                    for result in search_results[:2]:
-                        resources.append(Resource(
-                            title=result.get('title', ''),
-                            url=result.get('url', ''), 
-                            description=result.get('description', ''),
-                            platform="Documentation"
-                        ))
+                # Execute search queries in parallel
+                search_tasks = [
+                    self._search_duckduckgo(query, session) 
+                    for query in search_queries[:2]  # Limit to avoid rate limiting
+                ]
+                
+                search_results_list = await asyncio.gather(*search_tasks, return_exceptions=True)
+                
+                for search_results in search_results_list:
+                    if isinstance(search_results, list):  # Valid results
+                        for result in search_results[:2]:
+                            resources.append(Resource(
+                                title=result.get('title', ''),
+                                url=result.get('url', ''), 
+                                description=result.get('description', ''),
+                                platform="Documentation"
+                            ))
             
             return resources[:5]  # Limit to top 5
             
@@ -125,15 +133,23 @@ class ContentAggregator:
             if enhanced_queries:
                 search_queries.extend(enhanced_queries[:2])
             
-            for query in search_queries[:3]:  # Limit searches
-                search_results = await self._search_duckduckgo(query, session)
-                for result in search_results[:2]:
-                    resources.append(Resource(
-                        title=result.get('title', ''),
-                        url=result.get('url', ''),
-                        description=result.get('description', ''),
-                        platform="Blog"
-                    ))
+            # Execute search queries in parallel
+            search_tasks = [
+                self._search_duckduckgo(query, session) 
+                for query in search_queries[:3]  # Limit searches
+            ]
+            
+            search_results_list = await asyncio.gather(*search_tasks, return_exceptions=True)
+            
+            for search_results in search_results_list:
+                if isinstance(search_results, list):  # Valid results
+                    for result in search_results[:2]:
+                        resources.append(Resource(
+                            title=result.get('title', ''),
+                            url=result.get('url', ''),
+                            description=result.get('description', ''),
+                            platform="Blog"
+                        ))
             
             # If no results from search, provide fallback resources for popular topics
             if not resources:
@@ -157,16 +173,24 @@ class ContentAggregator:
                 f"{topic} crash course"
             ]
             
-            for query in search_queries[:2]:
-                search_results = await self._search_duckduckgo(query + " site:youtube.com", session)
-                for result in search_results[:3]:
-                    if 'youtube.com' in result.get('url', ''):
-                        resources.append(Resource(
-                            title=result.get('title', ''),
-                            url=result.get('url', ''),
-                            description=result.get('description', ''),
-                            platform="YouTube"
-                        ))
+            # Execute search queries in parallel
+            search_tasks = [
+                self._search_duckduckgo(query + " site:youtube.com", session) 
+                for query in search_queries[:2]
+            ]
+            
+            search_results_list = await asyncio.gather(*search_tasks, return_exceptions=True)
+            
+            for search_results in search_results_list:
+                if isinstance(search_results, list):  # Valid results
+                    for result in search_results[:3]:
+                        if 'youtube.com' in result.get('url', ''):
+                            resources.append(Resource(
+                                title=result.get('title', ''),
+                                url=result.get('url', ''),
+                                description=result.get('description', ''),
+                                platform="YouTube"
+                            ))
             
             # If no results from search, provide fallback resources
             if not resources:
@@ -192,15 +216,23 @@ class ContentAggregator:
                 f"free {topic} course freeCodeCamp"
             ]
             
-            for query in search_queries[:3]:
-                search_results = await self._search_duckduckgo(query, session)
-                for result in search_results[:2]:
-                    resources.append(Resource(
-                        title=result.get('title', ''),
-                        url=result.get('url', ''),
-                        description=result.get('description', ''),
-                        platform="Free Course"
-                    ))
+            # Execute search queries in parallel
+            search_tasks = [
+                self._search_duckduckgo(query, session) 
+                for query in search_queries[:3]
+            ]
+            
+            search_results_list = await asyncio.gather(*search_tasks, return_exceptions=True)
+            
+            for search_results in search_results_list:
+                if isinstance(search_results, list):  # Valid results
+                    for result in search_results[:2]:
+                        resources.append(Resource(
+                            title=result.get('title', ''),
+                            url=result.get('url', ''),
+                            description=result.get('description', ''),
+                            platform="Free Course"
+                        ))
             
             # If no results from search, provide fallback resources
             if not resources:
@@ -224,16 +256,24 @@ class ContentAggregator:
                 f"{topic} course linkedin learning"
             ]
             
-            for query in search_queries[:2]:
-                search_results = await self._search_duckduckgo(query, session)
-                for result in search_results[:2]:
-                    resources.append(Resource(
-                        title=result.get('title', ''),
-                        url=result.get('url', ''),
-                        description=result.get('description', ''),
-                        platform="Paid Course",
-                        price="$10-50" # Placeholder price range
-                    ))
+            # Execute search queries in parallel
+            search_tasks = [
+                self._search_duckduckgo(query, session) 
+                for query in search_queries[:2]
+            ]
+            
+            search_results_list = await asyncio.gather(*search_tasks, return_exceptions=True)
+            
+            for search_results in search_results_list:
+                if isinstance(search_results, list):  # Valid results
+                    for result in search_results[:2]:
+                        resources.append(Resource(
+                            title=result.get('title', ''),
+                            url=result.get('url', ''),
+                            description=result.get('description', ''),
+                            platform="Paid Course",
+                            price="$10-50" # Placeholder price range
+                        ))
             
             # If no results from search, provide fallback resources
             if not resources:
@@ -246,29 +286,10 @@ class ContentAggregator:
             return self._get_fallback_courses(topic, "paid")
     
     async def _search_duckduckgo(self, query: str, session: aiohttp.ClientSession) -> List[Dict]:
-        """Search DuckDuckGo for results with fallback search engines"""
+        """Search using reliable fallback search engines (removed DuckDuckGo due to timeouts)"""
         try:
-            # Try DuckDuckGo first
-            url = f"https://html.duckduckgo.com/html/?q={quote(query)}"
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-            
-            # Set a shorter timeout for DuckDuckGo
-            timeout = aiohttp.ClientTimeout(total=5)
-            try:
-                async with session.get(url, headers=headers, timeout=timeout) as response:
-                    if response.status == 200:
-                        html = await response.text()
-                        results = self._parse_duckduckgo_results(html)
-                        if results:
-                            logger.info(f"DuckDuckGo search successful for: {query}")
-                            return results
-            except (asyncio.TimeoutError, aiohttp.ClientError) as e:
-                logger.warning(f"DuckDuckGo timeout/error for query '{query}': {str(e)}")
-            
-            # Fallback to alternative search methods
-            logger.info(f"Using fallback search for: {query}")
+            # Skip DuckDuckGo due to consistent timeouts, go directly to working search engines
+            logger.info(f"Using reliable search engines for: {query}")
             fallback_results = await self._search_fallback(query, session)
             return fallback_results
                     
@@ -276,52 +297,18 @@ class ContentAggregator:
             logger.error(f"Error in search (trying fallback): {str(e)}")
             return await self._search_fallback(query, session)
     
-    def _parse_duckduckgo_results(self, html: str) -> List[Dict]:
-        """Parse DuckDuckGo search results from HTML"""
-        try:
-            soup = BeautifulSoup(html, 'html.parser')
-            results = []
-            
-            # Find search result elements
-            result_elements = soup.find_all('div', class_='result')
-            
-            for element in result_elements[:5]:  # Limit to first 5 results
-                title_elem = element.find('a', class_='result__a')
-                snippet_elem = element.find('a', class_='result__snippet')
-                
-                if title_elem:
-                    title = title_elem.get_text().strip()
-                    url = title_elem.get('href', '')
-                    description = snippet_elem.get_text().strip() if snippet_elem else ''
-                    
-                    results.append({
-                        'title': title,
-                        'url': url,
-                        'description': description
-                    })
-            
-            return results
-            
-        except Exception as e:
-            logger.error(f"Error parsing DuckDuckGo results: {str(e)}")
-            return []
+
     
     async def _search_fallback(self, query: str, session: aiohttp.ClientSession) -> List[Dict]:
-        """Fallback search methods when DuckDuckGo fails"""
+        """Reliable search methods using only working engines"""
         try:
-            # Try SearX search first (privacy-focused, bot-friendly)
-            searx_results = await self._search_searx(query)
-            if searx_results:
-                logger.info(f"SearX search successful for: {query}")
-                return searx_results
-            
-            # Try browser-based Bing search with better emulation
+            # Try GitHub API and StackOverflow API (most reliable)
             bing_results = await self._search_bing_browser(query)
             if bing_results:
-                logger.info(f"Bing browser search successful for: {query}")
+                logger.info(f"API search successful for: {query}")
                 return bing_results
             
-            # Try alternative search engines
+            # Try Startpage as secondary option
             startpage_results = await self._search_startpage(query)
             if startpage_results:
                 logger.info(f"Startpage search successful for: {query}")
@@ -335,92 +322,7 @@ class ContentAggregator:
             logger.error(f"Error in fallback search: {str(e)}")
             return self._get_curated_search_results(query)
     
-    async def _search_searx(self, query: str) -> List[Dict]:
-        """Search using SearX metasearch engine (privacy-focused and bot-friendly)"""
-        try:
-            # Use YouTube search for programming-related queries as a reliable fallback
-            if any(keyword in query.lower() for keyword in ['tutorial', 'programming', 'learn', 'course']):
-                youtube_results = await self._search_youtube_api(query)
-                if youtube_results:
-                    return youtube_results
-            
-            # Simple requests-based approach for SearX
-            import requests
-            
-            # Try reliable SearX instances
-            searx_instances = [
-                "https://search.bus-hit.me",
-                "https://searx.tiekoetter.com"
-            ]
-            
-            for instance in searx_instances[:1]:  # Try just one to avoid delays
-                try:
-                    url = f"{instance}/search"
-                    params = {
-                        'q': query,
-                        'format': 'json',
-                        'engines': 'bing,google',
-                        'categories': 'general'
-                    }
-                    
-                    headers = {
-                        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-                        'Accept': 'application/json'
-                    }
-                    
-                    response = requests.get(url, params=params, headers=headers, timeout=8)
-                    
-                    if response.status_code == 200:
-                        data = response.json()
-                        results = []
-                        
-                        for result in data.get('results', [])[:5]:
-                            results.append({
-                                'title': result.get('title', ''),
-                                'url': result.get('url', ''),
-                                'description': result.get('content', '')
-                            })
-                        
-                        if results:
-                            logger.info(f"SearX search successful with {len(results)} results from {instance}")
-                            return results
-                    
-                except Exception as e:
-                    logger.debug(f"SearX instance {instance} failed: {str(e)}")
-                    continue
-            
-            return []
-                    
-        except Exception as e:
-            logger.error(f"Error in SearX search: {str(e)}")
-            return []
     
-    async def _search_youtube_api(self, query: str) -> List[Dict]:
-        """Search YouTube using the youtube-search-python library"""
-        try:
-            from youtubesearchpython import VideosSearch
-            
-            # Search for videos
-            videosSearch = VideosSearch(query, limit=5)
-            results = videosSearch.result()
-            
-            search_results = []
-            for video in results.get('result', []):
-                search_results.append({
-                    'title': video.get('title', ''),
-                    'url': video.get('link', ''),
-                    'description': f"YouTube video - Duration: {video.get('duration', 'N/A')}"
-                })
-            
-            if search_results:
-                logger.info(f"YouTube API search successful with {len(search_results)} results")
-                return search_results
-            
-            return []
-                    
-        except Exception as e:
-            logger.error(f"Error in YouTube API search: {str(e)}")
-            return []
     
     async def _search_bing_browser(self, query: str) -> List[Dict]:
         """Search using reliable aggregator sites and APIs"""

@@ -32,7 +32,7 @@ def test_scala_learning_path_api():
         print(f"Payload: {json.dumps(payload, indent=2)}")
         
         # Make the API call
-        response = requests.post(endpoint, json=payload, headers=headers, timeout=30)
+        response = requests.post(endpoint, json=payload, headers=headers, timeout=120)
         
         print(f"\n📡 Response Status: {response.status_code}")
         

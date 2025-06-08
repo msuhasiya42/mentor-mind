@@ -33,6 +33,9 @@ class LearningPathGenerator:
     
     async def generate_path(self, topic: str) -> LearningPath:
         """Generate a comprehensive learning path for the given topic"""
+        import time
+        start_time = time.time()
+        
         try:
             logger.info(f"Starting learning path generation for: {topic}")
             
@@ -40,10 +43,14 @@ class LearningPathGenerator:
             cleaned_topic = self._clean_topic(topic)
             
             # Use AI to enhance topic understanding and generate search queries
+            query_start = time.time()
             enhanced_queries = await self.ai_processor.generate_search_queries(cleaned_topic)
+            query_time = time.time() - query_start
+            logger.info(f"Query generation took {query_time:.2f} seconds")
             
-            # Aggregate content from multiple sources
-            tasks = [
+            # Aggregate content from multiple sources in parallel
+            aggregation_start = time.time()
+            aggregation_tasks = [
                 self.content_aggregator.get_documentation(cleaned_topic, enhanced_queries),
                 self.content_aggregator.get_blogs(cleaned_topic, enhanced_queries),
                 self.content_aggregator.get_youtube_videos(cleaned_topic, enhanced_queries),
@@ -51,15 +58,25 @@ class LearningPathGenerator:
                 self.content_aggregator.get_paid_courses(cleaned_topic, enhanced_queries)
             ]
             
-            results = await asyncio.gather(*tasks)
+            results = await asyncio.gather(*aggregation_tasks)
             docs, blogs, youtube, free_courses, paid_courses = results
+            aggregation_time = time.time() - aggregation_start
+            logger.info(f"Parallel content aggregation took {aggregation_time:.2f} seconds")
             
-            # Use AI to rank and filter resources
-            docs = await self.ai_processor.rank_resources(docs, cleaned_topic)
-            blogs = await self.ai_processor.rank_resources(blogs, cleaned_topic)
-            youtube = await self.ai_processor.rank_resources(youtube, cleaned_topic)
-            free_courses = await self.ai_processor.rank_resources(free_courses, cleaned_topic)
-            paid_courses = await self.ai_processor.rank_resources(paid_courses, cleaned_topic)
+            # Use AI to rank and filter resources in parallel
+            ranking_start = time.time()
+            ranking_tasks = [
+                self.ai_processor.rank_resources(docs, cleaned_topic),
+                self.ai_processor.rank_resources(blogs, cleaned_topic),
+                self.ai_processor.rank_resources(youtube, cleaned_topic),
+                self.ai_processor.rank_resources(free_courses, cleaned_topic),
+                self.ai_processor.rank_resources(paid_courses, cleaned_topic)
+            ]
+            
+            ranked_results = await asyncio.gather(*ranking_tasks)
+            docs, blogs, youtube, free_courses, paid_courses = ranked_results
+            ranking_time = time.time() - ranking_start
+            logger.info(f"Parallel resource ranking took {ranking_time:.2f} seconds")
             
             learning_path = LearningPath(
                 docs=docs[:5],  # Limit to top 5
@@ -69,7 +86,8 @@ class LearningPathGenerator:
                 paid_courses=paid_courses[:5]
             )
             
-            logger.info(f"Successfully generated learning path for: {topic}")
+            total_time = time.time() - start_time
+            logger.info(f"Successfully generated learning path for: {topic} in {total_time:.2f} seconds")
             return learning_path
             
         except Exception as e:
@@ -90,10 +108,19 @@ class LearningPathGenerator:
         logger.info(f"Generating fallback path for: {topic}")
         
         try:
-            # Simple fallback - just get basic resources without AI processing
-            docs = await self.content_aggregator.get_documentation(topic, [])
-            blogs = await self.content_aggregator.get_blogs(topic, [])
-            youtube = await self.content_aggregator.get_youtube_videos(topic, [])
+            # Simple fallback - get basic resources in parallel without AI processing
+            fallback_tasks = [
+                self.content_aggregator.get_documentation(topic, []),
+                self.content_aggregator.get_blogs(topic, []),
+                self.content_aggregator.get_youtube_videos(topic, [])
+            ]
+            
+            results = await asyncio.gather(*fallback_tasks, return_exceptions=True)
+            
+            # Handle results safely
+            docs = results[0] if isinstance(results[0], list) else []
+            blogs = results[1] if isinstance(results[1], list) else []
+            youtube = results[2] if isinstance(results[2], list) else []
             
             return LearningPath(
                 docs=docs[:3],
