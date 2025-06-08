@@ -3,9 +3,18 @@ from dotenv import load_dotenv
 from pathlib import Path
 from typing import Optional, List, Tuple
 
-# Load environment variables
-env_path = Path(__file__).parent.parent / '.env'
-load_dotenv(env_path)
+# Load environment variables - try both backend/.env and project_root/.env
+backend_env_path = Path(__file__).parent / '.env'  # backend/.env
+project_env_path = Path(__file__).parent.parent / '.env'  # project_root/.env
+
+# Try backend/.env first, then project_root/.env
+if backend_env_path.exists():
+    load_dotenv(backend_env_path)
+elif project_env_path.exists():
+    load_dotenv(project_env_path)
+else:
+    # Try to load from environment variables directly
+    load_dotenv()
 
 class Settings:
     # OpenRouter Configuration - Free Models 2025

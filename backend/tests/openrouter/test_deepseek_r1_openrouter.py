@@ -11,10 +11,19 @@ import os
 import sys
 import time
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List
 
-# Add backend to path
-sys.path.append('backend')
+# Add backend to path - get the correct backend path
+import os
+current_dir = os.getcwd()
+if current_dir.endswith('backend'):
+    # Already in backend directory
+    sys.path.insert(0, current_dir)
+else:
+    # Add backend directory to path
+    backend_path = Path(__file__).parent.parent.parent / "backend"
+    sys.path.insert(0, str(backend_path))
 
 try:
     from config import settings

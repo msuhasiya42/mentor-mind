@@ -1,0 +1,77 @@
+{
+  "timestamp": 1749372611.5168982,
+  "start_time": 1749372603.849956,
+  "total_duration": 7.666943073272705,
+  "summary": {
+    "total_tests": 7,
+    "passed_tests": 1,
+    "failed_tests": 6,
+    "success_rate": 14.285714285714285
+  },
+  "test_results": {
+    "tests/openrouter/test_openrouter_setup.py": {
+      "description": "Basic OpenRouter API Setup",
+      "success": false,
+      "duration": 0.0429530143737793,
+      "return_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"tests/openrouter/test_openrouter_setup.py\", line 16, in <module>\n    from config import settings\nModuleNotFoundError: No module named 'config'\n"
+    },
+    "tests/openrouter/test_deepseek_r1_openrouter.py": {
+      "description": "DeepSeek R1 Model Testing",
+      "success": false,
+      "duration": 0.06841301918029785,
+      "return_code": 1,
+      "stdout": "\u274c Import error: No module named 'config'\nPlease run this script from the project root directory\n",
+      "stderr": ""
+    },
+    "tests/openrouter/test_learning_path_openrouter.py": {
+      "description": "Learning Path Generator",
+      "success": false,
+      "duration": 0.11199307441711426,
+      "return_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"tests/openrouter/test_learning_path_openrouter.py\", line 18, in <module>\n    from config import settings\nModuleNotFoundError: No module named 'config'\n"
+    },
+    "tests/openrouter/test_api_openrouter.py": {
+      "description": "FastAPI Server Integration",
+      "success": true,
+      "duration": 0.11236715316772461,
+      "return_code": 0,
+      "stdout": "\ud83c\udf10 FastAPI + OpenRouter Integration Test\n==================================================\n\ud83d\ude80 Starting FastAPI server...\n\u274c Failed to start server: [Errno 2] No such file or directory: PosixPath('tests/openrouter/backend')\n\u274c Could not start server. Please check your configuration.\n\n============================================================\n\ud83d\udcca API TEST SUMMARY\n============================================================\n\n\ud83d\udcc8 RESULTS:\n   Total Tests: 0\n   \u2705 Passed: 0\n   \u26a0\ufe0f  Warnings: 0\n   \u274c Failed: 0\n   \ud83d\udcca Success Rate: 0.0%\n\n\ud83c\udf89 All API tests passed! Your application is ready to use!\n\n\ud83d\udcbe API test results saved to 'api_test_results.json'\n",
+      "stderr": ""
+    },
+    "tests/integration/test_ai_detailed.py": {
+      "description": "AI Processing Integration",
+      "success": false,
+      "duration": 0.06278204917907715,
+      "return_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"tests/integration/test_ai_detailed.py\", line 15, in <module>\n    from backend.services.search_engines import LLMSearchEngine\nModuleNotFoundError: No module named 'backend'\n"
+    },
+    "tests/utils/test_direct_api.py": {
+      "description": "Direct API Testing",
+      "success": false,
+      "duration": 0.05121612548828125,
+      "return_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"tests/utils/test_direct_api.py\", line 13, in <module>\n    from backend.services.content_aggregator import ContentAggregator\nModuleNotFoundError: No module named 'backend'\n"
+    },
+    "tests/utils/test_import.py": {
+      "description": "Import Testing",
+      "success": false,
+      "duration": 0.028065204620361328,
+      "return_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"tests/utils/test_import.py\", line 12, in <module>\n    from backend.services.content_aggregator import ContentAggregator\nModuleNotFoundError: No module named 'backend'\n"
+    }
+  },
+  "assessment": "poor",
+  "recommendations": [
+    "Review failed tests",
+    "Verify OpenRouter API key",
+    "Check internet connection",
+    "Ensure all dependencies are installed",
+    "Re-run tests after fixes"
+  ]
+}

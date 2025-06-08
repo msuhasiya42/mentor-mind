@@ -27,7 +27,7 @@ class APITester:
         
         try:
             # Change to backend directory and start server
-            backend_path = Path(__file__).parent / "backend"
+            backend_path = Path(__file__).parent.parent.parent / "backend"
             
             self.server_process = subprocess.Popen(
                 [sys.executable, "main.py"],

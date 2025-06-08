@@ -8,11 +8,18 @@ import sys
 import os
 from pathlib import Path
 
-# Add backend to path
-backend_dir = Path(__file__).parent / 'backend'
-sys.path.insert(0, str(backend_dir))
+# Add backend to path - get the correct backend path
+import os
+current_dir = os.getcwd()
+if current_dir.endswith('backend'):
+    # Already in backend directory
+    sys.path.insert(0, current_dir)
+else:
+    # Add backend directory to path
+    backend_path = Path(__file__).parent.parent.parent / "backend"
+    sys.path.insert(0, str(backend_path))
 
-from backend.services.search_engines import LLMSearchEngine
+from services.search_engines import LLMSearchEngine
 
 def categorize_resources(resources):
     """Categorize resources by type and other attributes"""

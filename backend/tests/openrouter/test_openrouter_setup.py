@@ -9,9 +9,16 @@ import os
 import sys
 from pathlib import Path
 
-# Add backend to path
-backend_path = Path(__file__).parent / "backend"
-sys.path.append(str(backend_path))
+# Add backend to path - get the correct backend path
+import os
+current_dir = os.getcwd()
+if current_dir.endswith('backend'):
+    # Already in backend directory
+    sys.path.insert(0, current_dir)
+else:
+    # Add backend directory to path
+    backend_path = Path(__file__).parent.parent.parent / "backend"
+    sys.path.insert(0, str(backend_path))
 
 from config import settings
 from services.ai_processor import AIProcessor

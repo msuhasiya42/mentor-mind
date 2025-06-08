@@ -29,9 +29,10 @@ class TestRunner:
         try:
             start_time = time.time()
             
-            # Change to project root directory to run tests
+            # Change to backend directory to run tests
             original_cwd = os.getcwd()
-            os.chdir(self.project_root)
+            backend_dir = self.base_dir.parent  # backend directory
+            os.chdir(backend_dir)
             
             result = subprocess.run(
                 [sys.executable, script_path],
@@ -90,11 +91,23 @@ class TestRunner:
         """Check if prerequisites are met"""
         print("🔍 Checking prerequisites...")
         
-        # Check if .env file exists in project root
-        env_file = self.project_root / ".env"
-        if not env_file.exists():
-            print("❌ .env file not found in project root!")
+        # Check if .env file exists in backend folder first, then project root
+        backend_env_file = self.base_dir.parent / ".env"  # backend/.env
+        project_env_file = self.project_root / ".env"    # project_root/.env
+        
+        env_file = None
+        if backend_env_file.exists():
+            env_file = backend_env_file
+            print(f"✅ Found .env file in backend folder: {env_file}")
+        elif project_env_file.exists():
+            env_file = project_env_file
+            print(f"✅ Found .env file in project root: {env_file}")
+        else:
+            print("❌ .env file not found in backend folder or project root!")
             print("   Please create .env file with your OpenRouter API key")
+            print(f"   Checked locations:")
+            print(f"   - Backend: {backend_env_file}")
+            print(f"   - Project root: {project_env_file}")
             return False
         
         # Check if API key is set (not the placeholder)
