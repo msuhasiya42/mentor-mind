@@ -3,7 +3,7 @@
 ## Files Created for Vercel Deployment
 
 ✅ **vercel.json** - Configuration for Vercel Python runtime  
-✅ **api/index.py** - Vercel API handler that imports your FastAPI app  
+✅ **backend/api/index.py** - Vercel API handler that imports your FastAPI app  
 ✅ **requirements.txt** - Dependencies for Vercel (moved to root)  
 ✅ **.gitignore** - Excludes unnecessary files from deployment  
 ✅ **env.example** - Environment variables template  
@@ -92,11 +92,11 @@ Should return:
 
 1. **404 on routes**
    - Check that `vercel.json` points to correct file path
-   - Ensure `api/index.py` exists
+   - Ensure `backend/api/index.py` exists
 
 2. **Import errors**
    - Verify all dependencies are in root `requirements.txt`
-   - Check that Python path is set correctly in `api/index.py`
+   - Check that Python path is set correctly in `backend/api/index.py`
 
 3. **OpenRouter API errors**
    - Verify your API key is set in Vercel environment variables
