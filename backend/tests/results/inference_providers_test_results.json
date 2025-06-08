@@ -1,0 +1,127 @@
+{
+  "working_combinations": [],
+  "failed_combinations": [
+    {
+      "provider": "cerebras",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider cerebras\"}"
+    },
+    {
+      "provider": "cerebras",
+      "model": "meta-llama/Llama-3.1-70B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider cerebras\"}"
+    },
+    {
+      "provider": "cohere",
+      "model": "cohere/command-r-plus-08-2024",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider cohere\"}"
+    },
+    {
+      "provider": "cohere",
+      "model": "cohere/command-r7b-12-2024",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider cohere\"}"
+    },
+    {
+      "provider": "fireworks-ai",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider fireworks-ai\"}"
+    },
+    {
+      "provider": "fireworks-ai",
+      "model": "meta-llama/Llama-3.1-70B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider fireworks-ai\"}"
+    },
+    {
+      "provider": "hf-inference",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 404, Response: Not Found"
+    },
+    {
+      "provider": "hf-inference",
+      "model": "microsoft/DialoGPT-medium",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 404, Response: Not Found"
+    },
+    {
+      "provider": "hf-inference",
+      "model": "gpt2",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 404, Response: Not Found"
+    },
+    {
+      "provider": "hyperbolic",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider hyperbolic\"}"
+    },
+    {
+      "provider": "hyperbolic",
+      "model": "meta-llama/Llama-3.1-70B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider hyperbolic\"}"
+    },
+    {
+      "provider": "novita",
+      "model": "deepseek-ai/DeepSeek-V3-0324",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 404, Response: {\"code\":404,\"reason\":\"MODEL_NOT_FOUND\",\"message\":\"model not found\",\"metadata\":{\"reason\":\"model: deepseek-ai/DeepSeek-V3-0324 not found\"}}"
+    },
+    {
+      "provider": "novita",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 404, Response: {\"code\":404,\"reason\":\"MODEL_NOT_FOUND\",\"message\":\"model not found\",\"metadata\":{\"reason\":\"model: meta-llama/Llama-3.1-8B-Instruct not found\"}}"
+    },
+    {
+      "provider": "replicate",
+      "model": "meta/meta-llama-3-8b-instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider replicate\"}"
+    },
+    {
+      "provider": "replicate",
+      "model": "meta/meta-llama-3-70b-instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider replicate\"}"
+    },
+    {
+      "provider": "sambanova",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider sambanova\"}"
+    },
+    {
+      "provider": "sambanova",
+      "model": "meta-llama/Llama-3.1-405B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider sambanova\"}"
+    },
+    {
+      "provider": "together",
+      "model": "meta-llama/Llama-3.1-8B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider together\"}"
+    },
+    {
+      "provider": "together",
+      "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider together\"}"
+    },
+    {
+      "provider": "together",
+      "model": "Qwen/Qwen2.5-7B-Instruct",
+      "inference_client_error": "InferenceClient.__init__() got an unexpected keyword argument 'provider'",
+      "raw_api_error": "Status: 400, Response: {\"error\":\"Not allowed to POST v3/openai/chat/completions for provider together\"}"
+    }
+  ],
+  "timestamp": 1749363946.927308,
+  "api_version": "2025_inference_providers"
+}
