@@ -1,0 +1,120 @@
+{
+    "topic": "AI",
+    "learning_path": {
+        "blogs": [
+            {
+                "title": "Distill.pub",
+                "url": "https://distill.pub/",
+                "description": "Clear explanations of machine learning concepts",
+                "platform": "Distill",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI Blog",
+                "url": "https://ai.googleblog.com/",
+                "description": "Latest research and developments from Google AI",
+                "platform": "Google",
+                "price": "Free"
+            },
+            {
+                "title": "OpenAI Research",
+                "url": "https://openai.com/research/",
+                "description": "Cutting-edge AI research and publications",
+                "platform": "OpenAI",
+                "price": "Free"
+            }
+        ],
+        "docs": [
+            {
+                "title": "Artificial Intelligence: A Modern Approach",
+                "url": "https://aima.cs.berkeley.edu/",
+                "description": "Classic AI textbook resources and updates",
+                "platform": "Berkeley",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI Education",
+                "url": "https://ai.google/education/",
+                "description": "Comprehensive AI learning resources from Google",
+                "platform": "Google AI",
+                "price": "Free"
+            },
+            {
+                "title": "MIT Introduction to AI",
+                "url": "https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-034-artificial-intelligence-fall-2010/",
+                "description": "MIT's foundational AI course materials",
+                "platform": "MIT OCW",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "DeepMind Lectures",
+                "url": "https://www.youtube.com/c/DeepMind",
+                "description": "Advanced AI research presentations",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "MIT 6.034 Artificial Intelligence",
+                "url": "https://www.youtube.com/playlist?list=PLUl4u3cNGP63gFHB6xb-kVBiQHYe_4hSi",
+                "description": "Complete MIT AI course lectures",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "AI Explained",
+                "url": "https://www.youtube.com/c/aiexplained-official",
+                "description": "Latest AI developments explained clearly",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Introduction to Artificial Intelligence",
+                "url": "https://www.edx.org/course/introduction-to-artificial-intelligence",
+                "description": "Columbia University's AI fundamentals",
+                "platform": "edX",
+                "price": "Free"
+            },
+            {
+                "title": "CS50's Introduction to AI with Python",
+                "url": "https://cs50.harvard.edu/ai/2020/",
+                "description": "Harvard's practical AI programming course",
+                "platform": "Harvard",
+                "price": "Free"
+            },
+            {
+                "title": "AI for Everyone",
+                "url": "https://www.coursera.org/learn/ai-for-everyone",
+                "description": "Non-technical introduction to AI by Andrew Ng",
+                "platform": "Coursera",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Machine Learning Engineering for Production",
+                "url": "https://www.coursera.org/specializations/machine-learning-engineering-for-production-mlops",
+                "description": "MLOps specialization by Andrew Ng",
+                "platform": "Coursera",
+                "price": "$49/month"
+            },
+            {
+                "title": "AI Product Manager Nanodegree",
+                "url": "https://www.udacity.com/course/ai-product-manager-nanodegree--nd088",
+                "description": "Managing AI products and teams",
+                "platform": "Udacity",
+                "price": "$399/month"
+            },
+            {
+                "title": "Applied AI Professional Certificate",
+                "url": "https://www.ibm.com/training/badge/applied-ai-professional-certificate",
+                "description": "IBM's comprehensive AI program",
+                "platform": "IBM",
+                "price": "$39/month"
+            }
+        ]
+    }
+}

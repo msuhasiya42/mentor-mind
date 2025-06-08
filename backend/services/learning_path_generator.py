@@ -54,58 +54,31 @@ class SearchResult:
 class LearningPathGenerator:
     def __init__(self):
         # Import here to avoid circular imports
-        from .content_aggregator import ContentAggregator
-        from .ai_processor import AIProcessor
+        from .expert_ai_tutor import ExpertAITutor
         
-        self.content_aggregator = ContentAggregator()
-        self.ai_processor = AIProcessor()
-        logger.info("LearningPathGenerator initialized")
+        self.expert_tutor = ExpertAITutor()
+        logger.info("LearningPathGenerator initialized with Expert AI Tutor")
     
     async def generate_path(self, topic: str) -> LearningPath:
-        """Generate a comprehensive learning path for the given topic"""
+        """Generate a comprehensive learning path using a single AI expert call"""
         import time
         start_time = time.time()
         
         try:
-            logger.info(f"Starting learning path generation for: {topic}")
+            logger.info(f"Starting expert AI learning path generation for: {topic}")
             
             # Validate and clean the topic
             cleaned_topic = self._clean_topic(topic)
             
-            # Use AI to enhance topic understanding and generate search queries
-            query_start = time.time()
-            enhanced_queries = await self.ai_processor.generate_search_queries(cleaned_topic)
-            query_time = time.time() - query_start
-            logger.info(f"Query generation took {query_time:.2f} seconds")
-            
-            # Get comprehensive resources using the LLM search engine
-            aggregation_start = time.time()
-            all_resources = await self.content_aggregator.get_all_resources(cleaned_topic, enhanced_queries)
-            aggregation_time = time.time() - aggregation_start
-            logger.info(f"LLM-based resource aggregation took {aggregation_time:.2f} seconds")
+            # Get curated resources from expert AI tutor in a single call
+            categorized_resources = await self.expert_tutor.get_curated_resources(cleaned_topic)
             
             # Extract categorized resources
-            docs = all_resources.get('docs', [])
-            blogs = all_resources.get('blogs', [])
-            youtube = all_resources.get('youtube', [])
-            free_courses = all_resources.get('free_courses', [])
-            paid_courses = all_resources.get('paid_courses', [])
-            
-            # Use AI to rank and filter resources in parallel (if we have resources)
-            if any([docs, blogs, youtube, free_courses, paid_courses]):
-                ranking_start = time.time()
-                ranking_tasks = [
-                    self.ai_processor.rank_resources(docs, cleaned_topic),
-                    self.ai_processor.rank_resources(blogs, cleaned_topic),
-                    self.ai_processor.rank_resources(youtube, cleaned_topic),
-                    self.ai_processor.rank_resources(free_courses, cleaned_topic),
-                    self.ai_processor.rank_resources(paid_courses, cleaned_topic)
-                ]
-                
-                ranked_results = await asyncio.gather(*ranking_tasks)
-                docs, blogs, youtube, free_courses, paid_courses = ranked_results
-                ranking_time = time.time() - ranking_start
-                logger.info(f"Parallel resource ranking took {ranking_time:.2f} seconds")
+            docs = categorized_resources.get('docs', [])
+            blogs = categorized_resources.get('blogs', [])
+            youtube = categorized_resources.get('youtube', [])
+            free_courses = categorized_resources.get('free_courses', [])
+            paid_courses = categorized_resources.get('paid_courses', [])
             
             learning_path = LearningPath(
                 docs=docs[:5],  # Limit to top 5
@@ -117,7 +90,7 @@ class LearningPathGenerator:
             
             total_time = time.time() - start_time
             total_resources = len(docs) + len(blogs) + len(youtube) + len(free_courses) + len(paid_courses)
-            logger.info(f"Successfully generated learning path for: {topic} with {total_resources} resources in {total_time:.2f} seconds")
+            logger.info(f"Successfully generated expert learning path for: {topic} with {total_resources} resources in {total_time:.2f} seconds")
             return learning_path
             
         except Exception as e:
@@ -138,26 +111,23 @@ class LearningPathGenerator:
         logger.info(f"Generating fallback path for: {topic}")
         
         try:
-            # Simple fallback - get basic resources in parallel without AI processing
-            fallback_tasks = [
-                self.content_aggregator.get_documentation(topic, []),
-                self.content_aggregator.get_blogs(topic, []),
-                self.content_aggregator.get_youtube_videos(topic, [])
-            ]
+            # Import fallback provider
+            from .fallback_data import FallbackDataProvider
+            fallback_provider = FallbackDataProvider()
             
-            results = await asyncio.gather(*fallback_tasks, return_exceptions=True)
-            
-            # Handle results safely
-            docs = results[0] if isinstance(results[0], list) else []
-            blogs = results[1] if isinstance(results[1], list) else []
-            youtube = results[2] if isinstance(results[2], list) else []
+            # Get basic fallback resources
+            docs = fallback_provider.get_documentation_sources().get('general', [])[:3]
+            blogs = fallback_provider.get_fallback_blogs(topic)[:3]
+            youtube = fallback_provider.get_fallback_youtube(topic)[:3]
+            free_courses = fallback_provider.get_fallback_courses(topic, "free")[:3]
+            paid_courses = fallback_provider.get_fallback_courses(topic, "paid")[:3]
             
             return LearningPath(
-                docs=docs[:3],
-                blogs=blogs[:3], 
-                youtube=youtube[:3],
-                free_courses=[],
-                paid_courses=[]
+                docs=docs,
+                blogs=blogs, 
+                youtube=youtube,
+                free_courses=free_courses,
+                paid_courses=paid_courses
             )
         except Exception as e:
             logger.error(f"Even fallback generation failed: {str(e)}")
@@ -173,13 +143,9 @@ class LearningPathGenerator:
     async def close(self):
         """Clean up resources"""
         try:
-            # Close content aggregator
-            if hasattr(self.content_aggregator, 'close'):
-                await self.content_aggregator.close()
-            
-            # Close AI processor
-            if hasattr(self.ai_processor, 'close'):
-                await self.ai_processor.close()
+            # Close expert tutor
+            if hasattr(self.expert_tutor, 'close'):
+                await self.expert_tutor.close()
                 
             logger.info("LearningPathGenerator resources cleaned up")
             

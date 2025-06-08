@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
         
         # Initialize the learning path generator
         learning_path_generator = LearningPathGenerator()
-        logger.info("✅ Learning path generator initialized")
+        logger.info("✅ Learning path generator initialized with Expert AI Tutor")
         
     except Exception as e:
         logger.error(f"Startup error: {str(e)}")
@@ -48,8 +48,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Mentor Mind API",
-    description="AI-Powered Learning Path Generator",
-    version="1.0.0",
+    description="AI-Powered Learning Path Generator with Expert AI Tutor",
+    version="2.0.0",
     lifespan=lifespan
 )
 
@@ -78,7 +78,7 @@ def convert_dataclass_to_pydantic(dataclass_obj, resource_list):
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Mentor Mind API"}
+    return {"message": "Welcome to Mentor Mind API - Now with Expert AI Tutor!"}
 
 @app.get("/health")
 async def health_check():
@@ -95,7 +95,8 @@ async def health_check():
             "openrouter_api": openrouter_status,
             "default_model": settings.DEFAULT_MODEL,
             "available_free_models": available_models,
-            "version": "2.0.0 (OpenRouter)"
+            "version": "2.0.0 (Expert AI Tutor)",
+            "features": ["single_llm_call", "expert_persona", "curated_resources"]
         }
     except Exception as e:
         return {
@@ -112,9 +113,9 @@ async def generate_learning_path(request: LearningPathRequest):
         if not learning_path_generator:
             raise HTTPException(status_code=500, detail="Learning path generator not initialized")
         
-        logger.info(f"Generating learning path for topic: {request.topic}")
+        logger.info(f"Generating expert learning path for topic: {request.topic}")
         
-        # Generate the learning path (returns dataclass)
+        # Generate the learning path using Expert AI Tutor (returns dataclass)
         learning_path_dataclass = await learning_path_generator.generate_path(request.topic.strip())
         
         # Convert dataclass to Pydantic model
@@ -131,7 +132,7 @@ async def generate_learning_path(request: LearningPathRequest):
             learning_path=learning_path_pydantic
         )
         
-        logger.info(f"Successfully generated learning path for: {request.topic}")
+        logger.info(f"Successfully generated expert learning path for: {request.topic}")
         return response
         
     except HTTPException:
@@ -139,39 +140,6 @@ async def generate_learning_path(request: LearningPathRequest):
     except Exception as e:
         logger.error(f"Error generating learning path: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate learning path: {str(e)}")
-
-@app.post("/debug-search")
-async def debug_search(request: LearningPathRequest):
-    """Debug endpoint to test search functionality directly"""
-    try:
-        from services.content_aggregator import ContentAggregator
-        from services.search_engines import LLMSearchEngine
-        
-        # Test LLM search engine directly
-        llm_search = LLMSearchEngine()
-        llm_resources = await llm_search.search(request.topic)
-        await llm_search.close()
-        
-        # Test content aggregator
-        aggregator = ContentAggregator()
-        all_resources = await aggregator.get_all_resources(request.topic, [])
-        await aggregator.close()
-        
-        return {
-            "topic": request.topic,
-            "llm_direct_count": len(llm_resources),
-            "llm_sample": llm_resources[0] if llm_resources else None,
-            "aggregator_results": {
-                category: len(resources) for category, resources in all_resources.items()
-            },
-            "aggregator_samples": {
-                category: resources[0].title if resources else "No resources"
-                for category, resources in all_resources.items()
-            }
-        }
-        
-    except Exception as e:
-        return {"error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn
