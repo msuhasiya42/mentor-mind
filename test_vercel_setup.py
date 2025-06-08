@@ -11,8 +11,8 @@ import json
 
 # Test import of the API handler
 try:
-    from backend.api.index import app
-    print("✅ Successfully imported FastAPI app from backend/api/index.py")
+    from backend.index import app
+    print("✅ Successfully imported FastAPI app from backend/index.py")
 except ImportError as e:
     print(f"❌ Failed to import FastAPI app: {e}")
     sys.exit(1)

@@ -1,9 +1,9 @@
 {
   "version": 2,
   "builds": [
-    { "src": "backend/api/index.py", "use": "@vercel/python" }
+    { "src": "backend/index.py", "use": "@vercel/python" }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/backend/api/index.py" }
+    { "src": "/(.*)", "dest": "/backend/index.py" }
   ]
 } 

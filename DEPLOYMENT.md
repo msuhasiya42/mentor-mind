@@ -1,10 +1,20 @@
 # 🚀 Deployment Guide for Mentor Mind AI Service on Vercel
 
+## 🎯 **Learned from Advanced-Task-Manager**
+
+This deployment structure follows the same successful pattern used in your `advanced-task-manager` project:
+
+- **Simple entry point**: `backend/index.py` (like `server.js`)
+- **Backend-focused**: All backend files in `backend/` directory
+- **Direct routing**: Clean `vercel.json` that routes everything to main file
+- **CORS ready**: Proper headers for frontend integration
+
 ## Files Created for Vercel Deployment
 
-✅ **vercel.json** - Configuration for Vercel Python runtime  
-✅ **backend/api/index.py** - Vercel API handler that imports your FastAPI app  
-✅ **requirements.txt** - Dependencies for Vercel (moved to root)  
+✅ **vercel.json** - Configuration for Vercel Python runtime (points to backend)  
+✅ **backend/index.py** - Simple entry point (similar to server.js pattern)  
+✅ **backend/vercel.json** - Backend-specific Vercel configuration  
+✅ **backend/requirements.txt** - Dependencies in backend directory  
 ✅ **.gitignore** - Excludes unnecessary files from deployment  
 ✅ **env.example** - Environment variables template  
 
@@ -91,12 +101,12 @@ Should return:
 ### Common Issues:
 
 1. **404 on routes**
-   - Check that `vercel.json` points to correct file path
-   - Ensure `backend/api/index.py` exists
+   - Check that `vercel.json` points to `backend/index.py`
+   - Ensure `backend/index.py` exists and imports correctly
 
 2. **Import errors**
-   - Verify all dependencies are in root `requirements.txt`
-   - Check that Python path is set correctly in `backend/api/index.py`
+   - Verify all dependencies are in `backend/requirements.txt`
+   - Check that Python path is set correctly in `backend/index.py`
 
 3. **OpenRouter API errors**
    - Verify your API key is set in Vercel environment variables
