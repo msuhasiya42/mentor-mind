@@ -1,0 +1,120 @@
+{
+    "topic": "React Interview Questions",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "React Interview Questions & Answers",
+                "url": "https://github.com/sudheerj/reactjs-interview-questions",
+                "description": "A comprehensive list of React interview questions and answers on GitHub.",
+                "platform": "GitHub",
+                "price": "Free"
+            },
+            {
+                "title": "React Interview Questions",
+                "url": "https://www.toptal.com/react/interview-questions",
+                "description": "Top React interview questions curated by Toptal.",
+                "platform": "Toptal",
+                "price": "Free"
+            },
+            {
+                "title": "ReactJS Interview Questions",
+                "url": "https://www.fullstack.cafe/blog/react-interview-questions",
+                "description": "A collection of React interview questions with detailed answers.",
+                "platform": "FullStack Cafe",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Top 50 React Interview Questions You Must Prepare In 2024",
+                "url": "https://www.simplilearn.com/tutorials/reactjs-tutorial/reactjs-interview-questions",
+                "description": "A detailed blog post covering essential React interview questions.",
+                "platform": "Simplilearn",
+                "price": "Free"
+            },
+            {
+                "title": "React Interview Questions",
+                "url": "https://www.freecodecamp.org/news/react-interview-questions/",
+                "description": "A list of common React interview questions from freeCodeCamp.",
+                "platform": "freeCodeCamp",
+                "price": "Free"
+            },
+            {
+                "title": "React Interview Questions and Answers",
+                "url": "https://www.edureka.co/blog/interview-questions/react-interview-questions/",
+                "description": "Comprehensive React interview questions and answers by Edureka.",
+                "platform": "Edureka",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Top 50 ReactJS Interview Questions and Answers | 2024",
+                "url": "https://www.youtube.com/watch?v=9D1x7-2FmTA",
+                "description": "A video covering top ReactJS interview questions and answers.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "React Interview Questions and Answers | Frontend Interview Questions",
+                "url": "https://www.youtube.com/watch?v=8pDm_kH4YKY",
+                "description": "A detailed video on React interview questions for frontend developers.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "React Hooks Interview Questions and Answers",
+                "url": "https://www.youtube.com/watch?v=8P-XeD5X4zE",
+                "description": "A video focusing on React Hooks interview questions.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "React Interview Questions",
+                "url": "https://www.udemy.com/course/react-interview-questions/",
+                "description": "A free Udemy course covering React interview questions.",
+                "platform": "Udemy",
+                "price": "Free"
+            },
+            {
+                "title": "ReactJS Interview Preparation",
+                "url": "https://www.coursera.org/learn/react-interview-prep",
+                "description": "A free Coursera course to prepare for React interviews.",
+                "platform": "Coursera",
+                "price": "Free"
+            },
+            {
+                "title": "React Interview Questions - Free Course",
+                "url": "https://www.educative.io/courses/react-interview-questions",
+                "description": "A free Educative course on React interview questions.",
+                "platform": "Educative",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "React - The Complete Guide (incl Hooks, React Router, Redux)",
+                "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+                "description": "A comprehensive paid course on React, including interview prep.",
+                "platform": "Udemy",
+                "price": "$84.99"
+            },
+            {
+                "title": "Advanced React and Redux",
+                "url": "https://www.udemy.com/course/react-redux-tutorial/",
+                "description": "A paid course focusing on advanced React and Redux concepts.",
+                "platform": "Udemy",
+                "price": "$84.99"
+            },
+            {
+                "title": "React Native: Advanced Concepts",
+                "url": "https://www.udemy.com/course/react-native-advanced/",
+                "description": "A paid course covering advanced React Native concepts.",
+                "platform": "Udemy",
+                "price": "$84.99"
+            }
+        ]
+    }
+}
