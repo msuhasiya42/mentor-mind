@@ -3,7 +3,7 @@ import axios from 'axios'
 import LoadingSpinner from './LoadingSpinner'
 import LearningPathResult from './LearningPathResult'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'https://mentor-mind-phi.vercel.app'
 
 function Home() {
   const [topic, setTopic] = useState('')

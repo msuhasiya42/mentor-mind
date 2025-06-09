@@ -6,6 +6,7 @@ import logging
 from services.learning_path_generator import LearningPathGenerator
 from models import LearningPathRequest, LearningPathResponse, PydanticResource, PydanticLearningPath
 from config import settings
+from constants import APP_TITLE, APP_DESCRIPTION, APP_VERSION, ALLOWED_ORIGINS
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -47,16 +48,16 @@ async def lifespan(app: FastAPI):
             logger.error(f"Error during cleanup: {str(e)}")
 
 app = FastAPI(
-    title="Mentor Mind API",
-    description="AI-Powered Learning Path Generator with Expert AI Tutor",
-    version="2.0.0",
+    title=APP_TITLE,
+    description=APP_DESCRIPTION,
+    version=APP_VERSION,
     lifespan=lifespan
 )
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # React dev servers
+    allow_origins=ALLOWED_ORIGINS,  # React dev servers
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -95,7 +96,7 @@ async def health_check():
             "openrouter_api": openrouter_status,
             "default_model": settings.DEFAULT_MODEL,
             "available_free_models": available_models,
-            "version": "2.0.0 (Expert AI Tutor)",
+            "version": f"{APP_VERSION} (Expert AI Tutor)",
             "features": ["single_llm_call", "expert_persona", "curated_resources"]
         }
     except Exception as e:
