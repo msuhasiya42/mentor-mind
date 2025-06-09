@@ -8,7 +8,7 @@ import json
 import time
 import sys
 import os
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 # Add the parent directory to the path to import config
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -33,6 +33,7 @@ class ExpertAITutor:
         self.max_consecutive_failures = 3
         self.resource_curator = ResourceCurator()
         self.response_parser = AIResponseParser()
+        self.last_response_source = None  # Track the source of the last response
         
         # Log initialization details
         logger.info("   Configuration:")
@@ -51,7 +52,7 @@ class ExpertAITutor:
         if self.session is None:
             logger.debug("🔗 Creating new HTTP session")
             connector = aiohttp.TCPConnector(limit=100, limit_per_host=30)
-            timeout = aiohttp.ClientTimeout(total=90)
+            timeout = aiohttp.ClientTimeout(total=180)
             self.session = aiohttp.ClientSession(connector=connector, timeout=timeout)
             logger.debug("✅ HTTP session created")
         return self.session
@@ -71,6 +72,7 @@ class ExpertAITutor:
                 logger.warning("   🔄 Falling back to manual curation")
                 
                 manual_resources = self.resource_curator.get_curated_resources(topic)
+                self.last_response_source = "📋 MANUAL CURATION (Too many AI failures)"
                 logger.info("✅ Manual curation completed successfully")
                 logger.info("   📋 RESPONSE SOURCE: MANUAL CURATION (Manual fallback due to AI failures)")
                 return manual_resources
@@ -88,6 +90,7 @@ class ExpertAITutor:
                     self.consecutive_failures = 0  # Reset failure counter on success
                     total_ai_resources = sum(len(resources) for resources in ai_resources.values())
                     
+                    self.last_response_source = "🤖 AI TUTOR (DeepSeek via OpenRouter)"
                     logger.info("✅ AI CURATION SUCCESSFUL")
                     logger.info(f"   Total AI resources: {total_ai_resources}")
                     logger.info("   🔄 Consecutive failures reset to 0")
@@ -112,6 +115,14 @@ class ExpertAITutor:
             manual_resources = self.resource_curator.get_curated_resources(topic)
             total_manual_resources = sum(len(resources) for resources in manual_resources.values())
             
+            # Determine the specific reason for manual curation
+            if not settings.OPENROUTER_API_KEY:
+                self.last_response_source = "📋 MANUAL CURATION (No API key)"
+            elif self.consecutive_failures > 0:
+                self.last_response_source = "📋 MANUAL CURATION (AI partially failing)"
+            else:
+                self.last_response_source = "📋 MANUAL CURATION (Fallback)"
+            
             logger.info("✅ Manual curation fallback completed")
             logger.info(f"   Total manual resources: {total_manual_resources}")
             logger.info("   📋 RESPONSE SOURCE: MANUAL CURATION (Fallback)")
@@ -133,10 +144,26 @@ class ExpertAITutor:
             basic_fallback = self.resource_curator.get_basic_fallback_resources(topic)
             total_fallback_resources = sum(len(resources) for resources in basic_fallback.values())
             
+            self.last_response_source = "🔄 BASIC FALLBACK (Emergency fallback)"
             logger.info(f"✅ Basic fallback completed with {total_fallback_resources} resources")
             logger.info("   🔄 RESPONSE SOURCE: BASIC FALLBACK (Emergency fallback)")
             
             return basic_fallback
+    
+    def get_last_response_source(self) -> str:
+        """Get the source of the last response"""
+        return self.last_response_source or "No response yet"
+    
+    def get_source_info(self) -> Dict[str, any]:
+        """Get detailed information about the current source state"""
+        return {
+            "last_source": self.last_response_source,
+            "consecutive_failures": self.consecutive_failures,
+            "max_failures": self.max_consecutive_failures,
+            "has_api_key": bool(settings.OPENROUTER_API_KEY),
+            "rate_limit_delay": self.rate_limit_delay,
+            "is_ai_available": bool(settings.OPENROUTER_API_KEY) and self.consecutive_failures < self.max_consecutive_failures
+        }
     
     async def _enforce_rate_limit(self):
         """Enforce rate limiting between API calls"""
@@ -196,6 +223,10 @@ Provide REAL, SPECIFIC resources that are well-known in the developer community.
             logger.info(f"   URL: {api_url}")
             logger.info(f"   Payload size: {len(json.dumps(payload))} bytes")
             
+            # Add timing for the actual HTTP request
+            request_start_time = time.time()
+            logger.info("⏳ Starting HTTP request...")
+            
             async with session.post(
                 api_url,
                 headers=settings.openrouter_headers,
@@ -203,21 +234,38 @@ Provide REAL, SPECIFIC resources that are well-known in the developer community.
                 timeout=aiohttp.ClientTimeout(total=90)
             ) as response:
                 
+                request_time = time.time() - request_start_time
                 api_time = time.time() - api_start_time
-                logger.info(f"📨 API Response received in {api_time:.3f}s")
+                logger.info(f"📨 HTTP request completed in {request_time:.3f}s")
+                logger.info(f"📨 Total API time so far: {api_time:.3f}s")
                 logger.info(f"   Status: {response.status}")
                 logger.info(f"   Content Type: {response.headers.get('content-type', 'Unknown')}")
+                logger.info(f"   Content Length: {response.headers.get('content-length', 'Unknown')} bytes")
                 
                 if response.status == 200:
                     logger.info("✅ AI API CALL SUCCESSFUL")
+                    
+                    # Add timing for JSON parsing
+                    json_start_time = time.time()
+                    logger.info("🔍 Starting response JSON parsing...")
+                    
                     result = await response.json()
+                    
+                    json_time = time.time() - json_start_time
+                    logger.info(f"✅ JSON parsing completed in {json_time:.3f}s")
                     
                     if 'choices' in result and len(result['choices']) > 0:
                         generated_text = result['choices'][0]['message']['content']
                         logger.info(f"   Response length: {len(generated_text)} characters")
                         logger.info("   🔍 Parsing AI response...")
                         
+                        # Add timing for AI response parsing
+                        parse_start_time = time.time()
+                        
                         parsed_resources = self.response_parser.parse_json_response(generated_text, topic)
+                        
+                        parse_time = time.time() - parse_start_time
+                        logger.info(f"   AI response parsing took {parse_time:.3f}s")
                         
                         if parsed_resources:
                             total_parsed = sum(len(resources) for resources in parsed_resources.values())
@@ -305,4 +353,5 @@ Topic: {topic}"""
         
         logger.info("✅ Expert AI Tutor cleanup completed")
         logger.info(f"   Final failure count: {self.consecutive_failures}")
-        logger.info(f"   Final rate limit delay: {self.rate_limit_delay:.1f}s") 
+        logger.info(f"   Final rate limit delay: {self.rate_limit_delay:.1f}s")
+        logger.info(f"   Last response source: {self.last_response_source}") 

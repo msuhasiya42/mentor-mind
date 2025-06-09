@@ -56,13 +56,17 @@ class LearningPathGenerator:
     def __init__(self):
         # Import here to avoid circular imports
         from .expert_ai_tutor import ExpertAITutor
+        from .result_saver import ResultSaver
         
         logger.info("🔧 INITIALIZING LEARNING PATH GENERATOR")
         
         self.expert_tutor = ExpertAITutor()
+        self.result_saver = ResultSaver()
+        self.last_generation_source = None  # Track the source of the last generation
         
         logger.info("✅ Learning Path Generator initialized successfully")
         logger.info("   - Expert AI Tutor: Loaded")
+        logger.info("   - Result Saver: Loaded")
         logger.info("   - Ready to process learning path requests")
     
     async def generate_path(self, topic: str) -> LearningPath:
@@ -117,7 +121,25 @@ class LearningPathGenerator:
                 paid_courses=paid_courses[:5]
             )
             
-            # Step 5: Final processing and logging
+            # Step 5: Determine the source and potentially save result
+            logger.info("💾 STEP 5: Determining source and evaluating for auto-save")
+            result_source = self._determine_result_source()
+            self.last_generation_source = result_source
+            
+            logger.info(f"   Result source determined: '{result_source}'")
+            
+            # Auto-save if from AI source
+            try:
+                save_success = self.result_saver.save_ai_generated_result(cleaned_topic, learning_path, result_source)
+                if save_success:
+                    logger.info("💾 Auto-save completed successfully")
+                else:
+                    logger.info("⏭️ Auto-save skipped (not AI-generated or failed)")
+            except Exception as save_error:
+                logger.error(f"❌ Auto-save error: {str(save_error)}")
+                # Don't fail the main process if saving fails
+            
+            # Step 6: Final processing and logging
             total_time = time.time() - start_time
             total_resources = (
                 len(learning_path.docs) + 
@@ -136,6 +158,7 @@ class LearningPathGenerator:
             logger.info(f"     - YouTube: {len(learning_path.youtube)}")
             logger.info(f"     - Free Courses: {len(learning_path.free_courses)}")
             logger.info(f"     - Paid Courses: {len(learning_path.paid_courses)}")
+            logger.info(f"     - Source: {result_source}")
             logger.info(f"   Processing Time: {total_time:.3f} seconds")
             logger.info(f"   Performance: {total_resources/total_time:.1f} resources/second")
             
@@ -151,8 +174,52 @@ class LearningPathGenerator:
             
             # Return a basic fallback path
             fallback_path = await self._generate_fallback_path(topic)
+            self.last_generation_source = "🔄 FALLBACK (Exception recovery)"
             logger.info("🔄 Fallback path generation completed")
             return fallback_path
+    
+    def _determine_result_source(self) -> str:
+        """
+        Determine the source of the current result based on expert tutor state
+        
+        Returns:
+            str: Source description for logging and saving decisions
+        """
+        try:
+            # Get the actual source from the expert tutor
+            if hasattr(self.expert_tutor, 'get_last_response_source'):
+                actual_source = self.expert_tutor.get_last_response_source()
+                if actual_source and actual_source != "No response yet":
+                    logger.debug(f"   Using expert tutor's tracked source: {actual_source}")
+                    return actual_source
+            
+            # Fallback to inference method if direct tracking is not available
+            logger.debug("   Expert tutor source tracking not available, using inference")
+            
+            # Check expert tutor's consecutive failures and last operation
+            consecutive_failures = getattr(self.expert_tutor, 'consecutive_failures', 0)
+            max_failures = getattr(self.expert_tutor, 'max_consecutive_failures', 3)
+            
+            # If too many consecutive failures, it would have used manual curation
+            if consecutive_failures >= max_failures:
+                return "📋 MANUAL CURATION (Too many AI failures)"
+            
+            # If we have an OpenRouter API key and low failures, likely AI-generated
+            from config import settings
+            if settings.OPENROUTER_API_KEY and consecutive_failures == 0:
+                return "🤖 AI TUTOR (DeepSeek via OpenRouter)"
+            elif settings.OPENROUTER_API_KEY and consecutive_failures > 0:
+                return "📋 MANUAL CURATION (AI partially failing)"
+            else:
+                return "📋 MANUAL CURATION (No API key)"
+                
+        except Exception as e:
+            logger.warning(f"⚠️ Could not determine exact source: {str(e)}")
+            return "🔄 UNKNOWN SOURCE"
+    
+    def get_last_generation_source(self) -> str:
+        """Get the source of the last generation"""
+        return self.last_generation_source or "No generation yet"
     
     def _clean_topic(self, topic: str) -> str:
         """Clean and normalize the topic"""
@@ -246,6 +313,11 @@ class LearningPathGenerator:
                 logger.info("   Closing Expert AI Tutor...")
                 await self.expert_tutor.close()
                 logger.info("   ✅ Expert AI Tutor closed")
+            
+            # Log final save statistics
+            if hasattr(self.result_saver, 'get_save_statistics'):
+                stats = self.result_saver.get_save_statistics()
+                logger.info(f"   📊 Final save statistics: {stats.get('total_files', 0)} files saved")
                 
             logger.info("✅ Learning Path Generator cleanup completed")
             

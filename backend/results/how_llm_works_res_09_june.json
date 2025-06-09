@@ -1,0 +1,120 @@
+{
+    "topic": "How LLM Works",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "Attention Is All You Need",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "description": "The original paper introducing the Transformer architecture, which is the foundation of most LLMs.",
+                "platform": "arXiv",
+                "price": "Free"
+            },
+            {
+                "title": "The Illustrated Transformer",
+                "url": "https://jalammar.github.io/illustrated-transformer/",
+                "description": "A visual and intuitive explanation of the Transformer model.",
+                "platform": "Jay Alammar's Blog",
+                "price": "Free"
+            },
+            {
+                "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+                "url": "https://arxiv.org/abs/1810.04805",
+                "description": "Seminal paper on BERT, a popular LLM architecture.",
+                "platform": "arXiv",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "How GPT3 Works - Visualizations and Animations",
+                "url": "https://jalammar.github.io/how-gpt3-works-visualizations-animations/",
+                "description": "Detailed blog post with visualizations explaining how GPT-3 works.",
+                "platform": "Jay Alammar's Blog",
+                "price": "Free"
+            },
+            {
+                "title": "The Unreasonable Effectiveness of Recurrent Neural Networks",
+                "url": "http://karpathy.github.io/2015/05/21/rnn-effectiveness/",
+                "description": "Classic blog post on RNNs, which are predecessors to Transformers.",
+                "platform": "Andrej Karpathy's Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Understanding Large Language Models",
+                "url": "https://openai.com/research/language-models",
+                "description": "OpenAI's research blog on the evolution and workings of large language models.",
+                "platform": "OpenAI",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "How Large Language Models Work",
+                "url": "https://www.youtube.com/watch?v=zjkBMFhNj_g",
+                "description": "A comprehensive explanation of LLMs by Yannic Kilcher.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Transformers, explained: Understand the model behind GPT, BERT, and T5",
+                "url": "https://www.youtube.com/watch?v=ZXiruXfUcVk",
+                "description": "Detailed video on the Transformer architecture.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "The Rise of Large Language Models",
+                "url": "https://www.youtube.com/watch?v=0ZVOmBp29E0",
+                "description": "Lecture by Stanford on the rise and mechanics of LLMs.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "CS324 - Large Language Models",
+                "url": "https://stanford-cs324.github.io/winter2022/",
+                "description": "Stanford course covering the fundamentals of large language models.",
+                "platform": "Stanford University",
+                "price": "Free"
+            },
+            {
+                "title": "Natural Language Processing with Deep Learning",
+                "url": "https://web.stanford.edu/class/cs224n/",
+                "description": "Stanford's NLP course covering Transformers and LLMs.",
+                "platform": "Stanford University",
+                "price": "Free"
+            },
+            {
+                "title": "Deep Learning for Natural Language Processing",
+                "url": "https://www.youtube.com/playlist?list=PLoROMvodv4rMC6zfYmnD7UG3LVvwaITY5",
+                "description": "Lecture series by Chris Manning on NLP and LLMs.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Natural Language Processing Specialization",
+                "url": "https://www.coursera.org/specializations/natural-language-processing",
+                "description": "Coursera specialization covering NLP and LLMs.",
+                "platform": "Coursera",
+                "price": "$49.00/month"
+            },
+            {
+                "title": "Advanced NLP with spaCy",
+                "url": "https://course.spacy.io/en/",
+                "description": "Interactive course on NLP and LLMs using spaCy.",
+                "platform": "spaCy",
+                "price": "$99.00"
+            },
+            {
+                "title": "Deep Learning for NLP",
+                "url": "https://www.udemy.com/course/deep-learning-for-nlp/",
+                "description": "Udemy course on deep learning techniques for NLP and LLMs.",
+                "platform": "Udemy",
+                "price": "$84.99"
+            }
+        ]
+    }
+}
