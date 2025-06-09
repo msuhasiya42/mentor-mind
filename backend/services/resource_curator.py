@@ -12,25 +12,63 @@ class ResourceCurator:
     """Handles manual curation of learning resources for popular topics"""
     
     def __init__(self):
+        logger.info("📚 INITIALIZING RESOURCE CURATOR")
+        
         self.resource_templates = self._initialize_resource_templates()
-        logger.info("Resource Curator initialized")
+        
+        logger.info("   Manual curation templates loaded:")
+        logger.info(f"     - Available topics: {len(self.resource_templates)}")
+        for topic in self.resource_templates.keys():
+            logger.info(f"       * {topic}")
+        
+        logger.info("✅ Resource Curator initialized successfully")
     
     def get_curated_resources(self, topic: str) -> Dict[str, List[Resource]]:
         """Get manually curated resources for a topic"""
+        logger.info("📋 MANUAL CURATION: Searching for curated resources")
+        logger.info(f"   Topic: '{topic}'")
+        
         topic_lower = topic.lower()
+        logger.debug(f"   Normalized topic: '{topic_lower}'")
         
         # Check if we have specific resources for this topic
+        matched_key = None
         for key, resources in self.resource_templates.items():
             if key in topic_lower:
-                logger.info(f"Using curated resources for {key}")
+                matched_key = key
+                logger.info(f"✅ MANUAL CURATION MATCH FOUND")
+                logger.info(f"   Matched template: '{key}'")
+                logger.info(f"   Original topic: '{topic}'")
+                
+                # Log detailed breakdown
+                total_curated = sum(len(res_list) for res_list in resources.values())
+                logger.info(f"   Curated resources summary:")
+                for category, res_list in resources.items():
+                    logger.info(f"     - {category}: {len(res_list)} resources")
+                logger.info(f"   Total curated resources: {total_curated}")
+                
                 return resources
         
         # Generic high-quality resources
-        return self._get_generic_quality_resources(topic)
+        logger.info("❌ NO SPECIFIC CURATION FOUND")
+        logger.info(f"   No template found for topic: '{topic}'")
+        logger.info("   🔄 Using generic quality resources")
+        
+        generic_resources = self._get_generic_quality_resources(topic)
+        total_generic = sum(len(res_list) for res_list in generic_resources.values())
+        
+        logger.info("✅ Generic quality resources generated")
+        logger.info(f"   Total generic resources: {total_generic}")
+        
+        return generic_resources
     
     def get_basic_fallback_resources(self, topic: str) -> Dict[str, List[Resource]]:
         """Get basic fallback resources when everything else fails"""
-        return {
+        logger.warning("🆘 BASIC FALLBACK: Generating emergency resources")
+        logger.warning(f"   Topic: '{topic}'")
+        logger.warning("   This is the last resort fallback method")
+        
+        basic_resources = {
             'docs': [
                 Resource(f"{topic} Documentation", f"https://www.google.com/search?q={topic}+documentation", f"Find {topic} documentation", "Web Search", "Free")
             ],
@@ -47,10 +85,18 @@ class ResourceCurator:
                 Resource(f"{topic} Paid Courses", f"https://www.udemy.com/courses/search/?q={topic}", f"Find paid {topic} courses", "Udemy", "Varies")
             ]
         }
+        
+        total_basic = sum(len(res_list) for res_list in basic_resources.values())
+        logger.warning(f"✅ Basic fallback resources generated: {total_basic} resources")
+        logger.warning("   These are generic search links, not curated content")
+        
+        return basic_resources
     
     def _initialize_resource_templates(self) -> Dict[str, Dict[str, List[Resource]]]:
         """Initialize predefined resource templates for popular topics"""
-        return {
+        logger.info("🔧 Initializing manual curation templates")
+        
+        templates = {
             'react': {
                 'docs': [
                     Resource("React Official Documentation", "https://react.dev", "Official React documentation with hooks and modern practices", "Official", "Free"),
@@ -74,10 +120,21 @@ class ResourceCurator:
                 ]
             }
         }
+        
+        logger.info(f"   Loaded {len(templates)} manual curation templates")
+        for topic, resources in templates.items():
+            total_resources = sum(len(res_list) for res_list in resources.values())
+            logger.info(f"     - {topic}: {total_resources} resources across {len(resources)} categories")
+        
+        return templates
     
     def _get_generic_quality_resources(self, topic: str) -> Dict[str, List[Resource]]:
         """Get generic high-quality resources for any topic"""
-        return {
+        logger.info("🌐 GENERATING GENERIC QUALITY RESOURCES")
+        logger.info(f"   Topic: '{topic}'")
+        logger.info("   Using high-quality generic platforms")
+        
+        generic_resources = {
             'docs': [
                 Resource(f"{topic} Official Documentation", f"https://www.google.com/search?q={topic}+official+documentation", f"Official {topic} documentation and guides", "Official", "Free")
             ],
@@ -93,4 +150,10 @@ class ResourceCurator:
             'paid_courses': [
                 Resource(f"Complete {topic} Course on Udemy", f"https://www.udemy.com/courses/search/?q={topic}", f"Comprehensive {topic} training", "Udemy", "$89.99")
             ]
-        } 
+        }
+        
+        total_generic = sum(len(res_list) for res_list in generic_resources.values())
+        logger.info(f"✅ Generic quality resources generated: {total_generic} resources")
+        logger.info("   These are high-quality generic platforms with topic-specific searches")
+        
+        return generic_resources 

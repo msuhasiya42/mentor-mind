@@ -1,0 +1,120 @@
+{
+    "topic": "Prompt Engineering",
+    "learning_path": {
+        "blogs": [
+            {
+                "title": "Prompt Engineering: A Practical Guide",
+                "url": "https://lilianweng.github.io/posts/2023-03-15-prompt-engineering/",
+                "description": "In-depth blog post by Lilian Weng on practical prompt engineering techniques.",
+                "platform": "Personal Blog",
+                "price": "Free"
+            },
+            {
+                "title": "The Art of Prompt Engineering",
+                "url": "https://www.assemblyai.com/blog/the-art-of-prompt-engineering/",
+                "description": "Blog post exploring the nuances of crafting effective prompts for AI models.",
+                "platform": "AssemblyAI",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Best Practices",
+                "url": "https://towardsdatascience.com/prompt-engineering-best-practices-5b8b6f6f0a6a",
+                "description": "Best practices for prompt engineering, with examples and case studies.",
+                "platform": "Towards Data Science",
+                "price": "Free"
+            }
+        ],
+        "docs": [
+            {
+                "title": "OpenAI API Documentation",
+                "url": "https://platform.openai.com/docs/guides/prompt-engineering",
+                "description": "Official OpenAI guide on prompt engineering techniques and best practices.",
+                "platform": "OpenAI",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Guide by Cohere",
+                "url": "https://docs.cohere.ai/docs/prompt-engineering",
+                "description": "Comprehensive guide on prompt engineering from Cohere, covering basics to advanced techniques.",
+                "platform": "Cohere",
+                "price": "Free"
+            },
+            {
+                "title": "Anthropic's Prompt Engineering Handbook",
+                "url": "https://docs.anthropic.com/claude/docs/prompt-engineering",
+                "description": "Detailed handbook on prompt engineering for Claude AI, with practical examples.",
+                "platform": "Anthropic",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Prompt Engineering for Developers",
+                "url": "https://www.youtube.com/watch?v=dOxUroR57xs",
+                "description": "A comprehensive tutorial on prompt engineering for developers by OpenAI.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Advanced Prompt Engineering Techniques",
+                "url": "https://www.youtube.com/watch?v=5ef83Wljm-M",
+                "description": "Video covering advanced techniques in prompt engineering.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering with GPT-4",
+                "url": "https://www.youtube.com/watch?v=1N4H7B7Qp4E",
+                "description": "Tutorial on leveraging GPT-4 for effective prompt engineering.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Prompt Engineering for GPT-3",
+                "url": "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/",
+                "description": "Free short course on prompt engineering for GPT-3 by DeepLearning.AI.",
+                "platform": "DeepLearning.AI",
+                "price": "Free"
+            },
+            {
+                "title": "Learn Prompting",
+                "url": "https://learnprompting.org/",
+                "description": "Free open-source course covering all aspects of prompt engineering.",
+                "platform": "Learn Prompting",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Fundamentals",
+                "url": "https://www.coursera.org/learn/prompt-engineering",
+                "description": "Free course on the fundamentals of prompt engineering on Coursera.",
+                "platform": "Coursera",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Advanced Prompt Engineering",
+                "url": "https://www.udemy.com/course/advanced-prompt-engineering/",
+                "description": "Advanced course on prompt engineering techniques and applications.",
+                "platform": "Udemy",
+                "price": "$49.99"
+            },
+            {
+                "title": "Mastering Prompt Engineering",
+                "url": "https://www.pluralsight.com/courses/mastering-prompt-engineering",
+                "description": "In-depth course on mastering prompt engineering for AI models.",
+                "platform": "Pluralsight",
+                "price": "$29.99/month"
+            },
+            {
+                "title": "Prompt Engineering for Business",
+                "url": "https://www.linkedin.com/learning/prompt-engineering-for-business",
+                "description": "Course focused on applying prompt engineering in business contexts.",
+                "platform": "LinkedIn Learning",
+                "price": "$34.99/month"
+            }
+        ]
+    }
+}
