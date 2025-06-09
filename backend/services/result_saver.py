@@ -43,14 +43,11 @@ class ResultSaver:
         Returns:
             bool: True if saved successfully, False otherwise
         """
-        logger.info("💾 RESULT SAVER: Evaluating result for saving")
-        logger.info(f"   Topic: '{topic}'")
-        logger.info(f"   Source: '{source}'")
+        logger.info("💾 Evaluating result for saving")
         
         # Only save AI-generated results (not fallback)
         if not self._should_save_result(source):
-            logger.info("⏭️ SKIPPING SAVE: Result is not from AI source")
-            logger.info(f"   Source '{source}' does not qualify for saving")
+            logger.info("⏭️ Skipping save: Not from AI source")
             return False
         
         try:
@@ -58,9 +55,7 @@ class ResultSaver:
             filename = self._generate_filename(topic)
             filepath = os.path.join(self.results_dir, filename)
             
-            logger.info("💾 SAVING AI-GENERATED RESULT")
-            logger.info(f"   Filename: {filename}")
-            logger.info(f"   Full path: {os.path.abspath(filepath)}")
+            logger.info(f"💾 Saving AI result: {filename}")
             
             # Convert learning path to JSON format
             result_data = self._convert_to_json_format(topic, learning_path)
@@ -73,19 +68,12 @@ class ResultSaver:
             total_resources = sum(len(getattr(learning_path, category)) for category in ['docs', 'blogs', 'youtube', 'free_courses', 'paid_courses'])
             file_size = os.path.getsize(filepath)
             
-            logger.info("✅ AI RESULT SAVED SUCCESSFULLY")
-            logger.info(f"   File: {filename}")
-            logger.info(f"   Size: {file_size} bytes")
-            logger.info(f"   Total resources: {total_resources}")
-            logger.info(f"   Source confirmed: AI-generated")
+            logger.info(f"✅ Saved: {total_resources} resources, {file_size} bytes")
             
             return True
             
         except Exception as e:
-            logger.error("💥 RESULT SAVING FAILED")
-            logger.error(f"   Topic: '{topic}'")
-            logger.error(f"   Error: {str(e)}")
-            logger.error(f"   Error type: {type(e).__name__}")
+            logger.error(f"💥 Save failed: {str(e)}")
             return False
     
     def _should_save_result(self, source: str) -> bool:

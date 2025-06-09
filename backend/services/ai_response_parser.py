@@ -18,63 +18,39 @@ class AIResponseParser:
     
     def parse_json_response(self, generated_text: str, topic: str) -> Dict[str, List[Resource]]:
         """Parse JSON response from LLM into categorized Resource objects"""
-        logger.info("🔬 AI RESPONSE PARSING: Starting JSON analysis")
-        logger.info(f"   Topic: '{topic}'")
-        logger.info(f"   Raw response length: {len(generated_text)} characters")
-        logger.debug(f"   First 200 chars: {generated_text[:200]}...")
+        logger.info("🔬 Parsing AI response")
         
         try:
             # Clean the response text - remove any markdown or extra formatting
-            logger.info("🧹 Cleaning response text")
             cleaned_text = self._clean_response_text(generated_text)
-            logger.info(f"   Cleaned text length: {len(cleaned_text)} characters")
-            
-            if len(cleaned_text) != len(generated_text):
-                logger.info("   ✂️ Text was cleaned (removed formatting)")
-            else:
-                logger.info("   ✅ Text was already clean")
             
             # Try to parse as JSON
-            logger.info("📊 Attempting JSON parsing")
             data = json.loads(cleaned_text)
-            logger.info("✅ JSON parsing successful")
-            logger.info(f"   Top-level keys: {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
             
             # Convert to Resource objects
-            logger.info("🔄 Converting parsed data to Resource objects")
             result = self._convert_to_resources(data, topic)
             
             if result:
                 total_resources = sum(len(resources) for resources in result.values())
-                logger.info("✅ AI RESPONSE PARSING COMPLETED SUCCESSFULLY")
-                logger.info(f"   Successfully parsed: {total_resources} resources")
-                logger.info("   🤖 SOURCE CONFIRMED: AI-generated resources")
+                logger.info(f"✅ Parsed {total_resources} AI resources")
                 return result
             else:
                 logger.warning("❌ No resources extracted from parsed data")
                 return {}
             
-        except json.JSONDecodeError as e:
-            logger.warning("❌ JSON PARSING FAILED")
-            logger.warning(f"   JSON Error: {str(e)}")
-            logger.warning(f"   Error position: {getattr(e, 'pos', 'unknown')}")
-            logger.warning("   🔄 Attempting fallback JSON extraction")
-            
-            # Try to extract JSON from text if it's embedded
+        except json.JSONDecodeError:
+            logger.warning("❌ JSON parsing failed, trying fallback extraction")
             fallback_result = self._extract_json_from_text(generated_text, topic)
             if fallback_result:
-                logger.info("✅ Fallback JSON extraction successful")
+                total_resources = sum(len(resources) for resources in fallback_result.values())
+                logger.info(f"✅ Fallback extraction: {total_resources} resources")
                 return fallback_result
             else:
-                logger.error("❌ Fallback JSON extraction also failed")
+                logger.error("❌ All parsing methods failed")
                 return {}
                 
         except Exception as e:
-            logger.error("💥 AI RESPONSE PARSING ERROR")
-            logger.error(f"   Topic: '{topic}'")
-            logger.error(f"   Error type: {type(e).__name__}")
-            logger.error(f"   Error message: {str(e)}")
-            logger.error("   Response text preview:", exc_info=True)
+            logger.error(f"💥 Parsing error: {str(e)}")
             return {}
     
     def _clean_response_text(self, text: str) -> str:
@@ -120,11 +96,8 @@ class AIResponseParser:
     
     def _convert_to_resources(self, data: Dict, topic: str) -> Dict[str, List[Resource]]:
         """Convert parsed JSON data to Resource objects"""
-        logger.info("🔄 CONVERTING JSON DATA TO RESOURCES")
-        logger.info(f"   Input data type: {type(data).__name__}")
-        
         if not isinstance(data, dict):
-            logger.error(f"   ❌ Expected dict, got {type(data).__name__}")
+            logger.error(f"Expected dict, got {type(data).__name__}")
             return {}
         
         categories = {
@@ -135,37 +108,16 @@ class AIResponseParser:
             'paid_courses': []
         }
         
-        logger.info(f"   Processing {len(data)} categories from AI response")
-        
         for category, resources in data.items():
-            logger.debug(f"   Processing category: '{category}'")
-            
-            if category in categories:
-                if isinstance(resources, list):
-                    logger.debug(f"     Found {len(resources)} items in '{category}'")
-                    
-                    for i, resource_data in enumerate(resources):
-                        if isinstance(resource_data, dict):
-                            resource = self._create_resource_from_dict(resource_data, topic)
-                            if resource:
-                                categories[category].append(resource)
-                                logger.debug(f"       ✅ Resource {i+1}: '{resource.title}'")
-                            else:
-                                logger.debug(f"       ❌ Resource {i+1}: Failed to create")
-                        else:
-                            logger.debug(f"       ❌ Resource {i+1}: Not a dict (type: {type(resource_data).__name__})")
-                else:
-                    logger.warning(f"     ❌ Category '{category}' is not a list (type: {type(resources).__name__})")
-            else:
-                logger.debug(f"     ⚠️ Unknown category: '{category}' (ignored)")
+            if category in categories and isinstance(resources, list):
+                for resource_data in resources:
+                    if isinstance(resource_data, dict):
+                        resource = self._create_resource_from_dict(resource_data, topic)
+                        if resource:
+                            categories[category].append(resource)
         
-        # Log the results
         total_resources = sum(len(resources) for resources in categories.values())
-        logger.info("✅ RESOURCE CONVERSION COMPLETED")
-        logger.info(f"   Conversion summary:")
-        for category, resources in categories.items():
-            logger.info(f"     - {category}: {len(resources)} resources")
-        logger.info(f"   Total resources converted: {total_resources}")
+        logger.debug(f"Converted {total_resources} resources across {len([c for c in categories.values() if c])} categories")
         
         return categories
     

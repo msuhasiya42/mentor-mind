@@ -1,0 +1,120 @@
+{
+    "topic": "Most Asked LLD Questions",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "GeeksforGeeks - Low Level Design",
+                "url": "https://www.geeksforgeeks.org/low-level-design-lld/",
+                "description": "Comprehensive guide on Low Level Design concepts and common interview questions.",
+                "platform": "GeeksforGeeks",
+                "price": "Free"
+            },
+            {
+                "title": "System Design Primer - GitHub",
+                "url": "https://github.com/donnemartin/system-design-primer",
+                "description": "A collection of resources for system design and low level design interview preparation.",
+                "platform": "GitHub",
+                "price": "Free"
+            },
+            {
+                "title": "Low Level Design for Interviews",
+                "url": "https://www.educative.io/courses/grokking-the-low-level-design-interview-using-ood-principles",
+                "description": "A detailed course on low level design principles for interview preparation.",
+                "platform": "Educative",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Low Level Design Interview Questions",
+                "url": "https://www.interviewbit.com/low-level-design-interview-questions/",
+                "description": "List of commonly asked low level design interview questions with solutions.",
+                "platform": "InterviewBit",
+                "price": "Free"
+            },
+            {
+                "title": "LLD Questions and Answers",
+                "url": "https://www.javaguides.net/2020/08/low-level-design-interview-questions-and-answers.html",
+                "description": "Blog post covering various low level design questions and their answers.",
+                "platform": "JavaGuides",
+                "price": "Free"
+            },
+            {
+                "title": "Low Level Design Patterns",
+                "url": "https://medium.com/@shivendraodean/low-level-design-patterns-1a7a9b7a0e3a",
+                "description": "Article on common design patterns used in low level design.",
+                "platform": "Medium",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Low Level Design Interview Questions",
+                "url": "https://www.youtube.com/watch?v=4a_zP8wKZQ4",
+                "description": "Video covering top low level design interview questions and solutions.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "LLD for Beginners",
+                "url": "https://www.youtube.com/watch?v=5OjfQ7z7M9o",
+                "description": "Beginner-friendly tutorial on low level design concepts.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "System Design and LLD",
+                "url": "https://www.youtube.com/watch?v=ZgdS0EUmn70",
+                "description": "Detailed explanation of system design and low level design principles.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Grokking the Low Level Design Interview",
+                "url": "https://www.educative.io/courses/grokking-the-low-level-design-interview-using-ood-principles",
+                "description": "Free course on low level design interview preparation.",
+                "platform": "Educative",
+                "price": "Free"
+            },
+            {
+                "title": "Low Level Design Fundamentals",
+                "url": "https://www.udemy.com/course/low-level-design-fundamentals/",
+                "description": "Free course covering the basics of low level design.",
+                "platform": "Udemy",
+                "price": "Free"
+            },
+            {
+                "title": "Object-Oriented Design for Interviews",
+                "url": "https://www.coursera.org/learn/object-oriented-design",
+                "description": "Free course on object-oriented design principles for interviews.",
+                "platform": "Coursera",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Low Level Design Course",
+                "url": "https://www.scaler.com/topics/course/low-level-design/",
+                "description": "Comprehensive paid course on low level design concepts and interview questions.",
+                "platform": "Scaler",
+                "price": "$99.00"
+            },
+            {
+                "title": "System Design and LLD Masterclass",
+                "url": "https://www.udemy.com/course/system-design-interview-prep/",
+                "description": "Paid masterclass on system design and low level design for interviews.",
+                "platform": "Udemy",
+                "price": "$129.99"
+            },
+            {
+                "title": "Advanced Low Level Design",
+                "url": "https://www.educative.io/courses/advanced-low-level-design",
+                "description": "Advanced paid course on low level design principles and patterns.",
+                "platform": "Educative",
+                "price": "$79.00"
+            }
+        ]
+    }
+}
