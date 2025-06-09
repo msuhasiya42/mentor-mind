@@ -40,6 +40,8 @@ function Home() {
     }
   }
 
+  console.log("learningPath", learningPath)
+
   // Success notification component
   const SuccessNotification = () => (
     <div className={`fixed top-8 right-8 z-50 transition-all duration-500 transform ${showSuccess ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'}`}>

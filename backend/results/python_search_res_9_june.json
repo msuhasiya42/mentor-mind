@@ -1,0 +1,117 @@
+{
+    "blogs": [
+        {
+            "title": "Towards Data Science - Python",
+            "url": "https://towardsdatascience.com/tagged/python",
+            "description": "A collection of Python-related articles on data science and programming.",
+            "platform": "Towards Data Science",
+            "price": "Free"
+        },
+        {
+            "title": "PyBloggers",
+            "url": "http://www.pybloggers.com/",
+            "description": "Aggregates Python-related blog posts from various sources.",
+            "platform": "PyBloggers",
+            "price": "Free"
+        },
+        {
+            "title": "Mouse vs Python",
+            "url": "https://www.blog.pythonlibrary.org/",
+            "description": "A blog covering Python tutorials, book reviews, and more.",
+            "platform": "Mouse vs Python",
+            "price": "Free"
+        }
+    ],
+    "docs": [
+        {
+            "title": "Python Official Documentation",
+            "url": "https://docs.python.org/3/",
+            "description": "The official Python documentation, covering all aspects of the language.",
+            "platform": "Python Software Foundation",
+            "price": "Free"
+        },
+        {
+            "title": "Real Python",
+            "url": "https://realpython.com/",
+            "description": "A comprehensive resource with tutorials, articles, and guides for Python developers.",
+            "platform": "Real Python",
+            "price": "Free"
+        },
+        {
+            "title": "Python for Beginners",
+            "url": "https://www.pythonforbeginners.com/",
+            "description": "A beginner-friendly resource with tutorials and examples.",
+            "platform": "Python for Beginners",
+            "price": "Free"
+        }
+    ],
+    "youtube": [
+        {
+            "title": "Python Tutorial - Python for Beginners [Full Course]",
+            "url": "https://www.youtube.com/watch?v=_uQrJ0TkZlc",
+            "description": "A comprehensive Python tutorial for beginners by Programming with Mosh.",
+            "platform": "YouTube",
+            "price": "Free"
+        },
+        {
+            "title": "Corey Schafer's Python Tutorials",
+            "url": "https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU",
+            "description": "In-depth Python tutorials covering various topics.",
+            "platform": "YouTube",
+            "price": "Free"
+        },
+        {
+            "title": "freeCodeCamp's Python Tutorial",
+            "url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+            "description": "A beginner-friendly Python tutorial by freeCodeCamp.",
+            "platform": "YouTube",
+            "price": "Free"
+        }
+    ],
+    "free_courses": [
+        {
+            "title": "Python for Everybody",
+            "url": "https://www.coursera.org/specializations/python",
+            "description": "A popular introductory Python course by Dr. Charles Severance.",
+            "platform": "Coursera",
+            "price": "Free"
+        },
+        {
+            "title": "Learn Python 3",
+            "url": "https://www.codecademy.com/learn/learn-python-3",
+            "description": "An interactive Python course for beginners.",
+            "platform": "Codecademy",
+            "price": "Free"
+        },
+        {
+            "title": "Google's Python Class",
+            "url": "https://developers.google.com/edu/python",
+            "description": "A free Python class for beginners by Google.",
+            "platform": "Google",
+            "price": "Free"
+        }
+    ],
+    "paid_courses": [
+        {
+            "title": "Complete Python Bootcamp: Go from zero to hero in Python 3",
+            "url": "https://www.udemy.com/course/complete-python-bootcamp/",
+            "description": "A comprehensive Python course covering basics to advanced topics.",
+            "platform": "Udemy",
+            "price": "$84.99"
+        },
+        {
+            "title": "Python for Data Science and Machine Learning Bootcamp",
+            "url": "https://www.udemy.com/course/python-for-data-science-and-machine-learning-bootcamp/",
+            "description": "A course focusing on Python for data science and machine learning.",
+            "platform": "Udemy",
+            "price": "$84.99"
+        },
+        {
+            "title": "Automate the Boring Stuff with Python Programming",
+            "url": "https://www.udemy.com/course/automate/",
+            "description": "A practical Python course for automating tasks.",
+            "platform": "Udemy",
+            "price": "$84.99"
+        }
+    ]
+}
