@@ -1,0 +1,3 @@
+1. Decide which model to use GPT 4O mini or 4O
+2. Make the prompt better concise and effective
+3. Understand different models and their pricing
