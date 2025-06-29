@@ -5,120 +5,120 @@
             {
                 "title": "Attention Is All You Need",
                 "url": "https://arxiv.org/abs/1706.03762",
-                "description": "The seminal paper that introduced the Transformer architecture, the foundation of most modern LLMs.",
+                "description": "The foundational paper that introduced the Transformer architecture, which is the backbone of most modern LLMs.",
                 "platform": "arXiv",
                 "price": "Free"
             },
             {
                 "title": "The Illustrated Transformer",
                 "url": "http://jalammar.github.io/illustrated-transformer/",
-                "description": "A highly visual and intuitive explanation of the Transformer architecture.",
+                "description": "A highly visual and intuitive explanation of the Transformer architecture, breaking down its components.",
                 "platform": "Jay Alammar's Blog",
                 "price": "Free"
             },
             {
                 "title": "Hugging Face Transformers Documentation",
                 "url": "https://huggingface.co/docs/transformers/index",
-                "description": "Comprehensive documentation for the Hugging Face Transformers library, which provides pre-trained models and tools for LLMs.",
+                "description": "Comprehensive documentation for the Hugging Face Transformers library, covering models, tokenizers, and training.",
                 "platform": "Hugging Face",
                 "price": "Free"
             },
             {
                 "title": "Deep Learning Book - Chapter 10: Sequence Modeling: Recurrent and Recursive Nets",
                 "url": "https://www.deeplearningbook.org/contents/seq_modeling.html",
-                "description": "While not exclusively LLM-focused, this chapter covers foundational sequence modeling concepts like RNNs and LSTMs, which are precursors to Transformer-based LLMs.",
-                "platform": "DeepLearningBook.org",
+                "description": "While not exclusively LLM-focused, this chapter provides essential background on recurrent neural networks and their evolution.",
+                "platform": "Deep Learning Book",
                 "price": "Free"
             }
         ],
         "blogs": [
             {
-                "title": "The Annotated Transformer",
-                "url": "http://nlp.seas.harvard.edu/annotated-transformer/",
-                "description": "A detailed walkthrough of the 'Attention Is All You Need' paper, with code implementations.",
-                "platform": "Harvard NLP",
+                "title": "The Illustrated GPT-2",
+                "url": "http://jalammar.github.io/illustrated-gpt2/",
+                "description": "A detailed visual explanation of how GPT-2, a prominent LLM, works internally.",
+                "platform": "Jay Alammar's Blog",
                 "price": "Free"
             },
             {
                 "title": "A Gentle Introduction to Large Language Models",
-                "url": "https://jalammar.github.io/illustrated-gentle-intro-llm/",
-                "description": "An accessible explanation of what LLMs are and how they work, building on the Transformer concept.",
-                "platform": "Jay Alammar's Blog",
+                "url": "https://huggingface.co/blog/intro-to-llm",
+                "description": "An accessible introduction to the concepts and workings of Large Language Models.",
+                "platform": "Hugging Face Blog",
                 "price": "Free"
             },
             {
-                "title": "Understanding Large Language Models",
-                "url": "https://lilianweng.github.io/posts/2023-01-04-llm-primer/",
-                "description": "A comprehensive overview of LLM concepts, including architecture, training, and applications.",
-                "platform": "Lilian Weng's Blog",
+                "title": "Understanding Transformer Networks in NLP",
+                "url": "https://towardsdatascience.com/understanding-transformer-networks-in-nlp-97575038956e",
+                "description": "A blog post explaining the Transformer architecture and its significance in Natural Language Processing.",
+                "platform": "Towards Data Science",
                 "price": "Free"
             },
             {
-                "title": "The Illustrated GPT-2",
-                "url": "http://jalammar.github.io/illustrated-gpt2/",
-                "description": "A visual explanation of the GPT-2 model, a key development in LLMs.",
-                "platform": "Jay Alammar's Blog",
+                "title": "How do Transformers Work?",
+                "url": "https://thegradient.pub/how-do-transformers-work/",
+                "description": "An in-depth explanation of the Transformer architecture, focusing on the self-attention mechanism.",
+                "platform": "The Gradient",
                 "price": "Free"
             }
         ],
         "youtube": [
             {
-                "title": "Attention Is All You Need (Original Paper Explained)",
-                "url": "https://www.youtube.com/watch?v=iD4bgjrNkU0",
-                "description": "A clear explanation of the Transformer architecture from the original paper.",
-                "platform": "YouTube",
-                "price": "Free"
-            },
-            {
-                "title": "The Transformer Neural Network",
+                "title": "The Transformer Neural Network Explained",
                 "url": "https://www.youtube.com/watch?v=TQQlZhbC5ps",
-                "description": "A detailed breakdown of the Transformer architecture and its components.",
+                "description": "A clear and concise explanation of the Transformer architecture by StatQuest with Josh Starmer.",
                 "platform": "YouTube",
                 "price": "Free"
             },
             {
-                "title": "What is a Transformer? (AI Explained)",
-                "url": "https://www.youtube.com/watch?v=SZs68_f4a80",
-                "description": "An accessible explanation of the Transformer architecture, often used in LLMs.",
+                "title": "Attention Is All You Need (Paper Explained)",
+                "url": "https://www.youtube.com/watch?v=iD4y_74_f7Q",
+                "description": "A breakdown of the seminal 'Attention Is All You Need' paper, explaining the Transformer model.",
                 "platform": "YouTube",
                 "price": "Free"
             },
             {
-                "title": "Andrej Karpathy: Let's build GPT: from scratch, in code, spelled out.",
-                "url": "https://www.youtube.com/watch?v=kCc8FmEb1nY",
-                "description": "A hands-on tutorial by Andrej Karpathy on building a GPT model from scratch.",
+                "title": "What is a Transformer Model? | Deep Learning",
+                "url": "https://www.youtube.com/watch?v=eSg_5_70h40",
+                "description": "An explanation of the Transformer model, its components, and its applications in NLP.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Neural Networks for Beginners - Full Course",
+                "url": "https://www.youtube.com/watch?v=aircAruvnKk",
+                "description": "While a general neural networks course, it provides foundational knowledge crucial for understanding LLMs.",
                 "platform": "YouTube",
                 "price": "Free"
             }
         ],
         "free_courses": [
             {
-                "title": "Deep Learning Specialization - Sequence Models",
+                "title": "Deep Learning Specialization (Course 5: Sequence Models)",
                 "url": "https://www.coursera.org/learn/nlp-sequence-models",
-                "description": "Part of Andrew Ng's Deep Learning Specialization, this course covers RNNs, LSTMs, and attention mechanisms, crucial for understanding LLMs.",
+                "description": "Andrew Ng's popular specialization includes a course dedicated to sequence models, essential for understanding RNNs and Attention.",
                 "platform": "Coursera",
                 "price": "Free (Audit)"
             },
             {
-                "title": "Natural Language Processing with Deep Learning",
-                "url": "https://web.stanford.edu/class/cs224n/",
-                "description": "Stanford's renowned NLP course, covering foundational concepts and modern techniques including Transformers.",
-                "platform": "Stanford University",
-                "price": "Free"
+                "title": "Natural Language Processing Specialization (Course 3: Attention Models in NLP)",
+                "url": "https://www.coursera.org/learn/attention-models-in-nlp",
+                "description": "This specialization directly covers attention mechanisms and their application in NLP, including Transformers.",
+                "platform": "Coursera",
+                "price": "Free (Audit)"
             },
             {
                 "title": "Hugging Face NLP Course",
                 "url": "https://huggingface.co/course",
-                "description": "A practical, hands-on course focused on using the Hugging Face Transformers library for various NLP tasks, including LLMs.",
+                "description": "A practical, hands-on course covering Transformers and the Hugging Face ecosystem.",
                 "platform": "Hugging Face",
                 "price": "Free"
             },
             {
-                "title": "CS50's Introduction to Artificial Intelligence with Python",
-                "url": "https://www.edx.org/course/cs50s-introduction-to-artificial-intelligence-with-python",
-                "description": "While broader than just LLMs, this course provides a solid foundation in AI concepts and includes sections on neural networks and NLP.",
-                "platform": "edX",
-                "price": "Free (Audit)"
+                "title": "CS224N: Natural Language Processing with Deep Learning",
+                "url": "http://web.stanford.edu/class/cs224n/",
+                "description": "Stanford's renowned NLP course, often featuring lectures and materials on Transformer networks and LLMs.",
+                "platform": "Stanford University",
+                "price": "Free"
             }
         ]
     }

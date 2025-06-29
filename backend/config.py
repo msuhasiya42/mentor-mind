@@ -4,12 +4,13 @@ import sys
 from datetime import datetime
 from dotenv import load_dotenv
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict, Any
 
 # Import constants from constants.py
 from constants import (
     API_HOST, API_PORT,
     DEFAULT_MODEL, MODELS, FALLBACK_MODELS, RATE_LIMIT_WARNING_THRESHOLD,
+    get_openrouter_headers
 )
 
 # Load environment variables - try both backend/.env and project_root/.env
@@ -29,7 +30,8 @@ class Settings:
     # Sensitive Configuration - API Keys
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY")
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
-
+    OPENROUTER_API_KEY: Optional[str] = os.getenv("OPENROUTER_API_KEY")
+    
     # Import all constants from constants.py
     API_HOST: str = API_HOST
     API_PORT: int = API_PORT
@@ -37,7 +39,12 @@ class Settings:
     MODELS = MODELS
     FALLBACK_MODELS = FALLBACK_MODELS  # Fallback model order
     RATE_LIMIT_WARNING_THRESHOLD: int = RATE_LIMIT_WARNING_THRESHOLD
-
+    
+    @property
+    def openrouter_headers(self) -> dict:
+        """Get headers for OpenRouter API requests"""
+        return get_openrouter_headers(self.OPENROUTER_API_KEY)
+        
     @property
     def openai_headers(self) -> dict:
         """Get headers for OpenAI API requests"""
@@ -47,8 +54,8 @@ class Settings:
         }
     def validate_config(self) -> bool:
         """Validate API configuration"""
-        if not self.GEMINI_API_KEY and not self.OPENAI_API_KEY:
-            print("⚠️  No API keys found! Please set at least one of: GEMINI_API_KEY, OPENAI_API_KEY")
+        if not self.GEMINI_API_KEY and not self.OPENAI_API_KEY and not self.OPENROUTER_API_KEY:
+            print("⚠️  No API keys found! Please set at least one of: GEMINI_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY")
             return False
         return True
         
@@ -59,6 +66,8 @@ class Settings:
             providers.append("gemini")
         if self.OPENAI_API_KEY:
             providers.append("openai")
+        if self.OPENROUTER_API_KEY:
+            providers.append("openrouter")
         return providers
 
 # Create global settings instance
