@@ -1,20 +1,30 @@
-from fastapi import FastAPI, HTTPException, Request
-from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
+import os
+import sys
 import logging
 import time
 import uuid
+from typing import Optional
+from contextlib import asynccontextmanager
 
+from fastapi import FastAPI, HTTPException, Request, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+# Add the current directory to the Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Initialize logging before importing other modules
+from config import setup_logging, settings
+setup_logging()
+
+# Now import other modules that depend on logging
 from services.learning_path_generator import LearningPathGenerator
 from models import LearningPathRequest, LearningPathResponse, PydanticResource, PydanticLearningPath
-from config import settings, setup_logging
 from constants import APP_TITLE, APP_DESCRIPTION, APP_VERSION, ALLOWED_ORIGINS
-
-# Initialize comprehensive logging first
-setup_logging()
 
 # Get logger for this module
 logger = logging.getLogger(__name__)
+logger.info("🚀 Starting Mentor Mind API")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -52,6 +62,9 @@ async def lifespan(app: FastAPI):
         logger.error(f"❌ Error during cleanup: {str(e)}", exc_info=True)
     
     logger.info("👋 Application shutdown complete")
+
+# Global variable for learning path generator
+learning_path_generator: Optional[LearningPathGenerator] = None
 
 app = FastAPI(
     title=APP_TITLE,
@@ -159,8 +172,8 @@ async def health_check(request: Request):
 
 @app.post("/generate-learning-path", response_model=LearningPathResponse)
 async def generate_learning_path(request: LearningPathRequest, http_request: Request):
-    request_id = getattr(http_request.state, 'request_id', 'unknown')
-    start_time = getattr(http_request.state, 'start_time', time.time())
+    request_id = getattr(http_request.state, 'request_id', str(uuid.uuid4())[:8])
+    start_time = time.time()
     
     logger.info(f"🎯 Generating learning path: '{request.topic}' [ID: {request_id}]")
     
@@ -168,46 +181,78 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
         # Validate input
         if not request.topic.strip():
             logger.warning(f"❌ Empty topic provided [ID: {request_id}]")
-            raise HTTPException(status_code=400, detail="Topic cannot be empty")
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Topic cannot be empty"
+            )
 
         cleaned_topic = request.topic.strip()
         
-        # Generate the learning path using Expert AI Tutor (returns dataclass)
-        learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
+        # Check if learning path generator is initialized
+        if learning_path_generator is None:
+            error_msg = "Learning path generator not initialized"
+            logger.error(f"❌ {error_msg} [ID: {request_id}]")
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=error_msg
+            )
+        
+        # Generate the learning path
+        try:
+            learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
+        except Exception as e:
+            logger.error(f"🔴 Error generating learning path: {str(e)} [ID: {request_id}]", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Failed to generate learning path: {str(e)}"
+            )
         
         # Convert dataclass to Pydantic model
-        learning_path_pydantic = PydanticLearningPath(
-            docs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.docs),
-            blogs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.blogs),
-            youtube=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.youtube),
-            free_courses=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.free_courses),
-        )
+        try:
+            learning_path_pydantic = PydanticLearningPath(
+                docs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.docs),
+                blogs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.blogs),
+                youtube=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.youtube),
+                free_courses=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.free_courses),
+            )
+            
+            # Create response
+            response = LearningPathResponse(
+                topic=cleaned_topic,
+                learning_path=learning_path_pydantic
+            )
+            
+            # Log completion
+            total_resources = (
+                len(learning_path_dataclass.docs) + 
+                len(learning_path_dataclass.blogs) + 
+                len(learning_path_dataclass.youtube) + 
+                len(learning_path_dataclass.free_courses) 
+            )
+            total_time = time.time() - start_time
+            
+            logger.info(f"✅ Generated {total_resources} resources in {total_time:.2f}s [ID: {request_id}]")
+            
+            return response
+            
+        except Exception as e:
+            logger.error(f"🔴 Error formatting response: {str(e)} [ID: {request_id}]", exc_info=True)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Error formatting learning path response"
+            )
+    
+    except HTTPException as http_exc:
+        # Re-raise HTTP exceptions as-is
+        raise http_exc
         
-        # Create response
-        response = LearningPathResponse(
-            topic=cleaned_topic,
-            learning_path=learning_path_pydantic
-        )
-        
-        # Log completion
-        total_resources = (
-            len(learning_path_dataclass.docs) + 
-            len(learning_path_dataclass.blogs) + 
-            len(learning_path_dataclass.youtube) + 
-            len(learning_path_dataclass.free_courses) 
-        )
-        total_time = time.time() - start_time
-        
-        logger.info(f"✅ Generated {total_resources} resources in {total_time:.2f}s [ID: {request_id}]")
-        
-        return response
-        
-    except HTTPException:
-        raise
     except Exception as e:
         total_time = time.time() - start_time
-        logger.error(f"💥 Generation failed: {str(e)} in {total_time:.2f}s [ID: {request_id}]")
-        raise HTTPException(status_code=500, detail=f"Failed to generate learning path: {str(e)}")
+        logger.error(f"💥 Unexpected error: {str(e)} in {total_time:.2f}s [ID: {request_id}]", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An unexpected error occurred while processing your request"
+        )
 
 if __name__ == "__main__":
     import uvicorn
