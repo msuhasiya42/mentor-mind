@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import logging
@@ -24,34 +24,45 @@ async def lifespan(app: FastAPI):
     try:
         # Validate configuration
         logger.info("⚡ Validating configuration...")
-        if not settings.OPENROUTER_API_KEY:
-            logger.warning("⚠️ OpenRouter API key not configured")
+        if not settings.GEMINI_API_KEY and not settings.OPENAI_API_KEY:
+            logger.warning("⚠️ 'Gemini' API and 'OpenAI' key not configured")
         else:
             logger.info("✅ Configuration validated")
         
         # Initialize learning path generator
         logger.info("⚡ Initializing services...")
-        global learning_path_generator
-        learning_path_generator = LearningPathGenerator()
-        logger.info("✅ Services initialized")
+        try:
+            generator = LearningPathGenerator()
+            # Test the generator is working
+            if not hasattr(generator, 'generate_learning_path'):
+                raise AttributeError("LearningPathGenerator is missing required method 'generate_learning_path'")
+            
+            # Store the generator in the app state
+            app.state.learning_path_generator = generator
+            logger.info("✅ Services initialized")
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize LearningPathGenerator: {str(e)}", exc_info=True)
+            app.state.learning_path_generator = None
+            raise
         
         logger.info("🎯 Application ready to serve requests")
+        yield
         
     except Exception as e:
         logger.error(f"❌ Startup failed: {str(e)}", exc_info=True)
         raise
-    
-    yield  # Server is running
-    
-    # Cleanup
-    logger.info("🧹 Application shutdown starting...")
-    try:
-        if learning_path_generator:
-            await learning_path_generator.close()
-    except Exception as e:
-        logger.error(f"❌ Error during cleanup: {str(e)}", exc_info=True)
-    
-    logger.info("👋 Application shutdown complete")
+    finally:
+        # Cleanup
+        logger.info("🧹 Application shutdown starting...")
+        try:
+            if hasattr(app.state, 'learning_path_generator') and app.state.learning_path_generator:
+                await app.state.learning_path_generator.close()
+                logger.info("✅ Services cleaned up")
+        except Exception as e:
+            logger.error(f"❌ Error during cleanup: {str(e)}", exc_info=True)
+        
+        logger.info("👋 Application shutdown complete")
 
 app = FastAPI(
     title=APP_TITLE,
@@ -68,6 +79,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Dependency to get the learning path generator
+async def get_learning_path_generator(request: Request) -> LearningPathGenerator:
+    """Dependency to get the learning path generator from app state"""
+    generator = getattr(request.app.state, 'learning_path_generator', None)
+    if generator is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Learning path generator is not available. Please check server logs."
+        )
+    return generator
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
@@ -132,17 +154,22 @@ async def health_check(request: Request):
     logger.info(f"🏥 Health check requested [ID: {request_id}]")
     
     try:
-        # Check if OpenRouter API key is configured
-        openrouter_status = "configured" if settings.OPENROUTER_API_KEY else "not configured"
+        # Check API key status
+        gemini_status = "configured" if settings.GEMINI_API_KEY else "not configured"
+        openai_status = "configured" if settings.OPENAI_API_KEY else "not configured"
         
-        # Get available models info
-        available_models = len(settings.FREE_MODELS) if hasattr(settings, 'FREE_MODELS') else 0
+        # Check if any API is available
+        any_api_available = any([
+            settings.GEMINI_API_KEY,
+            settings.OPENAI_API_KEY
+        ])
         
         health_data = {
-            "status": "healthy",
-            "openrouter_api": openrouter_status,
+            "status": "healthy" if any_api_available else "unhealthy",
+            "gemini_api": gemini_status,
+            "openai_api": openai_status,
             "default_model": settings.DEFAULT_MODEL,
-            "available_free_models": available_models,
+            "available_free_models": len(settings.FREE_MODELS) if hasattr(settings, 'FREE_MODELS') else 0,
             "version": f"{APP_VERSION} (Expert AI Tutor)",
             "features": ["single_llm_call", "expert_persona", "curated_resources"]
         }
@@ -158,13 +185,17 @@ async def health_check(request: Request):
         }
 
 @app.post("/generate-learning-path", response_model=LearningPathResponse)
-async def generate_learning_path(request: LearningPathRequest, http_request: Request):
+async def generate_learning_path(
+    request: LearningPathRequest,
+    http_request: Request,
+    generator: LearningPathGenerator = Depends(get_learning_path_generator)
+):
     request_id = getattr(http_request.state, 'request_id', 'unknown')
     start_time = getattr(http_request.state, 'start_time', time.time())
     
     logger.info(f"🎯 Generating learning path: '{request.topic}' [ID: {request_id}]")
     
-    try:
+    try:            
         # Validate input
         if not request.topic.strip():
             logger.warning(f"❌ Empty topic provided [ID: {request_id}]")
@@ -173,7 +204,12 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
         cleaned_topic = request.topic.strip()
         
         # Generate the learning path using Expert AI Tutor (returns dataclass)
-        learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
+        try:
+            learning_path_dataclass = await generator.generate_learning_path(cleaned_topic)
+        except Exception as e:
+            error_msg = f"Failed to generate learning path: {str(e)}"
+            logger.error(f"❌ {error_msg} [ID: {request_id}]", exc_info=True)
+            raise HTTPException(status_code=500, detail=error_msg)
         
         # Convert dataclass to Pydantic model
         learning_path_pydantic = PydanticLearningPath(

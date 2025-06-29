@@ -84,7 +84,7 @@ class ExpertAITutor:
         start_time = time.time()
         
         # Check if we should attempt AI curation
-        if not settings.OPENROUTER_API_KEY:
+        if not settings.GEMINI_API_KEY and not settings.OPENAI_API_KEY:
             logger.warning("❌ No API key available, using manual curation")
             return await self._use_manual_curation(topic)
         

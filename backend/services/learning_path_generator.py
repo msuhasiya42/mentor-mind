@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from typing import List, Dict, Any
 from dataclasses import dataclass
@@ -162,72 +161,7 @@ class LearningPathGenerator:
         
         logger.debug(f"   Cleaned result: '{cleaned}'")
         return cleaned
-    
-    async def _generate_fallback_path(self, topic: str) -> LearningPath:
-        """Generate a basic fallback learning path when main generation fails"""
-        logger.warning("🆘 GENERATING FALLBACK LEARNING PATH")
-        logger.warning(f"   Topic: '{topic}'")
-        logger.warning("   Reason: Main AI generation failed")
-        
-        fallback_start_time = time.time()
-        
-        try:
-            # Import fallback provider
-            from .fallback_data import FallbackDataProvider
-            logger.info("📦 Loading fallback data provider")
-            
-            fallback_provider = FallbackDataProvider()
-            
-            # Get basic fallback resources
-            logger.info("🔍 Retrieving fallback resources")
-            docs = fallback_provider.get_documentation_sources().get('general', [])[:3]
-            blogs = fallback_provider.get_fallback_blogs(topic)[:3]
-            youtube = fallback_provider.get_fallback_youtube(topic)[:3]
-            free_courses = fallback_provider.get_fallback_courses(topic, "free")[:3]
-            
-            fallback_path = LearningPath(
-                docs=docs,
-                blogs=blogs, 
-                youtube=youtube,
-                free_courses=free_courses
-            )
-            
-            fallback_time = time.time() - fallback_start_time
-            total_fallback_resources = (
-                len(docs) + len(blogs) + len(youtube) + len(free_courses)
-            )
-            
-            logger.info("✅ FALLBACK PATH GENERATION COMPLETED")
-            logger.info(f"   Fallback Resources:")
-            logger.info(f"     - Docs: {len(docs)}")
-            logger.info(f"     - Blogs: {len(blogs)}")
-            logger.info(f"     - YouTube: {len(youtube)}")
-            logger.info(f"     - Free Courses: {len(free_courses)}")
-            logger.info(f"   Total Fallback Resources: {total_fallback_resources}")
-            logger.info(f"   Fallback Generation Time: {fallback_time:.3f} seconds")
-            
-            return fallback_path
-            
-        except Exception as e:
-            logger.error("💥 FALLBACK GENERATION ALSO FAILED")
-            logger.error(f"   Topic: '{topic}'")
-            logger.error(f"   Fallback Error: {str(e)}")
-            logger.error("   Returning empty learning path as last resort")
-            
-            # Return empty path as last resort
-            empty_path = LearningPath(
-                docs=[],
-                blogs=[],
-                youtube=[],
-                free_courses=[]
-            )
-            
-            logger.warning("⚠️ EMPTY LEARNING PATH RETURNED")
-            logger.warning("   This indicates a serious system failure")
-            logger.warning("   All resource generation methods have failed")
-            
-            return empty_path
-    
+
     async def close(self):
         """Clean up resources"""
         logger.info("🧹 CLEANING UP LEARNING PATH GENERATOR")
@@ -248,4 +182,4 @@ class LearningPathGenerator:
             
         except Exception as e:
             logger.error(f"❌ Error cleaning up Learning Path Generator: {str(e)}")
-            logger.error("   Some resources may not have been properly cleaned up") 
+            logger.error("   Some resources may not have been properly cleaned up")
