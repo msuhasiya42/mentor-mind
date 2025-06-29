@@ -19,7 +19,6 @@ class PydanticLearningPath(BaseModel):
     docs: List[PydanticResource] = []
     youtube: List[PydanticResource] = []
     free_courses: List[PydanticResource] = []
-    paid_courses: List[PydanticResource] = []
 
 
 class LearningPathResponse(BaseModel):

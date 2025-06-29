@@ -1,0 +1,76 @@
+{
+    "topic": "React",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "React Official Documentation",
+                "url": "https://react.dev/",
+                "description": "The official React documentation, comprehensive and up-to-date.",
+                "platform": "React.dev",
+                "price": "Free"
+            },
+            {
+                "title": "React API Reference",
+                "url": "https://reactjs.org/docs/api-reference.html",
+                "description": "Detailed reference for all React components and APIs.",
+                "platform": "Reactjs.org",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "React Blog (Official)",
+                "url": "https://reactblog.org/",
+                "description": "Official React blog with news, updates, and articles.",
+                "platform": "React Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Overreacted (Dan Abramov)",
+                "url": "https://overreacted.io/",
+                "description": "Blog by Dan Abramov, a core React contributor, with insightful articles on React concepts and best practices.",
+                "platform": "Overreacted.io",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "React - Full Course for Beginners (freeCodeCamp.org)",
+                "url": "https://www.youtube.com/watch?v=bMknfKXIFA8",
+                "description": "A comprehensive beginner-friendly React tutorial series.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Learn React for FREE (Traversy Media)",
+                "url": "https://www.youtube.com/watch?v=DLX62G4lc4w",
+                "description": "Another popular React tutorial series for beginners.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "ReactJS Tutorial for Beginners (Programming with Mosh)",
+                "url": "https://www.youtube.com/watch?v=w7ejDZ8SWv8",
+                "description": "A well-structured React tutorial for beginners by Programming with Mosh.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Modern React with Redux [freeCodeCamp]",
+                "url": "https://www.freecodecamp.org/learn/front-end-libraries/react/",
+                "description": "A freeCodeCamp curriculum covering React and Redux.",
+                "platform": "freeCodeCamp.org",
+                "price": "Free"
+            },
+            {
+                "title": "React - The Complete Guide (incl Hooks, React Router, Redux) (Udemy - Free Preview)",
+                "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+                "description": "While the full course is paid, a significant portion is accessible for free.",
+                "platform": "Udemy",
+                "price": "Partially Free"
+            }
+        ]
+    }
+}

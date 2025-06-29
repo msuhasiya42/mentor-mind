@@ -65,7 +65,7 @@ class ResultSaver:
                 json.dump(result_data, f, indent=4, ensure_ascii=False)
             
             # Log success with statistics
-            total_resources = sum(len(getattr(learning_path, category)) for category in ['docs', 'blogs', 'youtube', 'free_courses', 'paid_courses'])
+            total_resources = sum(len(getattr(learning_path, category)) for category in ['docs', 'blogs', 'youtube', 'free_courses'])
             file_size = os.path.getsize(filepath)
             
             logger.info(f"✅ Saved: {total_resources} resources, {file_size} bytes")

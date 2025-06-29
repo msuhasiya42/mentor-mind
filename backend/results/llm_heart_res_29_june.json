@@ -1,0 +1,68 @@
+{
+    "topic": "LLM Heart",
+    "learning_path": {
+        "docs": [],
+        "blogs": [
+            {
+                "title": "Hugging Face Blog",
+                "url": "https://huggingface.co/blog",
+                "description": "Hugging Face's blog often features articles on cutting-edge LLM research and applications.",
+                "platform": "Hugging Face",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI Blog",
+                "url": "https://ai.googleblog.com/",
+                "description": "Google's AI blog covers advancements in large language models and related fields.",
+                "platform": "Google AI",
+                "price": "Free"
+            },
+            {
+                "title": "OpenAI Blog",
+                "url": "https://openai.com/blog/",
+                "description": "OpenAI's blog provides insights into their research and development of LLMs.",
+                "platform": "OpenAI",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Two Minute Papers",
+                "url": "https://www.youtube.com/@TwoMinutePapers",
+                "description": "This channel provides concise explanations of recent research papers, often covering LLMs.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Lex Fridman Podcast",
+                "url": "https://www.youtube.com/@lexfridman",
+                "description": "Lex Fridman interviews leading researchers and experts in AI, including those working on LLMs.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Yann LeCun's Lectures (various)",
+                "url": "https://www.youtube.com/@yannlecun",
+                "description": "Search for Yann LeCun's lectures on YouTube; he frequently discusses topics related to LLMs and deep learning.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Stanford CS224N: Natural Language Processing with Deep Learning",
+                "url": "https://web.stanford.edu/class/cs224n/",
+                "description": "While not solely focused on LLMs, this course provides a strong foundation in NLP techniques relevant to LLM development.",
+                "platform": "Stanford University",
+                "price": "Free (lecture videos often available)"
+            },
+            {
+                "title": "fast.ai - Practical Deep Learning for Coders",
+                "url": "https://course.fast.ai/",
+                "description": "This course offers a practical introduction to deep learning, including some aspects relevant to LLMs.",
+                "platform": "fast.ai",
+                "price": "Free (some parts may require paid access)"
+            }
+        ]
+    }
+}

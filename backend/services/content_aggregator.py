@@ -56,7 +56,6 @@ class ContentAggregator:
                 'blogs': [],
                 'youtube': [],
                 'free_courses': [],
-                'paid_courses': []
             }
             
             for resource in all_resources:
@@ -79,21 +78,15 @@ class ContentAggregator:
                     categorized['youtube'].append(converted_resource)
                 elif resource_type == 'blog':
                     categorized['blogs'].append(converted_resource)
-                elif resource_type == 'course':
-                    if 'free' in price or price == '':
+                elif resource_type == 'free_courses':
                         categorized['free_courses'].append(converted_resource)
-                    else:
-                        categorized['paid_courses'].append(converted_resource)
                 elif resource_type == 'repository':
                     categorized['blogs'].append(converted_resource)  # Treat repos as blog-like resources
                 else:
                     # Default categorization
                     if 'free' in price or price == '':
                         categorized['free_courses'].append(converted_resource)
-                    else:
-                        categorized['paid_courses'].append(converted_resource)
-            
-            logger.info(f"Categorized resources: docs={len(categorized['docs'])}, blogs={len(categorized['blogs'])}, youtube={len(categorized['youtube'])}, free_courses={len(categorized['free_courses'])}, paid_courses={len(categorized['paid_courses'])}")
+            logger.info(f"Categorized resources: docs={len(categorized['docs'])}, blogs={len(categorized['blogs'])}, youtube={len(categorized['youtube'])}, free_courses={len(categorized['free_courses'])}")
             
             return categorized
             
@@ -169,24 +162,7 @@ class ContentAggregator:
         except Exception as e:
             logger.error(f"Error getting free courses: {str(e)}")
             return self.fallback_provider.get_fallback_courses(topic, "free")
-    
-    async def get_paid_courses(self, topic: str, enhanced_queries: List[str]) -> List[Resource]:
-        """Get paid courses with pricing"""
-        try:
-            # Try to get comprehensive resources first
-            all_resources = await self.get_all_resources(topic, enhanced_queries)
-            paid_courses = all_resources.get('paid_courses', [])
-            
-            if paid_courses:
-                return paid_courses[:5]
-            
-            # Fallback
-            return self.fallback_provider.get_fallback_courses(topic, "paid")
-            
-        except Exception as e:
-            logger.error(f"Error getting paid courses: {str(e)}")
-            return self.fallback_provider.get_fallback_courses(topic, "paid")
-    
+
     async def _get_fallback_categorized_resources(self, topic: str, enhanced_queries: List[str]) -> dict:
         """Get fallback categorized resources when LLM search fails"""
         logger.info(f"Using fallback categorized resources for: {topic}")

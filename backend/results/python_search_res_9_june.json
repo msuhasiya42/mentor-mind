@@ -90,28 +90,5 @@
             "platform": "Google",
             "price": "Free"
         }
-    ],
-    "paid_courses": [
-        {
-            "title": "Complete Python Bootcamp: Go from zero to hero in Python 3",
-            "url": "https://www.udemy.com/course/complete-python-bootcamp/",
-            "description": "A comprehensive Python course covering basics to advanced topics.",
-            "platform": "Udemy",
-            "price": "$84.99"
-        },
-        {
-            "title": "Python for Data Science and Machine Learning Bootcamp",
-            "url": "https://www.udemy.com/course/python-for-data-science-and-machine-learning-bootcamp/",
-            "description": "A course focusing on Python for data science and machine learning.",
-            "platform": "Udemy",
-            "price": "$84.99"
-        },
-        {
-            "title": "Automate the Boring Stuff with Python Programming",
-            "url": "https://www.udemy.com/course/automate/",
-            "description": "A practical Python course for automating tasks.",
-            "platform": "Udemy",
-            "price": "$84.99"
-        }
     ]
 }

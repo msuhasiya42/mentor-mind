@@ -75,11 +75,6 @@ settings = Settings()
 
 def setup_logging():
     """Configure comprehensive logging for the entire application"""
-    # Create logs directory if it doesn't exist
-    log_dir = "logs"
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-    
     # Create formatter with detailed information
     detailed_formatter = logging.Formatter(
         fmt='%(asctime)s | %(levelname)-8s | %(name)-20s | %(funcName)-20s | LINE:%(lineno)-4d | %(message)s',
@@ -92,39 +87,48 @@ def setup_logging():
         datefmt='%H:%M:%S'
     )
     
-    # Create file handler for all logs
-    file_handler = logging.FileHandler(
-        f"{log_dir}/mentor_mind_{datetime.now().strftime('%Y%m%d')}.log",
-        encoding='utf-8'
-    )
-    file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(detailed_formatter)
+    # Create handlers list
+    handlers = []
     
-    # Create console handler
+    # Only attempt file logging if not in Vercel environment
+    if not os.environ.get('VERCEL'):
+        try:
+            log_dir = "logs"
+            if not os.path.exists(log_dir):
+                os.makedirs(log_dir)
+            
+            file_handler = logging.FileHandler(
+                f"{log_dir}/mentor_mind_{datetime.now().strftime('%Y%m%d')}.log",
+                encoding='utf-8'
+            )
+            file_handler.setLevel(logging.DEBUG)
+            file_handler.setFormatter(detailed_formatter)
+            handlers.append(file_handler)
+        except OSError as e:
+            # If we can't create the logs directory, just log to console
+            print(f"Warning: Could not create logs directory - {str(e)}")
+    
+    # Always add console handler
     console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
     console_handler.setFormatter(console_formatter)
+    handlers.append(console_handler)
     
-    # Create error file handler
-    error_handler = logging.FileHandler(
-        f"{log_dir}/mentor_mind_errors_{datetime.now().strftime('%Y%m%d')}.log",
-        encoding='utf-8'
-    )
-    error_handler.setLevel(logging.ERROR)
-    error_handler.setFormatter(detailed_formatter)
-    
-    # Configure root logger
+    # Set up root logger
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)
     
-    # Clear existing handlers
-    for handler in root_logger.handlers[:]:
-        root_logger.removeHandler(handler)
+    # Clear any existing handlers
+    root_logger.handlers.clear()
     
-    # Add our handlers
-    root_logger.addHandler(file_handler)
-    root_logger.addHandler(console_handler)
-    root_logger.addHandler(error_handler)
+    # Add all configured handlers
+    for handler in handlers:
+        root_logger.addHandler(handler)
+    
+    # Configure specific loggers
+    logging.getLogger('asyncio').setLevel(logging.INFO)
+    logging.getLogger('aiohttp').setLevel(logging.WARNING)
+    logging.getLogger('urllib3').setLevel(logging.WARNING)
     
     # Set up specific loggers for different components
     loggers_config = {

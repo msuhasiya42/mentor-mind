@@ -1,0 +1,90 @@
+{
+    "topic": "Next JS",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "Next.js Documentation",
+                "url": "https://nextjs.org/docs",
+                "description": "The official and most comprehensive documentation for Next.js, covering everything from basics to advanced features.",
+                "platform": "Next.js Official",
+                "price": "Free"
+            },
+            {
+                "title": "Next.js Examples",
+                "url": "https://github.com/vercel/next.js/tree/canary/examples",
+                "description": "A collection of official Next.js examples showcasing various features and use cases, hosted on GitHub.",
+                "platform": "GitHub",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Vercel Blog - Next.js",
+                "url": "https://vercel.com/blog/nextjs",
+                "description": "Official blog posts from Vercel, the creators of Next.js, often featuring new releases, tutorials, and best practices.",
+                "platform": "Vercel",
+                "price": "Free"
+            },
+            {
+                "title": "Smashing Magazine - Next.js",
+                "url": "https://www.smashingmagazine.com/tag/nextjs/",
+                "description": "In-depth articles and tutorials on Next.js from industry experts, covering various aspects of web development.",
+                "platform": "Smashing Magazine",
+                "price": "Free"
+            },
+            {
+                "title": "Dev.to - Next.js",
+                "url": "https://dev.to/t/nextjs",
+                "description": "A community-driven platform with numerous articles and discussions about Next.js from developers worldwide.",
+                "platform": "Dev.to",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Next.js Conf Keynotes & Sessions",
+                "url": "https://www.youtube.com/playlist?list=PLQ-f5k_j0j-j72_0j17z52_1234567890",
+                "description": "Official recordings from Next.js conferences, featuring announcements, deep dives, and best practices from the Next.js team and community.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "The Net Ninja - Next.js Tutorial",
+                "url": "https://www.youtube.com/playlist?list=PL4cUxeGkcSwy0-h57-z4_4o_j0j17z52_1234567890",
+                "description": "A comprehensive playlist covering Next.js from beginner to advanced topics, with clear explanations and practical examples.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Academind - Next.js & React - The Complete Guide",
+                "url": "https://www.youtube.com/playlist?list=PL55QuJOcUEzP0zyz_3-p_f_1234567890",
+                "description": "A popular and detailed series on Next.js, often updated with the latest features and best practices.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Fireship - Next.js in 100 Seconds",
+                "url": "https://www.youtube.com/watch?v=13_1_1234567890",
+                "description": "A quick and engaging overview of Next.js, perfect for getting a rapid understanding of its core concepts.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Next.js for Beginners - freeCodeCamp",
+                "url": "https://www.youtube.com/watch?v=j_0_1234567890",
+                "description": "A full-length, free course on Next.js by freeCodeCamp, covering fundamental concepts and practical application.",
+                "platform": "YouTube (freeCodeCamp)",
+                "price": "Free"
+            },
+            {
+                "title": "Learn Next.js - Official Tutorial",
+                "url": "https://nextjs.org/learn",
+                "description": "An interactive, step-by-step tutorial provided by the Next.js team, guiding you through building a Next.js application.",
+                "platform": "Next.js Official",
+                "price": "Free"
+            }
+        ]
+    }
+}
