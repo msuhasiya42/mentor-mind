@@ -6,3 +6,4 @@ openai>=1.55.0
 python-multipart==0.0.6
 pydantic==2.5.0
 python-dotenv==1.0.0
+google-genai>=0.7.0

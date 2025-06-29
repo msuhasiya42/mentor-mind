@@ -1,0 +1,125 @@
+{
+    "topic": "ML",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "Machine Learning Cheat Sheet",
+                "url": "https://developers.google.com/machine-learning/crash-course/ml-cheat-sheet",
+                "description": "A concise summary of key machine learning concepts, algorithms, and best practices.",
+                "platform": "Google Developers",
+                "price": "Free"
+            },
+            {
+                "title": "Scikit-learn User Guide",
+                "url": "https://scikit-learn.org/stable/user_guide.html",
+                "description": "Comprehensive documentation for the scikit-learn machine learning library in Python.",
+                "platform": "Scikit-learn",
+                "price": "Free"
+            },
+            {
+                "title": "TensorFlow Core Concepts",
+                "url": "https://www.tensorflow.org/guide/core",
+                "description": "An introduction to the fundamental concepts and building blocks of TensorFlow for machine learning.",
+                "platform": "TensorFlow",
+                "price": "Free"
+            },
+            {
+                "title": "PyTorch Documentation",
+                "url": "https://pytorch.org/docs/stable/index.html",
+                "description": "Official documentation for PyTorch, a popular deep learning framework.",
+                "platform": "PyTorch",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Distill.pub",
+                "url": "https://distill.pub/",
+                "description": "A journal of interactive machine learning research, known for its clear explanations and visualizations.",
+                "platform": "Distill.pub",
+                "price": "Free"
+            },
+            {
+                "title": "Towards Data Science",
+                "url": "https://towardsdatascience.com/",
+                "description": "A popular online publication featuring articles on data science, machine learning, and AI.",
+                "platform": "Medium",
+                "price": "Free"
+            },
+            {
+                "title": "The Gradient",
+                "url": "https://thegradient.pub/",
+                "description": "A publication focused on AI and machine learning, often featuring in-depth articles and interviews.",
+                "platform": "The Gradient",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI Blog",
+                "url": "https://ai.googleblog.com/",
+                "description": "Updates and insights from Google's AI research and development efforts.",
+                "platform": "Google AI",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Machine Learning Crash Course with TensorFlow APIs",
+                "url": "https://www.youtube.com/playlist?list=PLOUxfK2c0_9_p-j_0_0f9j_f3M_40s_09",
+                "description": "A comprehensive video series from Google covering machine learning fundamentals using TensorFlow.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "StatQuest with Josh Starmer",
+                "url": "https://www.youtube.com/user/joshstarmer",
+                "description": "Clear and intuitive explanations of statistical concepts and machine learning algorithms.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "DeepLearning.AI",
+                "url": "https://www.youtube.com/c/Deeplearningai",
+                "description": "Content from Andrew Ng's DeepLearning.AI, including lectures and interviews on AI and machine learning.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "sentdex",
+                "url": "https://www.youtube.com/user/sentdex",
+                "description": "Practical Python programming tutorials, including many on machine learning and data analysis.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Machine Learning by Andrew Ng",
+                "url": "https://www.coursera.org/learn/machine-learning",
+                "description": "A foundational course on machine learning covering core algorithms and concepts.",
+                "platform": "Coursera",
+                "price": "Free (Audit)"
+            },
+            {
+                "title": "Google's Machine Learning Crash Course",
+                "url": "https://developers.google.com/machine-learning/crash-course/",
+                "description": "A fast-paced, practical introduction to machine learning with TensorFlow.",
+                "platform": "Google Developers",
+                "price": "Free"
+            },
+            {
+                "title": "Introduction to Machine Learning for Coders",
+                "url": "https://course.fast.ai/",
+                "description": "A practical, code-first introduction to machine learning and deep learning.",
+                "platform": "fast.ai",
+                "price": "Free"
+            },
+            {
+                "title": "Elements of AI",
+                "url": "https://www.elementsofai.com/",
+                "description": "An introduction to AI for everyone, covering the basics of AI and its implications.",
+                "platform": "University of Helsinki",
+                "price": "Free"
+            }
+        ]
+    }
+}
