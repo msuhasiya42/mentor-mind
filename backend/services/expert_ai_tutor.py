@@ -1,5 +1,6 @@
 """
-Expert AI Tutor Service - Simplified LLM-based resource curation
+Expert AI Tutor Service - Multi-provider LLM-based resource curation
+Supports Gemini, OpenAI, and OpenRouter APIs with automatic fallback
 """
 import asyncio
 import aiohttp
@@ -8,11 +9,17 @@ import json
 import time
 import sys
 import os
-from typing import List, Dict, Tuple
+import re
+from typing import List, Dict, Any, Optional, Union
+from google import genai
 
 # Add the parent directory to the path to import config
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import settings
+from constants import (
+    OPENAI_API_BASE, FALLBACK_MODELS, get_model_provider
+)
+
 from .learning_path_generator import Resource
 from .resource_curator import ResourceCurator
 from .ai_response_parser import AIResponseParser
@@ -23,7 +30,8 @@ logger = logging.getLogger(__name__)
 class ExpertAITutor:
     """Expert AI Tutor that provides curated learning resources via LLM"""
     
-    def __init__(self):
+    def __init__(self, model: str = None):
+        # Initialize logger first
         logger.info("🤖 INITIALIZING EXPERT AI TUTOR")
         
         # Configuration
@@ -33,14 +41,30 @@ class ExpertAITutor:
         self.last_api_call = 0
         self.session = None
         self.last_response_source = None
+        self.last_provider = None
+        self.provider = get_model_provider(model)
+        
+        # Model configuration
+        self.model = model or settings.DEFAULT_MODEL
         
         # Initialize services
         self.resource_curator = ResourceCurator()
         self.response_parser = AIResponseParser()
         
+        # Initialize Google Generative AI client if API key is available
+        self.gemini_client = None
+        if settings.GEMINI_API_KEY:
+            try:
+                self.gemini_client = genai.Client()
+                logger.info("✅ Google Generative AI client initialized")
+            except Exception as e:
+                logger.error(f"❌ Failed to initialize Google Generative AI client: {str(e)}")
+        
+        # Log initialization
         logger.info("✅ Expert AI Tutor initialized")
-        logger.info(f"   OpenRouter API: {'✅' if settings.OPENROUTER_API_KEY else '❌'}")
-        logger.info(f"   Model: {settings.DEFAULT_MODEL}")
+        logger.info(f"   Provider: {self.provider.upper()}")
+        logger.info(f"   Model: {self.model}")
+        logger.info(f"   Available providers: {', '.join(settings.get_available_providers())}")
     
     async def _get_session(self):
         """Get or create aiohttp session"""
@@ -142,129 +166,218 @@ class ExpertAITutor:
         else:
             logger.debug(f"✅ Rate limit OK: {time_since_last_call:.1f}s since last call")
     
-    async def _get_ai_curated_resources(self, topic: str) -> Dict[str, List[Resource]]:
-        """Get AI-curated resources using simplified JSON format request"""
-        logger.info("🚀 Starting AI API call")
+    async def _call_llm_api(self, messages: List[Dict[str, str]], model: str = None) -> Dict[str, Any]:
+        """Call the appropriate LLM API based on the provider"""
+        model = model or self.model
+        provider = get_model_provider(model)
         
-        api_start_time = time.time()
+        # Update instance state
+        self.model = model
+        self.provider = provider
+        self.last_provider = provider
+        
+        # Select the appropriate API handler
+        if provider == 'gemini':
+            return await self._call_gemini_api(messages, model)
+        elif provider == 'openai':
+            return await self._call_openai_api(messages, model)
+    
+    async def _call_gemini_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
+        """Call Google's Gemini API using the official client"""
+        if not self.gemini_client:
+            raise ValueError("Google Generative AI client not initialized. Check your API key configuration.")
+        
+        # Convert messages to the format expected by the Gemini client
+        contents = []
+        for msg in messages:
+            role = 'user' if msg['role'] == 'user' else 'model'
+            contents.append({"role": role, "parts": [{"text": msg['content']}]})
         
         try:
-            session = await self._get_session()
-            self.last_api_call = time.time()
+            # Call the Gemini API using the official client
+            response = self.gemini_client.models.generate_content(
+                model=model,
+                contents=contents,
+                config={
+                    "temperature": 0.2,
+                    "max_output_tokens": 2000
+                }
+            )
             
-            # Create simplified prompt that requests JSON format directly
-            prompt = self._create_json_prompt(topic)
+            # Extract the response text
+            if response and hasattr(response, 'text'):
+                return {
+                    "choices": [{
+                        "message": {
+                            "content": response.text,
+                            "role": "assistant"
+                        }
+                    }]
+                }
+            else:
+                raise ValueError("Invalid response format from Gemini API")
+                
+        except Exception as e:
+            logger.error(f"Error calling Gemini API: {str(e)}")
+            raise
+        
+        return await self._make_api_request(api_url, payload, headers={"Content-Type": "application/json"})
+    
+    async def _call_openai_api(self, messages: List[Dict[str, str]], model: str) -> Dict[str, Any]:
+        """Call OpenAI's API"""
+        if not settings.OPENAI_API_KEY:
+            raise ValueError("OpenAI API key not configured")
             
-            messages = [
-                {
-                    "role": "system",
-                    "content": """You are an expert AI tutor with 15+ years of experience in technology education. 
+        api_url = f"{OPENAI_API_BASE}{self.model_info['endpoint']}"
+        
+        payload = {
+            "model": model,
+            "messages": messages,
+            "temperature": 0.2,
+            "max_tokens": 2000,
+        }
+        
+        return await self._make_api_request(api_url, payload, settings.openai_headers)
+
+    async def _make_api_request(self, url: str, payload: Dict, headers: Dict) -> Dict[str, Any]:
+        """Make an HTTP request to the LLM API"""
+        session = await self._get_session()
+        self.last_api_call = time.time()
+        
+        try:
+            async with session.post(
+                url,
+                headers=headers,
+                json=payload,
+                timeout=aiohttp.ClientTimeout(total=90)
+            ) as response:
+                response_text = await response.text()
+                
+                if response.status != 200:
+                    error_msg = f"API request failed with status {response.status}: {response_text}"
+                    logger.error(error_msg)
+                    raise Exception(error_msg)
+                
+                return json.loads(response_text)
+                
+        except Exception as e:
+            logger.error(f"API request failed: {str(e)}")
+            raise
+    
+    async def _get_ai_curated_resources(self, topic: str) -> Dict[str, List[Resource]]:
+        """Get AI-curated resources with automatic fallback between providers"""
+        logger.info(f"🚀 Starting AI API call with provider: {self.provider}")
+        
+        # Create system and user messages
+        system_message = {
+            "role": "system",
+            "content": """You are an expert AI tutor with 15+ years of experience in technology education. 
 You specialize in recommending the BEST and most FAMOUS learning resources.
 
 IMPORTANT: Respond ONLY with valid JSON in the exact format requested. 
 Do not include any other text, explanations, or markdown formatting.
 Provide REAL, SPECIFIC resources that are well-known in the developer community."""
-                },
-                {
-                    "role": "user", 
-                    "content": prompt
-                }
-            ]
-            
-            payload = {
-                "model": settings.DEFAULT_MODEL,
-                "messages": messages,
-                "max_tokens": 2000,
-                "temperature": 0.2,
-                "stream": False
-            }
-            
-            api_url = f"{settings.OPENROUTER_API_BASE}/chat/completions"
-            
-            async with session.post(
-                api_url,
-                headers=settings.openrouter_headers,
-                json=payload,
-                timeout=aiohttp.ClientTimeout(total=90)
-            ) as response:
-                
-                request_time = time.time() - api_start_time
-                
-                if response.status == 200:
-                    logger.info(f"📨 API response received ({request_time:.2f}s)")
-                    
-                    # Fetch response text once and store it
-                    response_text = await response.text()
-                    
-                    # Parse the JSON response
-                    json_start_time = time.time()
-                    try:
-                        result = json.loads(response_text)
-                        json_time = time.time() - json_start_time
-                        
-                        if json_time > 5:  # Only log if JSON parsing is slow
-                            logger.warning(f"⚠️ Slow JSON parsing: {json_time:.2f}s")
-                        
-                        # Log formatted response with appropriate level of detail
-                        logger.info("🔄 API Response Summary:")
-                        
-                        if 'id' in result:
-                            logger.info(f"   ID: {result.get('id')}")
-                        if 'model' in result:
-                            logger.info(f"   Model: {result.get('model')}")
-                        if 'usage' in result:
-                            usage = result.get('usage', {})
-                            logger.info(f"   Tokens: {usage.get('total_tokens', 'N/A')} total "+ 
-                                      f"({usage.get('prompt_tokens', 'N/A')} prompt, "+ 
-                                      f"{usage.get('completion_tokens', 'N/A')} completion)")
-                        
-                        # Log choices summary if available
-                        if 'choices' in result and len(result['choices']) > 0:
-                            choice = result['choices'][0]
-                            finish_reason = choice.get('finish_reason', 'unknown')
-                            logger.info(f"   Finish reason: {finish_reason}")
-                            
-                            # For debugging purposes, log full JSON at debug level
-                            if settings.DEBUG:
-                                formatted_json = json.dumps(result, indent=2)
-                                logger.debug(f"Full API Response:\n{formatted_json}")
-                            
-                            # Process the generated text
-                            generated_text = choice['message']['content']
-                            parsed_resources = self.response_parser.parse_json_response(generated_text, topic)
-                            
-                            if parsed_resources:
-                                total_parsed = sum(len(resources) for resources in parsed_resources.values())
-                                total_time = time.time() - api_start_time
-                                logger.info(f"✅ AI parsing complete: {total_parsed} resources ({total_time:.2f}s total)")
-                                return parsed_resources
-                            else:
-                                logger.warning("❌ AI response parsing failed")
-                        else:
-                            logger.warning("❌ No choices found in API response")
-                    except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to parse API response as JSON: {e}")
-                        logger.debug(f"Raw response text: {response_text[:500]}...")
-                        
-                elif response.status == 429:
-                    logger.warning("🚫 Rate limit exceeded")
-                    self.rate_limit_delay = min(self.rate_limit_delay * 1.5, 10)
-                    
-                else:
-                    logger.warning(f"❌ API error: HTTP {response.status}")
-                    try:
-                        error_text = await response.text()
-                        logger.debug(f"Error response: {error_text[:500]}...")
-                    except Exception as e:
-                        logger.debug(f"Could not read error response: {e}")
-                        
-                    
-        except asyncio.TimeoutError:
-            logger.error(f"⏰ API timeout after {time.time() - api_start_time:.2f}s")
-            
-        except Exception as e:
-            logger.error(f"💥 API call failed: {str(e)}")
+        }
         
+        user_message = {
+            "role": "user",
+            "content": self._create_json_prompt(topic)
+        }
+        
+        messages = [system_message, user_message]
+        
+        # Try the current model first, then fallback models
+        models_to_try = [self.model] + [m for m in FALLBACK_MODELS if m != self.model]
+        
+        last_error = None
+        
+        for model in models_to_try:
+            try:
+                # Skip if we don't have the required API key
+                provider = get_model_provider(model)
+                if (provider == 'gemini' and not settings.GEMINI_API_KEY) or \
+                   (provider == 'openai' and not settings.OPENAI_API_KEY) or \
+                   (provider == 'openrouter' and not settings.OPENROUTER_API_KEY):
+                    logger.warning(f"Skipping {model} - missing API key for {provider}")
+                    continue
+                
+                logger.info(f"🔍 Trying model: {model} ({provider})")
+                
+                # Make the API call
+                response = await self._call_llm_api(messages, model)
+                
+                # Process the response based on the provider
+                if provider == 'gemini':
+                    # Gemini responses are already converted to OpenAI format in _call_gemini_api
+                    if 'choices' in response and response['choices'] and 'message' in response['choices'][0]:
+                        content = response['choices'][0]['message']['content']
+                        logger.info(f"Extracted Gemini (converted) content: {content[:200]}...")
+                    else:
+                        logger.warning("Unexpected Gemini response format after conversion")
+                        content = str(response)
+                elif 'choices' in response and response['choices'] and 'message' in response['choices'][0]:
+                    # Handle OpenAI/OpenRouter response format
+                    content = response['choices'][0]['message']['content']
+                    logger.info(f"Extracted {provider} content: {content[:200]}...")
+                else:
+                    logger.warning("Unrecognized response structure")
+                    content = str(response)
+                    
+                # Clean the content by removing markdown code blocks if present
+                def clean_json_content(text):
+                    # Remove ```json and ``` markers
+                    text = re.sub(r'^\s*```(?:json\s*)?', '', text, flags=re.IGNORECASE)
+                    text = re.sub(r'```\s*$', '', text, flags=re.IGNORECASE)
+                    return text.strip()
+                
+                # Parse the JSON response
+                try:
+                    cleaned_content = clean_json_content(content)
+                    resources_data = json.loads(cleaned_content)
+                    
+                    # Convert to Resource objects
+                    resources = {}
+                    for resource_type, items in resources_data.items():
+                        resources[resource_type] = [
+                            Resource(
+                                title=item.get('title', ''),
+                                url=item.get('url', ''),
+                                description=item.get('description', ''),
+                                platform=item.get('platform', ''),
+                                price=item.get('price', '')
+                            )
+                            for item in items
+                            if item.get('title') and item.get('url')
+                        ]
+                    
+                    # Log success
+                    total_resources = sum(len(r) for r in resources.values())
+                    logger.info(f"✅ Successfully parsed {total_resources} resources from {provider} ({model})")
+                    
+                    # Reset failure count on success
+                    self.consecutive_failures = 0
+                    return resources
+                    
+                except json.JSONDecodeError as je:
+                    logger.warning(f"❌ Failed to parse {provider} response as JSON, trying next model...")
+                    logger.debug(f"   Error: {str(je)}")
+                    logger.debug(f"   Response content: {content[:500]}...")
+                    last_error = je
+                    continue
+                    
+                except Exception as e:
+                    logger.error(f"❌ Error processing {provider} response: {str(e)}")
+                    last_error = e
+                    continue
+                    
+            except Exception as e:
+                logger.error(f"❌ API call to {provider} failed: {str(e)}")
+                last_error = e
+                continue
+        
+        # If we get here, all models failed
+        self.consecutive_failures += 1
+        logger.error(f"❌ All model attempts failed. Last error: {str(last_error)}" if last_error else "❌ All model attempts failed")
         return {}
     
     def _create_json_prompt(self, topic: str) -> str:
@@ -285,9 +398,6 @@ Provide REAL, SPECIFIC resources that are well-known in the developer community.
   ],
   "free_courses": [
     {{"title": "Course Title", "url": "https://example.com", "description": "Brief description", "platform": "Platform Name", "price": "Free"}}
-  ],
-  "paid_courses": [
-    {{"title": "Course Title", "url": "https://example.com", "description": "Brief description", "platform": "Platform Name", "price": "$XX.XX"}}
   ]
 }}
 
@@ -300,6 +410,7 @@ Requirements:
 
 Topic: {topic}"""
 
+        prompt = prompt.strip()
         logger.debug(f"   Prompt created with {len(prompt)} characters")
         return prompt
 

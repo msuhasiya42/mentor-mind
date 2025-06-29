@@ -212,8 +212,7 @@ class ResultSaver:
                 "docs": resources_to_dict_list(learning_path.docs),
                 "blogs": resources_to_dict_list(learning_path.blogs),
                 "youtube": resources_to_dict_list(learning_path.youtube),
-                "free_courses": resources_to_dict_list(learning_path.free_courses),
-                "paid_courses": resources_to_dict_list(learning_path.paid_courses)
+                "free_courses": resources_to_dict_list(learning_path.free_courses)
             }
         }
         

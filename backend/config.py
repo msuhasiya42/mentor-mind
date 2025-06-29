@@ -8,9 +8,9 @@ from typing import Optional, Dict, Any
 
 # Import constants from constants.py
 from constants import (
-    API_HOST, API_PORT, OPENROUTER_API_BASE, DEFAULT_MODEL,
-    FREE_MODELS, FALLBACK_MODELS, RATE_LIMIT_WARNING_THRESHOLD,
-    get_openrouter_headers, get_model_info
+    API_HOST, API_PORT,
+    DEFAULT_MODEL, MODELS, FALLBACK_MODELS, RATE_LIMIT_WARNING_THRESHOLD,
+    get_openrouter_headers
 )
 
 # Load environment variables - try both backend/.env and project_root/.env
@@ -27,34 +27,48 @@ else:
     load_dotenv()
 
 class Settings:
-    # Sensitive Configuration - Only keep API key here
+    # Sensitive Configuration - API Keys
+    GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY")
+    OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
     OPENROUTER_API_KEY: Optional[str] = os.getenv("OPENROUTER_API_KEY")
     
     # Import all constants from constants.py
-    OPENROUTER_API_BASE: str = OPENROUTER_API_BASE
     API_HOST: str = API_HOST
     API_PORT: int = API_PORT
     DEFAULT_MODEL: str = DEFAULT_MODEL
-    FREE_MODELS = FREE_MODELS
-    FALLBACK_MODELS = FALLBACK_MODELS
+    MODELS = MODELS
+    FALLBACK_MODELS = FALLBACK_MODELS  # Fallback model order
     RATE_LIMIT_WARNING_THRESHOLD: int = RATE_LIMIT_WARNING_THRESHOLD
     
     @property
     def openrouter_headers(self) -> dict:
         """Get headers for OpenRouter API requests"""
         return get_openrouter_headers(self.OPENROUTER_API_KEY)
-    
-    def get_model_info(self, model_key: str = None) -> dict:
-        """Get information about a specific model or the default model"""
-        return get_model_info(model_key)
-    
-    def validate_config(self) -> bool:
-        """Validate OpenRouter configuration"""
-        if not self.OPENROUTER_API_KEY:
-            print("⚠️  OPENROUTER_API_KEY not found!")
-            return False
         
+    @property
+    def openai_headers(self) -> dict:
+        """Get headers for OpenAI API requests"""
+        return {
+            "Authorization": f"Bearer {self.OPENAI_API_KEY}",
+            "Content-Type": "application/json"
+        }
+    def validate_config(self) -> bool:
+        """Validate API configuration"""
+        if not self.GEMINI_API_KEY and not self.OPENAI_API_KEY and not self.OPENROUTER_API_KEY:
+            print("⚠️  No API keys found! Please set at least one of: GEMINI_API_KEY, OPENAI_API_KEY, or OPENROUTER_API_KEY")
+            return False
         return True
+        
+    def get_available_providers(self) -> list:
+        """Get list of available LLM providers based on API keys"""
+        providers = []
+        if self.GEMINI_API_KEY:
+            providers.append("gemini")
+        if self.OPENAI_API_KEY:
+            providers.append("openai")
+        if self.OPENROUTER_API_KEY:
+            providers.append("openrouter")
+        return providers
 
 # Create global settings instance
 settings = Settings() 

@@ -32,7 +32,6 @@ class LearningPath:
     docs: List[Resource] 
     youtube: List[Resource]
     free_courses: List[Resource]
-    paid_courses: List[Resource]
 
 
 @dataclass
@@ -93,7 +92,7 @@ class LearningPathGenerator:
             logger.info("💾 Auto-saved AI result")
         
         processing_time = time.time() - start_time
-        total_resources = sum(len(getattr(learning_path, category)) for category in ['docs', 'blogs', 'youtube', 'free_courses', 'paid_courses'])
+        total_resources = sum(len(getattr(learning_path, category)) for category in ['docs', 'blogs', 'youtube', 'free_courses'])
         
         logger.info("✅ LEARNING PATH GENERATION COMPLETED")
         logger.info(f"   Resources: {total_resources} | Time: {processing_time:.2f}s | Source: {source.split('(')[0].strip()}")
@@ -106,8 +105,7 @@ class LearningPathGenerator:
             docs=resources.get('docs', [])[:5],
             blogs=resources.get('blogs', [])[:5],
             youtube=resources.get('youtube', [])[:5],
-            free_courses=resources.get('free_courses', [])[:5],
-            paid_courses=resources.get('paid_courses', [])[:5]
+            free_courses=resources.get('free_courses', [])[:5]
         )
     
     def _determine_result_source(self) -> str:
@@ -186,20 +184,17 @@ class LearningPathGenerator:
             blogs = fallback_provider.get_fallback_blogs(topic)[:3]
             youtube = fallback_provider.get_fallback_youtube(topic)[:3]
             free_courses = fallback_provider.get_fallback_courses(topic, "free")[:3]
-            paid_courses = fallback_provider.get_fallback_courses(topic, "paid")[:3]
             
             fallback_path = LearningPath(
                 docs=docs,
                 blogs=blogs, 
                 youtube=youtube,
-                free_courses=free_courses,
-                paid_courses=paid_courses
+                free_courses=free_courses
             )
             
             fallback_time = time.time() - fallback_start_time
             total_fallback_resources = (
-                len(docs) + len(blogs) + len(youtube) + 
-                len(free_courses) + len(paid_courses)
+                len(docs) + len(blogs) + len(youtube) + len(free_courses)
             )
             
             logger.info("✅ FALLBACK PATH GENERATION COMPLETED")
@@ -208,7 +203,6 @@ class LearningPathGenerator:
             logger.info(f"     - Blogs: {len(blogs)}")
             logger.info(f"     - YouTube: {len(youtube)}")
             logger.info(f"     - Free Courses: {len(free_courses)}")
-            logger.info(f"     - Paid Courses: {len(paid_courses)}")
             logger.info(f"   Total Fallback Resources: {total_fallback_resources}")
             logger.info(f"   Fallback Generation Time: {fallback_time:.3f} seconds")
             
@@ -225,8 +219,7 @@ class LearningPathGenerator:
                 docs=[],
                 blogs=[],
                 youtube=[],
-                free_courses=[],
-                paid_courses=[]
+                free_courses=[]
             )
             
             logger.warning("⚠️ EMPTY LEARNING PATH RETURNED")

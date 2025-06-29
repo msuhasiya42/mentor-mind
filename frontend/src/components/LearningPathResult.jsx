@@ -39,15 +39,6 @@ const LearningPathResult = ({ data }) => {
       bgGradient: 'from-purple-50 to-purple-100',
       iconBg: 'bg-purple-100 text-purple-600',
       description: 'Structured learning paths at no cost'
-    },
-    {
-      title: 'Premium Courses',
-      icon: '💎',
-      resources: learning_path.paid_courses,
-      gradient: 'from-amber-500 to-orange-600',
-      bgGradient: 'from-amber-50 to-orange-100',
-      iconBg: 'bg-amber-100 text-amber-600',
-      description: 'Professional courses with certificates and support'
     }
   ];
 

@@ -1,0 +1,139 @@
+{
+    "topic": "Transformers of LLM",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "The Illustrated Transformer",
+                "url": "http://jalammar.github.io/illustrated-transformer/",
+                "description": "A highly visual and intuitive explanation of the Transformer architecture, breaking down each component.",
+                "platform": "Jay Alammar's Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Attention Is All You Need",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "description": "The seminal paper that introduced the Transformer architecture, detailing its self-attention mechanism.",
+                "platform": "arXiv",
+                "price": "Free"
+            },
+            {
+                "title": "Hugging Face Transformers Documentation",
+                "url": "https://huggingface.co/docs/transformers/index",
+                "description": "Comprehensive documentation for the Hugging Face Transformers library, covering models, tokenizers, and training.",
+                "platform": "Hugging Face",
+                "price": "Free"
+            },
+            {
+                "title": "TensorFlow Transformer Tutorial",
+                "url": "https://www.tensorflow.org/text/tutorials/transformer",
+                "description": "A step-by-step guide to implementing the Transformer model using TensorFlow.",
+                "platform": "TensorFlow",
+                "price": "Free"
+            },
+            {
+                "title": "PyTorch Transformer Tutorial",
+                "url": "https://pytorch.org/tutorials/beginner/transformer_tutorial.html",
+                "description": "A practical guide to building a Transformer model with PyTorch.",
+                "platform": "PyTorch",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "The Annotated Transformer",
+                "url": "http://nlp.seas.harvard.edu/annotated-transformer/",
+                "description": "A code-first, annotated version of the 'Attention Is All You Need' paper, explaining the implementation details.",
+                "platform": "Harvard NLP",
+                "price": "Free"
+            },
+            {
+                "title": "Understanding Transformer Networks",
+                "url": "https://towardsdatascience.com/understanding-transformer-networks-in-nlp-a-gentle-introduction-91973936822e",
+                "description": "A blog post providing a clear and accessible explanation of the Transformer architecture and its components.",
+                "platform": "Towards Data Science",
+                "price": "Free"
+            },
+            {
+                "title": "A Deep Dive into the Transformer Architecture",
+                "url": "https://medium.com/analytics-vidhya/a-deep-dive-into-the-transformer-architecture-f2f0469c1751",
+                "description": "An in-depth exploration of the Transformer's mechanics, including self-attention and positional encoding.",
+                "platform": "Medium (Analytics Vidhya)",
+                "price": "Free"
+            },
+            {
+                "title": "How Transformers Work",
+                "url": "https://jalammar.github.io/how-transformers-work/",
+                "description": "Another excellent visual explanation from Jay Alammar, focusing on the practical application of Transformers in NLP.",
+                "platform": "Jay Alammar's Blog",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "The Transformer Neural Network (Attention is All You Need)",
+                "url": "https://www.youtube.com/watch?v=TQQlZhbC5ps",
+                "description": "A detailed video explanation of the Transformer architecture and its core concepts.",
+                "platform": "YouTube (StatQuest with Josh Starmer)",
+                "price": "Free"
+            },
+            {
+                "title": "Attention and Transformers Explained",
+                "url": "https://www.youtube.com/watch?v=idkcjr_0_fA",
+                "description": "A clear and concise explanation of attention mechanisms and how they are used in Transformers.",
+                "platform": "YouTube (DeepLearningAI)",
+                "price": "Free"
+            },
+            {
+                "title": "Transformer Networks - Deep Learning",
+                "url": "https://www.youtube.com/watch?v=rbsa0J_3_2c",
+                "description": "A comprehensive overview of Transformer networks, covering their architecture and applications.",
+                "platform": "YouTube (Yannic Kilcher)",
+                "price": "Free"
+            },
+            {
+                "title": "The Illustrated Transformer (Video)",
+                "url": "https://www.youtube.com/watch?v=v-2vW0j_11M",
+                "description": "A video adaptation of Jay Alammar's popular 'Illustrated Transformer' blog post.",
+                "platform": "YouTube (Jay Alammar)",
+                "price": "Free"
+            },
+            {
+                "title": "NLP - Transformer Network",
+                "url": "https://www.youtube.com/watch?v=y0Z5_x_W0_E",
+                "description": "An explanation of the Transformer architecture with a focus on its use in Natural Language Processing.",
+                "platform": "YouTube (CodeEmporium)",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Natural Language Processing Specialization",
+                "url": "https://www.coursera.org/specializations/natural-language-processing",
+                "description": "This specialization includes a course on Attention Models and Transformers, providing a strong foundation.",
+                "platform": "Coursera (DeepLearning.AI)",
+                "price": "Free (Audit)"
+            },
+            {
+                "title": "Hugging Face Course",
+                "url": "https://huggingface.co/course",
+                "description": "A practical, hands-on course covering the Hugging Face Transformers library and its applications.",
+                "platform": "Hugging Face",
+                "price": "Free"
+            },
+            {
+                "title": "Deep Learning Specialization",
+                "url": "https://www.coursera.org/specializations/deep-learning",
+                "description": "While broader, this specialization's later courses touch upon attention mechanisms and sequence models relevant to Transformers.",
+                "platform": "Coursera (DeepLearning.AI)",
+                "price": "Free (Audit)"
+            },
+            {
+                "title": "CS224n: Natural Language Processing with Deep Learning",
+                "url": "http://web.stanford.edu/class/cs224n/",
+                "description": "Stanford's renowned NLP course, with lectures and materials often covering Transformers in detail.",
+                "platform": "Stanford University",
+                "price": "Free"
+            }
+        ]
+    }
+}

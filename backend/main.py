@@ -172,11 +172,7 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
         if not request.topic.strip():
             logger.warning(f"❌ Empty topic provided [ID: {request_id}]")
             raise HTTPException(status_code=400, detail="Topic cannot be empty")
-        
-        if not learning_path_generator:
-            logger.error(f"❌ Learning path generator not initialized [ID: {request_id}]")
-            raise HTTPException(status_code=500, detail="Learning path generator not initialized")
-        
+
         cleaned_topic = request.topic.strip()
         
         # Generate the learning path using Expert AI Tutor (returns dataclass)
@@ -188,7 +184,6 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
             blogs=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.blogs),
             youtube=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.youtube),
             free_courses=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.free_courses),
-            paid_courses=convert_dataclass_to_pydantic(learning_path_dataclass, learning_path_dataclass.paid_courses)
         )
         
         # Create response
@@ -202,8 +197,7 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
             len(learning_path_dataclass.docs) + 
             len(learning_path_dataclass.blogs) + 
             len(learning_path_dataclass.youtube) + 
-            len(learning_path_dataclass.free_courses) + 
-            len(learning_path_dataclass.paid_courses)
+            len(learning_path_dataclass.free_courses) 
         )
         total_time = time.time() - start_time
         
