@@ -1,0 +1,120 @@
+{
+    "topic": "Machine Learning",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow",
+                "url": "https://github.com/ageron/handson-ml3",
+                "description": "Practical ML book with code examples (3rd edition)",
+                "platform": "GitHub",
+                "price": "Free"
+            },
+            {
+                "title": "TensorFlow Documentation",
+                "url": "https://www.tensorflow.org/learn",
+                "description": "Official guides and tutorials for TensorFlow",
+                "platform": "TensorFlow",
+                "price": "Free"
+            },
+            {
+                "title": "Scikit-learn Documentation",
+                "url": "https://scikit-learn.org/stable/user_guide.html",
+                "description": "Comprehensive guide to Scikit-learn library",
+                "platform": "Scikit-learn",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Google AI Blog",
+                "url": "https://ai.googleblog.com/",
+                "description": "Latest ML research and applications from Google",
+                "platform": "Google",
+                "price": "Free"
+            },
+            {
+                "title": "Towards Data Science",
+                "url": "https://towardsdatascience.com/machine-learning/home",
+                "description": "Popular ML articles and tutorials on Medium",
+                "platform": "Medium",
+                "price": "Free"
+            },
+            {
+                "title": "Machine Learning Mastery",
+                "url": "https://machinelearningmastery.com/blog/",
+                "description": "Practical tutorials for ML practitioners",
+                "platform": "Machine Learning Mastery",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Machine Learning Course by Andrew Ng",
+                "url": "https://www.youtube.com/playlist?list=PLLssT5z_DsK-h9vYZkQkYNWcItqhlRJLN",
+                "description": "Stanford's legendary ML course lectures",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Neural Networks by 3Blue1Brown",
+                "url": "https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi",
+                "description": "Visual introduction to neural networks",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Machine Learning Tutorials by Sentdex",
+                "url": "https://www.youtube.com/playlist?list=PLQVvvaa0QuDfKTOs3Keq_kaG2P55YRn5v",
+                "description": "Practical ML with Python implementations",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Machine Learning by Stanford University",
+                "url": "https://www.coursera.org/learn/machine-learning",
+                "description": "Andrew Ng's foundational ML course (free audit option)",
+                "platform": "Coursera",
+                "price": "Free"
+            },
+            {
+                "title": "Practical Deep Learning for Coders",
+                "url": "https://course.fast.ai/",
+                "description": "Hands-on deep learning course using PyTorch",
+                "platform": "fast.ai",
+                "price": "Free"
+            },
+            {
+                "title": "Intro to Machine Learning with TensorFlow",
+                "url": "https://developers.google.com/machine-learning/crash-course",
+                "description": "Google's ML crash course with exercises",
+                "platform": "Google",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "Deep Learning Specialization",
+                "url": "https://www.coursera.org/specializations/deep-learning",
+                "description": "Advanced neural networks course by Andrew Ng",
+                "platform": "Coursera",
+                "price": "$49.00/month"
+            },
+            {
+                "title": "Machine Learning Engineer Nanodegree",
+                "url": "https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009t",
+                "description": "Project-based ML engineering program",
+                "platform": "Udacity",
+                "price": "$399/month"
+            },
+            {
+                "title": "Python for Machine Learning & Data Science Masterclass",
+                "url": "https://www.udemy.com/course/python-for-machine-learning-data-science-masterclass/",
+                "description": "Comprehensive ML implementation course",
+                "platform": "Udemy",
+                "price": "$84.99"
+            }
+        ]
+    }
+}

@@ -193,33 +193,71 @@ Provide REAL, SPECIFIC resources that are well-known in the developer community.
                 if response.status == 200:
                     logger.info(f"📨 API response received ({request_time:.2f}s)")
                     
-                    # Add timing for JSON parsing
+                    # Fetch response text once and store it
+                    response_text = await response.text()
+                    
+                    # Parse the JSON response
                     json_start_time = time.time()
-                    result = await response.json()
-                    json_time = time.time() - json_start_time
-                    
-                    if json_time > 10:  # Only log if JSON parsing is slow
-                        logger.warning(f"⚠️ Slow JSON parsing: {json_time:.2f}s")
-                    
-                    if 'choices' in result and len(result['choices']) > 0:
-                        generated_text = result['choices'][0]['message']['content']
+                    try:
+                        result = json.loads(response_text)
+                        json_time = time.time() - json_start_time
                         
-                        parsed_resources = self.response_parser.parse_json_response(generated_text, topic)
+                        if json_time > 5:  # Only log if JSON parsing is slow
+                            logger.warning(f"⚠️ Slow JSON parsing: {json_time:.2f}s")
                         
-                        if parsed_resources:
-                            total_parsed = sum(len(resources) for resources in parsed_resources.values())
-                            total_time = time.time() - api_start_time
-                            logger.info(f"✅ AI parsing complete: {total_parsed} resources ({total_time:.2f}s total)")
-                            return parsed_resources
-                        else:
-                            logger.warning("❌ AI response parsing failed")
+                        # Log formatted response with appropriate level of detail
+                        logger.info("🔄 API Response Summary:")
+                        
+                        if 'id' in result:
+                            logger.info(f"   ID: {result.get('id')}")
+                        if 'model' in result:
+                            logger.info(f"   Model: {result.get('model')}")
+                        if 'usage' in result:
+                            usage = result.get('usage', {})
+                            logger.info(f"   Tokens: {usage.get('total_tokens', 'N/A')} total "+ 
+                                      f"({usage.get('prompt_tokens', 'N/A')} prompt, "+ 
+                                      f"{usage.get('completion_tokens', 'N/A')} completion)")
+                        
+                        # Log choices summary if available
+                        if 'choices' in result and len(result['choices']) > 0:
+                            choice = result['choices'][0]
+                            finish_reason = choice.get('finish_reason', 'unknown')
+                            logger.info(f"   Finish reason: {finish_reason}")
                             
+                            # For debugging purposes, log full JSON at debug level
+                            if settings.DEBUG:
+                                formatted_json = json.dumps(result, indent=2)
+                                logger.debug(f"Full API Response:\n{formatted_json}")
+                            
+                            # Process the generated text
+                            generated_text = choice['message']['content']
+                            parsed_resources = self.response_parser.parse_json_response(generated_text, topic)
+                            
+                            if parsed_resources:
+                                total_parsed = sum(len(resources) for resources in parsed_resources.values())
+                                total_time = time.time() - api_start_time
+                                logger.info(f"✅ AI parsing complete: {total_parsed} resources ({total_time:.2f}s total)")
+                                return parsed_resources
+                            else:
+                                logger.warning("❌ AI response parsing failed")
+                        else:
+                            logger.warning("❌ No choices found in API response")
+                    except json.JSONDecodeError as e:
+                        logger.error(f"❌ Failed to parse API response as JSON: {e}")
+                        logger.debug(f"Raw response text: {response_text[:500]}...")
+                        
                 elif response.status == 429:
                     logger.warning("🚫 Rate limit exceeded")
                     self.rate_limit_delay = min(self.rate_limit_delay * 1.5, 10)
                     
                 else:
                     logger.warning(f"❌ API error: HTTP {response.status}")
+                    try:
+                        error_text = await response.text()
+                        logger.debug(f"Error response: {error_text[:500]}...")
+                    except Exception as e:
+                        logger.debug(f"Could not read error response: {e}")
+                        
                     
         except asyncio.TimeoutError:
             logger.error(f"⏰ API timeout after {time.time() - api_start_time:.2f}s")

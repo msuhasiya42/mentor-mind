@@ -1,0 +1,120 @@
+{
+    "topic": "React Js",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "React Documentation",
+                "url": "https://react.dev",
+                "description": "Official React documentation with tutorials and API references",
+                "platform": "React",
+                "price": "Free"
+            },
+            {
+                "title": "MDN React Tutorial",
+                "url": "https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/React_getting_started",
+                "description": "Mozilla's comprehensive guide to React fundamentals",
+                "platform": "MDN Web Docs",
+                "price": "Free"
+            },
+            {
+                "title": "React TypeScript Cheatsheet",
+                "url": "https://react-typescript-cheatsheet.netlify.app",
+                "description": "Community-maintained cheatsheet for React + TypeScript",
+                "platform": "GitHub",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "React Blog",
+                "url": "https://react.dev/blog",
+                "description": "Official React team updates and release notes",
+                "platform": "React",
+                "price": "Free"
+            },
+            {
+                "title": "Overreacted",
+                "url": "https://overreacted.io",
+                "description": "Personal blog by Dan Abramov (React core team)",
+                "platform": "Personal Blog",
+                "price": "Free"
+            },
+            {
+                "title": "freeCodeCamp React Handbook",
+                "url": "https://www.freecodecamp.org/news/tag/react/",
+                "description": "Practical React tutorials and articles",
+                "platform": "freeCodeCamp",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "React Tutorial for Beginners",
+                "url": "https://www.youtube.com/watch?v=SqcY0GlETPk",
+                "description": "Complete React course by Codevolution",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Full React Course 2024",
+                "url": "https://www.youtube.com/watch?v=RVFAyFWO4go",
+                "description": "Project-based learning with The Net Ninja",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "React JS Crash Course",
+                "url": "https://www.youtube.com/watch?v=w7ejDZ8SWv8",
+                "description": "2-hour crash course by Traversy Media",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Scrimba Learn React",
+                "url": "https://scrimba.com/learn/learnreact",
+                "description": "Interactive coding tutorials with instant feedback",
+                "platform": "Scrimba",
+                "price": "Free"
+            },
+            {
+                "title": "Codecademy React 101",
+                "url": "https://www.codecademy.com/learn/react-101",
+                "description": "Introductory React course with hands-on practice",
+                "platform": "Codecademy",
+                "price": "Free"
+            },
+            {
+                "title": "The Odin Project React Course",
+                "url": "https://www.theodinproject.com/paths/full-stack-javascript/courses/react",
+                "description": "Full-stack React curriculum with projects",
+                "platform": "The Odin Project",
+                "price": "Free"
+            }
+        ],
+        "paid_courses": [
+            {
+                "title": "React - The Complete Guide",
+                "url": "https://www.udemy.com/course/react-the-complete-guide-incl-redux/",
+                "description": "Bestselling course by Maximilian Schwarzmüller",
+                "platform": "Udemy",
+                "price": "$89.99"
+            },
+            {
+                "title": "Epic React",
+                "url": "https://epicreact.dev",
+                "description": "Professional-grade React training by Kent C. Dodds",
+                "platform": "Epic React",
+                "price": "$599.00"
+            },
+            {
+                "title": "Advanced React Patterns",
+                "url": "https://frontendmasters.com/courses/advanced-react/",
+                "description": "Deep dive into React architecture",
+                "platform": "Frontend Masters",
+                "price": "$39/month"
+            }
+        ]
+    }
+}

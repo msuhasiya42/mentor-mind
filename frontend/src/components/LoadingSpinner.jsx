@@ -7,8 +7,7 @@ const LoadingSpinner = () => {
         <div className="w-24 h-24 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
         
         {/* Inner pulsing circle */}
-        <div className="absolute inset-2 w-13 h-13 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse flex items-center justify-center">
-          <div className="text-white text-2xl">🧠</div>
+        <div className="absolute inset-2 left-1.5 top-1.5 w-13 h-13 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse flex items-center justify-center">
         </div>
         
         {/* Floating dots */}
