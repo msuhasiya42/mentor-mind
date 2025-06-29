@@ -22,58 +22,37 @@ learning_path_generator = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """FastAPI lifespan event handler"""
-    global learning_path_generator
     logger.info("🚀 MENTOR MIND APPLICATION STARTUP")
     
     try:
         # Validate configuration
         logger.info("⚡ Validating configuration...")
-        if not any([settings.OPENROUTER_API_KEY, settings.OPENAI_API_KEY, settings.GEMINI_API_KEY]):
-            error_msg = "No API keys found! Please set at least one of: OPENROUTER_API_KEY, OPENAI_API_KEY, or GEMINI_API_KEY"
-            logger.error(f"❌ {error_msg}")
-            raise RuntimeError(error_msg)
-        
-        if settings.OPENROUTER_API_KEY:
-            logger.info("✅ OpenRouter API key configured")
-        if settings.OPENAI_API_KEY:
-            logger.info("✅ OpenAI API key configured")
-        if settings.GEMINI_API_KEY:
-            logger.info("✅ Google Gemini API key configured")
+        if not settings.OPENROUTER_API_KEY:
+            logger.warning("⚠️ OpenRouter API key not configured")
+        else:
+            logger.info("✅ Configuration validated")
         
         # Initialize learning path generator
         logger.info("⚡ Initializing services...")
-        try:
-            learning_path_generator = LearningPathGenerator()
-            # Test the generator is working
-            if not hasattr(learning_path_generator, 'generate_learning_path'):
-                error_msg = "LearningPathGenerator is missing required method 'generate_learning_path'"
-                logger.error(f"❌ {error_msg}")
-                raise AttributeError(error_msg)
-            logger.info("✅ Services initialized")
-        except Exception as e:
-            logger.error(f"❌ Failed to initialize LearningPathGenerator: {str(e)}", exc_info=True)
-            learning_path_generator = None  # Explicitly set to None to prevent AttributeError
-            raise
+        global learning_path_generator
+        learning_path_generator = LearningPathGenerator()
+        logger.info("✅ Services initialized")
         
         logger.info("🎯 Application ready to serve requests")
         
     except Exception as e:
-        logger.critical(f"❌ Critical startup failure: {str(e)}", exc_info=True)
-        # Don't raise here to allow the application to start with limited functionality
-        # The API endpoints will check for learning_path_generator and return appropriate errors
-        
+        logger.error(f"❌ Startup failed: {str(e)}", exc_info=True)
+        raise
+    
     yield  # Server is running
     
     # Cleanup
     logger.info("🧹 Application shutdown starting...")
     try:
-        if learning_path_generator is not None:
+        if learning_path_generator:
             await learning_path_generator.close()
-            logger.info("✅ Services cleaned up")
     except Exception as e:
         logger.error(f"❌ Error during cleanup: {str(e)}", exc_info=True)
-    finally:
-        learning_path_generator = None
     
     logger.info("👋 Application shutdown complete")
 
@@ -189,12 +168,6 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
     logger.info(f"🎯 Generating learning path: '{request.topic}' [ID: {request_id}]")
     
     try:
-        # Check if learning_path_generator is initialized
-        if learning_path_generator is None:
-            error_msg = "Learning path generator is not initialized. Please check server logs for startup errors."
-            logger.error(f"❌ {error_msg} [ID: {request_id}]")
-            raise HTTPException(status_code=503, detail=error_msg)
-            
         # Validate input
         if not request.topic.strip():
             logger.warning(f"❌ Empty topic provided [ID: {request_id}]")
@@ -203,12 +176,7 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
         cleaned_topic = request.topic.strip()
         
         # Generate the learning path using Expert AI Tutor (returns dataclass)
-        try:
-            learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
-        except AttributeError as e:
-            error_msg = f"Learning path generator error: {str(e)}"
-            logger.error(f"❌ {error_msg} [ID: {request_id}]", exc_info=True)
-            raise HTTPException(status_code=500, detail=error_msg)
+        learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
         
         # Convert dataclass to Pydantic model
         learning_path_pydantic = PydanticLearningPath(
