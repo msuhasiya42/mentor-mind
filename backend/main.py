@@ -147,42 +147,6 @@ async def root(request: Request):
     logger.info(f"🏠 Root endpoint accessed [ID: {request_id}]")
     return {"message": "Welcome to Mentor Mind API - Now with Expert AI Tutor!"}
 
-@app.get("/health")
-async def health_check(request: Request):
-    """Health check endpoint"""
-    request_id = getattr(request.state, 'request_id', 'unknown')
-    logger.info(f"🏥 Health check requested [ID: {request_id}]")
-    
-    try:
-        # Check API key status
-        gemini_status = "configured" if settings.GEMINI_API_KEY else "not configured"
-        openai_status = "configured" if settings.OPENAI_API_KEY else "not configured"
-        
-        # Check if any API is available
-        any_api_available = any([
-            settings.GEMINI_API_KEY,
-            settings.OPENAI_API_KEY
-        ])
-        
-        health_data = {
-            "status": "healthy" if any_api_available else "unhealthy",
-            "gemini_api": gemini_status,
-            "openai_api": openai_status,
-            "default_model": settings.DEFAULT_MODEL,
-            "available_free_models": len(settings.FREE_MODELS) if hasattr(settings, 'FREE_MODELS') else 0,
-            "version": f"{APP_VERSION} (Expert AI Tutor)",
-            "features": ["single_llm_call", "expert_persona", "curated_resources"]
-        }
-        
-        logger.info(f"✅ Health check successful [ID: {request_id}] - OpenRouter: {openrouter_status}")
-        return health_data
-        
-    except Exception as e:
-        logger.error(f"❌ Health check failed [ID: {request_id}]: {str(e)}", exc_info=True)
-        return {
-            "status": "error",
-            "error": str(e)
-        }
 
 @app.post("/generate-learning-path", response_model=LearningPathResponse)
 async def generate_learning_path(
