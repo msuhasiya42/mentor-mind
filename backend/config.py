@@ -89,6 +89,7 @@ def setup_logging():
     
     # Create handlers list
     handlers = []
+    log_dir = None
     
     # Only attempt file logging if not in Vercel environment
     if not os.environ.get('VERCEL'):
@@ -107,6 +108,7 @@ def setup_logging():
         except OSError as e:
             # If we can't create the logs directory, just log to console
             print(f"Warning: Could not create logs directory - {str(e)}")
+            log_dir = None
     
     # Always add console handler
     console_handler = logging.StreamHandler(sys.stdout)
@@ -146,9 +148,14 @@ def setup_logging():
         logger.setLevel(level)
     
     # Log the setup completion
-    logging.getLogger(__name__).info("=== LOGGING SYSTEM INITIALIZED ===")
-    logging.getLogger(__name__).info(f"Log files created in: {os.path.abspath(log_dir)}")
-    logging.getLogger(__name__).info("Full detailed logs: mentor_mind_YYYYMMDD.log")
-    logging.getLogger(__name__).info("Error logs: mentor_mind_errors_YYYYMMDD.log")
+    logger = logging.getLogger(__name__)
+    logger.info("=== LOGGING SYSTEM INITIALIZED ===")
+    
+    if log_dir and os.path.exists(log_dir):
+        logger.info(f"Log files created in: {os.path.abspath(log_dir)}")
+        logger.info("Full detailed logs: mentor_mind_YYYYMMDD.log")
+        logger.info("Error logs: mentor_mind_errors_YYYYMMDD.log")
+    else:
+        logger.info("Running in serverless environment - logging to console only")
     
     return True 
