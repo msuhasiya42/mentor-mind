@@ -71,7 +71,9 @@ APP_VERSION = "2.0.0"
 # CORS Configuration
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "http://localhost:5173"  # React dev servers
+    "http://localhost:5173",  # React dev servers
+    "https://ai-resource-curator.netlify.app",  # Production frontend
+    "https://*.netlify.app"  # All Netlify preview deployments
 ]
 
 
