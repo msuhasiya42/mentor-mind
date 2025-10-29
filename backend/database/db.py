@@ -51,6 +51,31 @@ def get_db():
 
 def init_db():
     """Initialize database - create all tables."""
-    from .models import LearningPath, UserAction
-    Base.metadata.create_all(bind=engine)
-    print("✅ Database initialized successfully!")
+    import logging
+    logger = logging.getLogger(__name__)
+
+    try:
+        # Import models to register them with Base
+        from .models import LearningPath, UserAction
+
+        logger.info(f"Creating tables in database: {DATABASE_URL[:50]}...")
+
+        # Create all tables
+        Base.metadata.create_all(bind=engine)
+
+        # Verify tables were created
+        inspector = None
+        try:
+            from sqlalchemy import inspect
+            inspector = inspect(engine)
+            tables = inspector.get_table_names()
+            logger.info(f"✅ Database tables created: {tables}")
+        except Exception as inspect_error:
+            logger.warning(f"Could not verify tables: {inspect_error}")
+
+        print("✅ Database initialized successfully!")
+        return True
+
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {str(e)}", exc_info=True)
+        raise

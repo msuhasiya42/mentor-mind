@@ -31,7 +31,13 @@ async def lifespan(app: FastAPI):
     try:
         # Initialize database
         logger.info("⚡ Initializing database...")
-        init_db()
+        try:
+            init_db()
+            logger.info("✅ Database initialized successfully")
+        except Exception as db_error:
+            logger.error(f"❌ Database initialization failed: {str(db_error)}", exc_info=True)
+            logger.warning("⚠️ App will continue but database features may not work")
+            # Continue startup even if DB fails
 
         # Validate configuration
         logger.info("⚡ Validating configuration...")
@@ -146,21 +152,37 @@ async def health_check(request: Request):
     """Health check endpoint"""
     request_id = getattr(request.state, 'request_id', 'unknown')
     logger.info(f"🏥 Health check requested [ID: {request_id}]")
-    
+
     try:
         # Check if OpenRouter API key is configured
         openrouter_status = "configured" if settings.OPENROUTER_API_KEY else "not configured"
-        
+
         # Get available models info
         available_models = len(settings.FREE_MODELS) if hasattr(settings, 'FREE_MODELS') else 0
-        
+
+        # Check database status
+        db_status = "unknown"
+        try:
+            from database.db import SessionLocal
+            from sqlalchemy import inspect
+            db = SessionLocal()
+            try:
+                inspector = inspect(engine)
+                tables = inspector.get_table_names()
+                db_status = f"connected ({len(tables)} tables)"
+            finally:
+                db.close()
+        except Exception as db_err:
+            db_status = f"error: {str(db_err)[:50]}"
+
         health_data = {
             "status": "healthy",
+            "database": db_status,
             "openrouter_api": openrouter_status,
             "default_model": settings.DEFAULT_MODEL,
             "available_free_models": available_models,
             "version": f"{APP_VERSION} (Expert AI Tutor)",
-            "features": ["single_llm_call", "expert_persona", "curated_resources"]
+            "features": ["single_llm_call", "expert_persona", "curated_resources", "persistent_storage"]
         }
         
         logger.info(f"✅ Health check successful [ID: {request_id}] - OpenRouter: {openrouter_status}")
@@ -338,6 +360,22 @@ async def get_statistics(db: Session = Depends(get_db)):
     except Exception as e:
         logger.error(f"❌ Failed to retrieve statistics: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/admin/init-db")
+async def initialize_database():
+    """Manually trigger database initialization (creates tables if they don't exist)."""
+    try:
+        logger.info("📦 Manual database initialization requested")
+        init_db()
+        return {
+            "success": True,
+            "message": "Database tables created successfully",
+            "timestamp": time.time()
+        }
+    except Exception as e:
+        logger.error(f"❌ Manual database initialization failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to initialize database: {str(e)}")
 
 
 if __name__ == "__main__":
