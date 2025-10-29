@@ -72,7 +72,9 @@ APP_VERSION = "2.0.0"
 ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",  # React dev servers
-    "https://ai-resource-curator.netlify.app",  # Production frontend
+    "https://mentor-mind-ai-tau.vercel.app",  # Production frontend
+    "https://*.vercel.app",  # All Vercel preview deployments
+    "https://ai-resource-curator.netlify.app",  # Old frontend
     "https://*.netlify.app"  # All Netlify preview deployments
 ]
 
