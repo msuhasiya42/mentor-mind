@@ -20,6 +20,9 @@ setup_logging()
 # Get logger for this module
 logger = logging.getLogger(__name__)
 
+# Global variable for learning path generator
+learning_path_generator = None
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """FastAPI lifespan event handler"""
