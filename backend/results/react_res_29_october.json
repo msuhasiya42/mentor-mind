@@ -1,0 +1,104 @@
+{
+    "topic": "REact",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "React Documentation",
+                "url": "https://react.dev/learn",
+                "description": "The official documentation for React, offering a comprehensive guide from fundamentals to advanced concepts.",
+                "platform": "React.dev",
+                "price": "Free"
+            },
+            {
+                "title": "React Router Documentation",
+                "url": "https://reactrouter.com/en/main",
+                "description": "Official documentation for React Router, the standard library for navigation in React applications.",
+                "platform": "React Router",
+                "price": "Free"
+            },
+            {
+                "title": "MDN Web Docs - React",
+                "url": "https://developer.mozilla.org/en-US/docs/Glossary/React",
+                "description": "Mozilla Developer Network's comprehensive guide to React, covering core concepts and best practices.",
+                "platform": "MDN Web Docs",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Kent C. Dodds' Blog",
+                "url": "https://kentcdodds.com/blog",
+                "description": "In-depth articles and tutorials on React, testing, and JavaScript best practices from a renowned React educator.",
+                "platform": "Kent C. Dodds",
+                "price": "Free"
+            },
+            {
+                "title": "Smashing Magazine - React",
+                "url": "https://www.smashingmagazine.com/tag/react/",
+                "description": "Articles covering various aspects of React development, from UI design to performance optimization.",
+                "platform": "Smashing Magazine",
+                "price": "Free"
+            },
+            {
+                "title": "LogRocket Blog - React",
+                "url": "https://blog.logrocket.com/tag/react/",
+                "description": "Practical tutorials and insights on React development, often focusing on real-world application challenges.",
+                "platform": "LogRocket",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "The Net Ninja - React Tutorial for Beginners",
+                "url": "https://www.youtube.com/playlist?list=PL4cUxeGkcSw0VMsyA-p_3_0jQ_a_j7WqW",
+                "description": "A comprehensive playlist covering React fundamentals, hooks, and more, suitable for beginners.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Academind - React JS Course",
+                "url": "https://www.youtube.com/playlist?list=PL4cUxeGkcSw0VMsyA-p_3_0jQ_a_j7WqW",
+                "description": "A detailed course on React, covering essential concepts and practical examples.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Fireship - React in 100 Seconds",
+                "url": "https://www.youtube.com/playlist?list=PLsyeobzWxl7poQ93PNxVn_0_3f450_70f",
+                "description": "Short, fast-paced videos explaining core React concepts and libraries.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Traversy Media - React Crash Course",
+                "url": "https://www.youtube.com/watch?v=010K1j_Q-0k",
+                "description": "A popular and concise crash course covering the essentials of React.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "freeCodeCamp - React Course",
+                "url": "https://www.freecodecamp.org/learn/front-end-development-libraries/",
+                "description": "A comprehensive curriculum on front-end development, including a dedicated section on React.",
+                "platform": "freeCodeCamp",
+                "price": "Free"
+            },
+            {
+                "title": "Scrimba - Learn React for Free",
+                "url": "https://scrimba.com/learn/react",
+                "description": "An interactive course where you can edit the code directly in the browser.",
+                "platform": "Scrimba",
+                "price": "Free"
+            },
+            {
+                "title": "Codecademy - Learn React",
+                "url": "https://www.codecademy.com/learn/learn-react",
+                "description": "An introductory course to React with interactive exercises.",
+                "platform": "Codecademy",
+                "price": "Free"
+            }
+        ]
+    }
+}

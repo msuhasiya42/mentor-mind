@@ -23,4 +23,5 @@ class PydanticLearningPath(BaseModel):
 
 class LearningPathResponse(BaseModel):
     topic: str
-    learning_path: PydanticLearningPath 
+    learning_path: PydanticLearningPath
+    id: int = None  # Database ID, optional 

@@ -1,6 +1,8 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from sqlalchemy.orm import Session
+from typing import List
 import logging
 import time
 import uuid
@@ -9,6 +11,8 @@ from services.learning_path_generator import LearningPathGenerator
 from models import LearningPathRequest, LearningPathResponse, PydanticResource, PydanticLearningPath
 from config import settings, setup_logging
 from constants import APP_TITLE, APP_DESCRIPTION, APP_VERSION, ALLOWED_ORIGINS
+from database.db import get_db, init_db
+from database import crud
 
 # Initialize comprehensive logging first
 setup_logging()
@@ -20,29 +24,33 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """FastAPI lifespan event handler"""
     logger.info("🚀 MENTOR MIND APPLICATION STARTUP")
-    
+
     try:
+        # Initialize database
+        logger.info("⚡ Initializing database...")
+        init_db()
+
         # Validate configuration
         logger.info("⚡ Validating configuration...")
         if not settings.OPENROUTER_API_KEY:
             logger.warning("⚠️ OpenRouter API key not configured")
         else:
             logger.info("✅ Configuration validated")
-        
+
         # Initialize learning path generator
         logger.info("⚡ Initializing services...")
         global learning_path_generator
         learning_path_generator = LearningPathGenerator()
         logger.info("✅ Services initialized")
-        
+
         logger.info("🎯 Application ready to serve requests")
-        
+
     except Exception as e:
         logger.error(f"❌ Startup failed: {str(e)}", exc_info=True)
         raise
-    
+
     yield  # Server is running
-    
+
     # Cleanup
     logger.info("🧹 Application shutdown starting...")
     try:
@@ -50,7 +58,7 @@ async def lifespan(app: FastAPI):
             await learning_path_generator.close()
     except Exception as e:
         logger.error(f"❌ Error during cleanup: {str(e)}", exc_info=True)
-    
+
     logger.info("👋 Application shutdown complete")
 
 app = FastAPI(
@@ -188,18 +196,44 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
             topic=cleaned_topic,
             learning_path=learning_path_pydantic
         )
-        
+
         # Log completion
         total_resources = (
-            len(learning_path_dataclass.docs) + 
-            len(learning_path_dataclass.blogs) + 
-            len(learning_path_dataclass.youtube) + 
-            len(learning_path_dataclass.free_courses) 
+            len(learning_path_dataclass.docs) +
+            len(learning_path_dataclass.blogs) +
+            len(learning_path_dataclass.youtube) +
+            len(learning_path_dataclass.free_courses)
         )
         total_time = time.time() - start_time
-        
+
         logger.info(f"✅ Generated {total_resources} resources in {total_time:.2f}s [ID: {request_id}]")
-        
+
+        # Save to database (get DB session)
+        try:
+            from database.db import SessionLocal
+            db = SessionLocal()
+            try:
+                # Prepare data for storage
+                data_to_store = {
+                    "topic": cleaned_topic,
+                    "learning_path": {
+                        "docs": [{"title": r.title, "url": r.url, "description": r.description, "platform": r.platform, "price": r.price} for r in learning_path_pydantic.docs],
+                        "blogs": [{"title": r.title, "url": r.url, "description": r.description, "platform": r.platform, "price": r.price} for r in learning_path_pydantic.blogs],
+                        "youtube": [{"title": r.title, "url": r.url, "description": r.description, "platform": r.platform, "price": r.price} for r in learning_path_pydantic.youtube],
+                        "free_courses": [{"title": r.title, "url": r.url, "description": r.description, "platform": r.platform, "price": r.price} for r in learning_path_pydantic.free_courses]
+                    }
+                }
+                saved_path = crud.create_learning_path(db, cleaned_topic, data_to_store)
+                logger.info(f"💾 Saved to database with ID: {saved_path.id} [ID: {request_id}]")
+
+                # Add ID to response for frontend to use
+                response.id = saved_path.id
+            finally:
+                db.close()
+        except Exception as e:
+            logger.error(f"⚠️ Failed to save to database: {str(e)} [ID: {request_id}]")
+            # Don't fail the request if DB save fails
+
         return response
         
     except HTTPException:
@@ -208,6 +242,89 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
         total_time = time.time() - start_time
         logger.error(f"💥 Generation failed: {str(e)} in {total_time:.2f}s [ID: {request_id}]")
         raise HTTPException(status_code=500, detail=f"Failed to generate learning path: {str(e)}")
+
+
+# ==================== New Database Endpoints ====================
+
+@app.get("/learning-paths")
+async def get_all_learning_paths(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    """Get all saved learning paths."""
+    try:
+        paths = crud.get_all_learning_paths(db, skip=skip, limit=limit)
+        result = []
+        for path in paths:
+            result.append({
+                "id": path.id,
+                "topic": path.topic,
+                "created_at": path.created_at.isoformat() if path.created_at else None,
+                "data": path.get_data()
+            })
+        logger.info(f"📚 Retrieved {len(result)} learning paths")
+        return result
+    except Exception as e:
+        logger.error(f"❌ Failed to retrieve learning paths: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/learning-paths/{path_id}")
+async def get_learning_path(path_id: int, db: Session = Depends(get_db)):
+    """Get a specific learning path by ID."""
+    try:
+        path = crud.get_learning_path(db, path_id)
+        if not path:
+            raise HTTPException(status_code=404, detail="Learning path not found")
+
+        logger.info(f"📖 Retrieved learning path ID: {path_id}")
+        return {
+            "id": path.id,
+            "topic": path.topic,
+            "created_at": path.created_at.isoformat() if path.created_at else None,
+            "data": path.get_data()
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to retrieve learning path {path_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/learning-paths/{path_id}/action")
+async def track_action(path_id: int, action_type: str, db: Session = Depends(get_db)):
+    """Track user actions like downloads or views."""
+    try:
+        # Verify learning path exists
+        path = crud.get_learning_path(db, path_id)
+        if not path:
+            raise HTTPException(status_code=404, detail="Learning path not found")
+
+        # Validate action type
+        valid_actions = ["viewed", "downloaded_pdf", "downloaded_doc"]
+        if action_type not in valid_actions:
+            raise HTTPException(status_code=400, detail=f"Invalid action type. Must be one of: {valid_actions}")
+
+        # Create action
+        action = crud.create_user_action(db, path_id, action_type)
+        logger.info(f"✅ Tracked action '{action_type}' for learning path {path_id}")
+
+        return {"success": True, "action_id": action.id, "action_type": action_type}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Failed to track action: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/stats")
+async def get_statistics(db: Session = Depends(get_db)):
+    """Get overall statistics."""
+    try:
+        stats = crud.get_statistics(db)
+        logger.info(f"📊 Retrieved statistics")
+        return stats
+    except Exception as e:
+        logger.error(f"❌ Failed to retrieve statistics: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

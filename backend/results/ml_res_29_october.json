@@ -1,0 +1,125 @@
+{
+    "topic": "ML",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "Scikit-learn User Guide",
+                "url": "https://scikit-learn.org/stable/user_guide.html",
+                "description": "Comprehensive documentation for scikit-learn, a popular Python library for machine learning.",
+                "platform": "Scikit-learn",
+                "price": "Free"
+            },
+            {
+                "title": "TensorFlow Documentation",
+                "url": "https://www.tensorflow.org/api_docs/python/tf",
+                "description": "Official documentation for TensorFlow, an end-to-end open-source platform for machine learning.",
+                "platform": "TensorFlow",
+                "price": "Free"
+            },
+            {
+                "title": "PyTorch Documentation",
+                "url": "https://pytorch.org/docs/stable/index.html",
+                "description": "Official documentation for PyTorch, an open-source machine learning framework that accelerates the path from research prototyping to production deployment.",
+                "platform": "PyTorch",
+                "price": "Free"
+            },
+            {
+                "title": "Keras Documentation",
+                "url": "https://keras.io/api/",
+                "description": "Documentation for Keras, a high-level API for building and training neural networks, often used with TensorFlow.",
+                "platform": "Keras",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Towards Data Science",
+                "url": "https://towardsdatascience.com/",
+                "description": "A popular Medium publication featuring articles on data science, machine learning, AI, and more.",
+                "platform": "Medium",
+                "price": "Free (with Medium membership for some articles)"
+            },
+            {
+                "title": "Machine Learning Mastery",
+                "url": "https://machinelearningmastery.com/",
+                "description": "A blog by Jason Brownlee offering practical tutorials and guides on machine learning.",
+                "platform": "Machine Learning Mastery",
+                "price": "Free"
+            },
+            {
+                "title": "Distill.pub",
+                "url": "https://distill.pub/",
+                "description": "A journal dedicated to clear, concise, and visual explanations of machine learning concepts.",
+                "platform": "Distill.pub",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI Blog",
+                "url": "https://ai.googleblog.com/",
+                "description": "Official blog from Google AI, sharing research and advancements in artificial intelligence.",
+                "platform": "Google AI",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "StatQuest with Josh Starmer",
+                "url": "https://www.youtube.com/c/joshstarmer",
+                "description": "Clear and intuitive explanations of complex machine learning and statistics concepts.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "DeepLearning.AI",
+                "url": "https://www.youtube.com/c/Deeplearningai",
+                "description": "Content from Andrew Ng's DeepLearning.AI, including lectures and interviews on AI and ML.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "sentdex",
+                "url": "https://www.youtube.com/user/sentdex",
+                "description": "Practical Python programming tutorials, including many on machine learning and AI applications.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "3Blue1Brown",
+                "url": "https://www.youtube.com/c/3blue1brown",
+                "description": "Visually stunning explanations of mathematical concepts, including those fundamental to machine learning.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Machine Learning by Andrew Ng (Coursera)",
+                "url": "https://www.coursera.org/learn/machine-learning",
+                "description": "A foundational and highly popular course covering the basics of machine learning.",
+                "platform": "Coursera",
+                "price": "Free (Audit option)"
+            },
+            {
+                "title": "Introduction to Machine Learning for Coders (fast.ai)",
+                "url": "https://course.fast.ai/",
+                "description": "A practical, code-first introduction to deep learning and machine learning.",
+                "platform": "fast.ai",
+                "price": "Free"
+            },
+            {
+                "title": "Google's Machine Learning Crash Course",
+                "url": "https://developers.google.com/machine-learning/crash-course",
+                "description": "A fast-paced, practical introduction to machine learning with TensorFlow APIs.",
+                "platform": "Google",
+                "price": "Free"
+            },
+            {
+                "title": "Elements of AI",
+                "url": "https://www.elementsofai.com/",
+                "description": "An introduction to AI for everyone, covering the basics of AI and machine learning.",
+                "platform": "University of Helsinki",
+                "price": "Free"
+            }
+        ]
+    }
+}

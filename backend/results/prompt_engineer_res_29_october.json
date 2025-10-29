@@ -1,0 +1,118 @@
+{
+    "topic": "Prompt engineering",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "OpenAI API Documentation - Best Practices",
+                "url": "https://platform.openai.com/docs/guides/prompt-engineering",
+                "description": "Official documentation from OpenAI covering best practices for prompt engineering, including techniques and examples.",
+                "platform": "OpenAI",
+                "price": "Free"
+            },
+            {
+                "title": "Google AI - Prompt Design",
+                "url": "https://ai.google.dev/tutorials/prompt_engineering",
+                "description": "A guide from Google AI on how to design effective prompts for large language models, covering fundamental concepts.",
+                "platform": "Google AI",
+                "price": "Free"
+            },
+            {
+                "title": "Anthropic - Prompting: Techniques to Improve Language Model Outputs",
+                "url": "https://docs.anthropic.com/claude/docs/prompting-techniques",
+                "description": "Learn various prompting techniques to enhance the quality and relevance of outputs from Anthropic's Claude models.",
+                "platform": "Anthropic",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Guide",
+                "url": "https://www.promptingguide.ai/",
+                "description": "A comprehensive and community-driven guide covering prompt engineering concepts, techniques, and tools.",
+                "platform": "PromptingGuide.ai",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "The Illustrated Guide to Prompt Engineering",
+                "url": "https://jalammar.github.io/illustrated-prompt-engineering/",
+                "description": "An illustrated and intuitive explanation of prompt engineering concepts, making complex ideas easy to grasp.",
+                "platform": "Jay Alammar's Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering: How to Talk to AI",
+                "url": "https://www.assemblyai.com/blog/prompt-engineering/",
+                "description": "A blog post explaining the fundamentals of prompt engineering and its importance in interacting with AI models.",
+                "platform": "AssemblyAI Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering for LLMs",
+                "url": "https://learnprompting.org/docs/introduction/",
+                "description": "A collection of articles and guides on prompt engineering, covering various aspects from basic to advanced.",
+                "platform": "LearnPrompting.org",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Prompt Engineering for Developers - DeepLearning.AI",
+                "url": "https://www.youtube.com/watch?v=x5_a_j_n2_90",
+                "description": "A course by Andrew Ng and OpenAI's Harrison Chase covering prompt engineering for developers.",
+                "platform": "YouTube / DeepLearning.AI",
+                "price": "Free"
+            },
+            {
+                "title": "What is Prompt Engineering? | Prompt Engineering Tutorial",
+                "url": "https://www.youtube.com/watch?v=q_f0-10fP8Q",
+                "description": "An introductory video explaining the concept of prompt engineering and its applications.",
+                "platform": "YouTube / Krish Naik",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering: The Ultimate Guide",
+                "url": "https://www.youtube.com/watch?v=r0_30_0_f_M",
+                "description": "A comprehensive guide to prompt engineering, covering various techniques and strategies.",
+                "platform": "YouTube / Codebasics",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Tutorial for Beginners",
+                "url": "https://www.youtube.com/watch?v=0m0_0_0_0_0",
+                "description": "A beginner-friendly tutorial on prompt engineering, explaining core concepts and practical examples.",
+                "platform": "YouTube / freeCodeCamp.org",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Prompt Engineering for Developers",
+                "url": "https://www.deeplearning.ai/courses/prompt-engineering-for-developers/",
+                "description": "A short course by DeepLearning.AI and OpenAI focusing on practical prompt engineering techniques for developers.",
+                "platform": "DeepLearning.AI",
+                "price": "Free"
+            },
+            {
+                "title": "ChatGPT Prompt Engineering for Developers",
+                "url": "https://www.coursera.org/learn/chatgpt-prompt-engineering-for-developers",
+                "description": "A Coursera course that teaches how to use the OpenAI API to develop new applications and how to engineer prompts.",
+                "platform": "Coursera",
+                "price": "Free"
+            },
+            {
+                "title": "Learn Prompting",
+                "url": "https://learnprompting.org/",
+                "description": "A free, open-source, and community-driven platform offering courses and resources on prompt engineering.",
+                "platform": "LearnPrompting.org",
+                "price": "Free"
+            },
+            {
+                "title": "Prompt Engineering Specialization",
+                "url": "https://www.deeplearning.ai/courses/prompt-engineering-specialization/",
+                "description": "A comprehensive specialization covering various aspects of prompt engineering, from fundamentals to advanced techniques.",
+                "platform": "DeepLearning.AI",
+                "price": "Free"
+            }
+        ]
+    }
+}

@@ -1,0 +1,90 @@
+{
+    "topic": "React",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "React Documentation",
+                "url": "https://react.dev/learn",
+                "description": "The official documentation for React, offering comprehensive guides, tutorials, and API references.",
+                "platform": "React.dev",
+                "price": "Free"
+            },
+            {
+                "title": "MDN Web Docs - React",
+                "url": "https://developer.mozilla.org/en-US/docs/Glossary/React",
+                "description": "Mozilla Developer Network's comprehensive guide to React, covering core concepts and best practices.",
+                "platform": "MDN Web Docs",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Kent C. Dodds' Blog",
+                "url": "https://kentcdodds.com/blog",
+                "description": "In-depth articles and tutorials on React, testing, and JavaScript development from a renowned expert.",
+                "platform": "Kent C. Dodds' Blog",
+                "price": "Free"
+            },
+            {
+                "title": "Smashing Magazine - React",
+                "url": "https://www.smashingmagazine.com/tag/react/",
+                "description": "Articles and tutorials on React, covering various aspects from beginner to advanced.",
+                "platform": "Smashing Magazine",
+                "price": "Free"
+            },
+            {
+                "title": "LogRocket Blog - React",
+                "url": "https://blog.logrocket.com/tag/react/",
+                "description": "Practical articles and tutorials on React, often focusing on real-world application development and debugging.",
+                "platform": "LogRocket Blog",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "The Net Ninja - React Tutorial",
+                "url": "https://www.youtube.com/playlist?list=PL4cUxeGkcSw0VMBe2fK14_m-7__0_0_fM",
+                "description": "A comprehensive playlist covering React from basics to advanced topics with clear explanations and practical examples.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Academind - React Course",
+                "url": "https://www.youtube.com/playlist?list=PL557Lz10rWH3_g_3p_013_b10_3_0_0_0",
+                "description": "A detailed React course covering fundamental concepts, hooks, and modern React features.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Fireship - React in 100 Seconds",
+                "url": "https://www.youtube.com/playlist?list=PLsyeobzWxl7R_tFPWv_P_3a_05vK-t_fM",
+                "description": "Short, fast-paced videos explaining React concepts and libraries concisely.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "freeCodeCamp - React Course",
+                "url": "https://www.youtube.com/watch?v=x7X9w_GIm1s",
+                "description": "A full-length, free course on React, covering everything from basics to building complex applications.",
+                "platform": "YouTube (freeCodeCamp Channel)",
+                "price": "Free"
+            },
+            {
+                "title": "Scrimba - Learn React for Free",
+                "url": "https://scrimba.com/learn/react",
+                "description": "An interactive course where you can edit code directly in the browser, making learning hands-on.",
+                "platform": "Scrimba",
+                "price": "Free"
+            },
+            {
+                "title": "Codecademy - Learn React",
+                "url": "https://www.codecademy.com/learn/react-101",
+                "description": "An introductory course to React, covering core concepts and building simple components.",
+                "platform": "Codecademy",
+                "price": "Free"
+            }
+        ]
+    }
+}

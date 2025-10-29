@@ -1,0 +1,111 @@
+{
+    "topic": "Python",
+    "learning_path": {
+        "docs": [
+            {
+                "title": "The Python Tutorial",
+                "url": "https://docs.python.org/3/tutorial/index.html",
+                "description": "The official Python tutorial, covering the basics and more advanced features of the language.",
+                "platform": "Python.org",
+                "price": "Free"
+            },
+            {
+                "title": "Python Standard Library",
+                "url": "https://docs.python.org/3/library/index.html",
+                "description": "Comprehensive documentation for Python's extensive standard library.",
+                "platform": "Python.org",
+                "price": "Free"
+            },
+            {
+                "title": "PEP Index",
+                "url": "https://peps.python.org/",
+                "description": "Python Enhancement Proposals, offering insights into the design and evolution of Python.",
+                "platform": "Python.org",
+                "price": "Free"
+            }
+        ],
+        "blogs": [
+            {
+                "title": "Real Python",
+                "url": "https://realpython.com/",
+                "description": "A vast collection of high-quality Python tutorials, articles, and guides for all skill levels.",
+                "platform": "Real Python",
+                "price": "Free"
+            },
+            {
+                "title": "Python Insider",
+                "url": "https://www.python.org/blogs/",
+                "description": "Official blog from the Python Software Foundation, covering news, releases, and community updates.",
+                "platform": "Python.org",
+                "price": "Free"
+            },
+            {
+                "title": "Towards Data Science (Python Tag)",
+                "url": "https://towardsdatascience.com/tagged/python",
+                "description": "A popular Medium publication with many articles on Python for data science, machine learning, and more.",
+                "platform": "Medium",
+                "price": "Free"
+            }
+        ],
+        "youtube": [
+            {
+                "title": "Corey Schafer",
+                "url": "https://www.youtube.com/user/schafer5",
+                "description": "Excellent Python tutorials covering a wide range of topics, from beginner to advanced.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "freeCodeCamp.org",
+                "url": "https://www.youtube.com/c/Freecodecamp",
+                "description": "Offers comprehensive Python courses, including full-length beginner to advanced tutorials.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Sentdex",
+                "url": "https://www.youtube.com/user/sentdex",
+                "description": "Focuses on Python for finance, AI, machine learning, and robotics, with practical examples.",
+                "platform": "YouTube",
+                "price": "Free"
+            },
+            {
+                "title": "Tech With Tim",
+                "url": "https://www.youtube.com/c/TechWithTim",
+                "description": "Provides clear and concise Python tutorials, often project-based, suitable for beginners.",
+                "platform": "YouTube",
+                "price": "Free"
+            }
+        ],
+        "free_courses": [
+            {
+                "title": "Python for Everybody",
+                "url": "https://www.py4e.com/",
+                "description": "A popular free course by Dr. Charles Severance, focusing on Python for data analysis.",
+                "platform": "Py4E",
+                "price": "Free"
+            },
+            {
+                "title": "Google's Python Class",
+                "url": "https://developers.google.com/edu/python/",
+                "description": "A free class for people with a little bit of programming experience, covering Python basics.",
+                "platform": "Google Developers",
+                "price": "Free"
+            },
+            {
+                "title": "Learn Python - Full Course for Beginners",
+                "url": "https://www.youtube.com/watch?v=rfscVS0vtbw",
+                "description": "A comprehensive 4-hour beginner course available on YouTube.",
+                "platform": "YouTube (freeCodeCamp.org)",
+                "price": "Free"
+            },
+            {
+                "title": "Introduction to Python Programming",
+                "url": "https://www.edx.org/course/introduction-to-python-programming",
+                "description": "An introductory course from the University of Michigan on edX, often available for free audit.",
+                "platform": "edX",
+                "price": "Free (Audit)"
+            }
+        ]
+    }
+}
