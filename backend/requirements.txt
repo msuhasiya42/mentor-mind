@@ -8,3 +8,4 @@ pydantic==2.5.0
 python-dotenv==1.0.0
 google-genai>=0.7.0
 sqlalchemy==2.0.35
+psycopg2-binary==2.9.10
