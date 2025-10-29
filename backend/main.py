@@ -43,14 +43,19 @@ async def lifespan(app: FastAPI):
         # Initialize learning path generator
         logger.info("⚡ Initializing services...")
         global learning_path_generator
-        learning_path_generator = LearningPathGenerator()
-        logger.info("✅ Services initialized")
+        try:
+            learning_path_generator = LearningPathGenerator()
+            logger.info("✅ Services initialized")
+        except Exception as init_error:
+            logger.error(f"❌ Failed to initialize LearningPathGenerator: {str(init_error)}", exc_info=True)
+            logger.warning("⚠️ Generator will be initialized on first request instead")
+            # Don't fail startup, generator will be created on-demand
 
         logger.info("🎯 Application ready to serve requests")
 
     except Exception as e:
         logger.error(f"❌ Startup failed: {str(e)}", exc_info=True)
-        raise
+        # Don't raise to allow app to start in degraded mode
 
     yield  # Server is running
 
@@ -170,11 +175,12 @@ async def health_check(request: Request):
 
 @app.post("/generate-learning-path", response_model=LearningPathResponse)
 async def generate_learning_path(request: LearningPathRequest, http_request: Request):
+    global learning_path_generator
     request_id = getattr(http_request.state, 'request_id', 'unknown')
     start_time = getattr(http_request.state, 'start_time', time.time())
-    
+
     logger.info(f"🎯 Generating learning path: '{request.topic}' [ID: {request_id}]")
-    
+
     try:
         # Validate input
         if not request.topic.strip():
@@ -182,7 +188,12 @@ async def generate_learning_path(request: LearningPathRequest, http_request: Req
             raise HTTPException(status_code=400, detail="Topic cannot be empty")
 
         cleaned_topic = request.topic.strip()
-        
+
+        # Initialize generator if not already initialized (fallback for serverless)
+        if learning_path_generator is None:
+            logger.warning(f"⚠️ Generator not initialized, creating new instance [ID: {request_id}]")
+            learning_path_generator = LearningPathGenerator()
+
         # Generate the learning path using Expert AI Tutor (returns dataclass)
         learning_path_dataclass = await learning_path_generator.generate_learning_path(cleaned_topic)
         
